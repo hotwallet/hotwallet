@@ -1,5 +1,25 @@
+html {
+  background-color: #1c242a;
+}
+
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  background-color: #2b333a;
+  color: #fff;
+}
+
+h1 {
+  font-weight: normal;
+  margin: 0;
+  padding: 15px 20px 35px;
+  border-bottom: 1px solid #49525a;
+}
+
+.pad {
+  padding: 20px;
+}
+
+button {
+  cursor: pointer;
 }
