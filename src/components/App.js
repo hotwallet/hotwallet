@@ -5,6 +5,7 @@ import Counter from './Counter'
 import Portfolio from './Portfolio'
 import Settings from './Settings'
 import Header from './Header'
+import { border } from '../lib/styles'
 import 'semantic-ui-css/semantic.min.css'
 
 const navItems = {
@@ -55,7 +56,7 @@ const highlightColor = '#282f36'
 const ulStyle = {
   position: 'fixed',
   width: sideBarWidth,
-  borderRight: '1px solid #49525a',
+  borderRight: border,
   height: '100%',
   margin: 0,
   padding: 0,
