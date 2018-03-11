@@ -4,7 +4,7 @@ import { Route, Link } from 'react-router-dom'
 import Counter from './Counter'
 import Portfolio from './Portfolio'
 import Settings from './Settings'
-import HeaderBar from './Header'
+import Header from './Header'
 import 'semantic-ui-css/semantic.min.css'
 
 const navItems = {
@@ -15,25 +15,13 @@ const navItems = {
 
 class App extends React.Component {
   render() {
-    const activeUri = this.props.uri
-    const rows = Object.keys(navItems).map((name, i) => {
-      const uri = navItems[name]
-      const linkStyle = (activeUri === uri) ? activeStyle : inactiveStyle
-      return (
-        <li key={i}>
-          <Link style={linkStyle} to={uri}>
-            {name}
-          </Link>
-        </li>
-      )
-    })
     return (
       <div>
-        <HeaderBar />
+        <Header />
         <div>
-          <style>{`.nav li:hover{background-color:#282f36}`}</style>
+          <style>{`.nav li:hover{background-color:${highlightColor}`}</style>
           <ul className="nav" style={ulStyle}>
-            {rows}
+            {this.getNavLinks()}
           </ul>
           <main style={mainStyle}>
             <Route exact path="/" component={Portfolio} />
@@ -44,9 +32,25 @@ class App extends React.Component {
       </div>
     )
   }
+
+  getNavLinks() {
+    const activeUri = this.props.uri
+    return Object.keys(navItems).map((name, i) => {
+      const uri = navItems[name]
+      const linkStyle = (activeUri === uri) ? activeStyle : inactiveStyle
+      return (
+        <li key={i}>
+          <Link style={linkStyle} to={uri}>
+            {name}
+          </Link>
+        </li>
+      )
+    })
+  }
 }
 
 const sideBarWidth = 175
+const highlightColor = '#282f36'
 
 const ulStyle = {
   position: 'fixed',
@@ -64,7 +68,7 @@ const inactiveStyle = {
 }
 
 const activeStyle = Object.assign({
-  backgroundColor: '#282f36',
+  backgroundColor: highlightColor,
   color: '#fff'
 }, inactiveStyle)
 

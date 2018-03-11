@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-
-const border = '1px solid #49525a'
+import { border } from '../lib/styles'
 
 class Settings extends React.Component {
   componentDidMount() {}
