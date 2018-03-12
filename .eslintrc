@@ -1,0 +1,7 @@
+{
+  "extends": ["standard", "standard-jsx"],
+  "rules": {
+    "jsx-quotes": ["error", "prefer-double"],
+    "space-before-function-paren": ["error", {"anonymous": "always", "named": "never", "asyncArrow": "always"}]
+  }
+}
