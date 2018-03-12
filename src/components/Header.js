@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 class Header extends React.Component {
-  render() {
+  render () {
     return (
       <header style={headerStyle}>
         <span>Tarragon</span>

@@ -4,9 +4,9 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 class Counter extends React.Component {
-  componentDidMount() {}
+  componentDidMount () {}
 
-  render() {
+  render () {
     const props = this.props
     return (
       <div>
