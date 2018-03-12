@@ -15,7 +15,7 @@ const navItems = {
 }
 
 class App extends React.Component {
-  render () {
+  render() {
     return (
       <div>
         <Header />
@@ -34,7 +34,7 @@ class App extends React.Component {
     )
   }
 
-  getNavLinks () {
+  getNavLinks() {
     const activeUri = this.props.uri
     return Object.keys(navItems).map((name, i) => {
       const uri = navItems[name]

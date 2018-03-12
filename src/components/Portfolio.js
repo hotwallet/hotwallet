@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 import { border } from '../lib/styles'
 
 class Settings extends React.Component {
-  componentDidMount () {}
+  componentDidMount() {}
 
-  render () {
+  render() {
     return (
       <div>
         <h1>Portfolio</h1>

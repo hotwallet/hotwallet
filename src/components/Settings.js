@@ -2,9 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 class Settings extends React.Component {
-  componentDidMount () {}
+  componentDidMount() {}
 
-  render () {
+  render() {
     return (
       <div>
         <h1>Settings</h1>
