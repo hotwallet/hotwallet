@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { border } from '../lib/styles'
+import Prices from './Prices'
 
 class Settings extends React.Component {
   componentDidMount() {}
@@ -10,6 +11,7 @@ class Settings extends React.Component {
       <div>
         <h1>Portfolio</h1>
         <div className="charts" style={chartsStyle} />
+        <Prices />
       </div>
     )
   }
