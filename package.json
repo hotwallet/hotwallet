@@ -39,5 +39,4 @@
       "pre-push": "npm run eslint"
     }
   }
-
 }
