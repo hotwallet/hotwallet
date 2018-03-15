@@ -1,3 +1,5 @@
+import { SECURITIES_FETCH, SECURITIES_FETCH_SUCCESS, SECURITIES_FETCH_FAILURE } from '../actions//types'
+
 const initialState = {}
 
 export const getSecurities = function (state) {
@@ -8,13 +10,17 @@ export const getIsFetching = function (state) {
   return state.isFetching
 }
 
+export const getFailureMessage = function (state) {
+  return state.failureMessage
+}
+
 export default (state = initialState, action) => {
   switch (action.type) {
-    case 'securities.fetch':
+    case SECURITIES_FETCH:
       return { ...state, isFetching: true }
-    case 'securities.fetchSuccess':
+    case SECURITIES_FETCH_SUCCESS:
       return { securities: action.response, isFetching: false }
-    case 'securities.fetchFailure':
+    case SECURITIES_FETCH_FAILURE:
       return { ...state, isFetching: false, failureMessage: action.message }
     default:
       return state

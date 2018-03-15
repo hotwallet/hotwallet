@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { table } from '../lib/styles'
 import { Dimmer, Loader, Table } from 'semantic-ui-react'
 import * as actions from '../actions'
-import { getIsFetching } from '../reducers'
+import { getIsFetchingSecurities, getSecurities, getSecuritiesFailure } from '../reducers'
 
 class Prices extends React.Component {
   componentDidMount() {
@@ -46,9 +46,9 @@ class Prices extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  securities: state.securities.securities,
-  isFetching: getIsFetching(state, 'securities'),
-  failureMessage: state.securities.failureMessage
+  securities: getSecurities(state),
+  isFetching: getIsFetchingSecurities(state),
+  failureMessage: getSecuritiesFailure(state)
 })
 
 export default connect(mapStateToProps, actions)(Prices)

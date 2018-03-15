@@ -1,18 +1,28 @@
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
-import counter from './counter'
-import securities, * as securitiesReducer from './securities'
+import counterReducer, * as counter from './counter'
+import securitiesReducer, * as securities from './securities'
 
-export const getIsFetching = function (state, reducerName) {
-  return state[reducerName] && state[reducerName].isFetching
+// selectors
+export const getIsFetchingSecurities = function (state) {
+  return securities.getIsFetching(state.securities)
 }
 
 export const getSecurities = function (state) {
-  return securitiesReducer.getSecurities(state.securities)
+  return securities.getSecurities(state.securities)
 }
 
+export const getSecuritiesFailure = function (state) {
+  return securities.getFailureMessage(state.securities)
+}
+
+export const getCounter = function (state) {
+  return counter.getCounter(state.counter)
+}
+
+// reducers
 export default combineReducers({
   router: routerReducer,
-  securities: securities,
-  counter
+  securities: securitiesReducer,
+  counter: counterReducer
 })
