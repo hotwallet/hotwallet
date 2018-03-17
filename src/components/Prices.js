@@ -1,29 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import client from '../lib/tarragonClient'
-import { bindActionCreators } from 'redux'
 import { table } from '../lib/styles'
 import { Dimmer, Loader, Table } from 'semantic-ui-react'
+import * as actions from '../actions'
+import { getIsFetchingSecurities, getSecurities, getSecuritiesFailure } from '../reducers'
 
 class Prices extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isFetching: false
-    }
-  }
-
-  async componentDidMount() {
-    this.setState({ isFetching: true })
-    const securities = await client.get('/securities')
-    this.setState({
-      isFetching: false,
-      rows: this.getRows(securities)
-    })
+  componentDidMount() {
+    this.props.fetchSecurities()
   }
 
   getRows(securities) {
-    return securities.map(security =>
+    return securities && securities.map(security =>
       <Table.Row key={security.symbol}>
         <Table.Cell>{security.symbol}</Table.Cell>
         <Table.Cell>{security.price}</Table.Cell>
@@ -33,18 +21,23 @@ class Prices extends React.Component {
   }
 
   render() {
-    if (this.state.isFetching) {
+    if (this.props.isFetching) {
       return (
         <Dimmer active>
           <Loader inverted content="Loading" />
         </Dimmer>
       )
     }
+    if (this.props.failureMessage) {
+      return (
+        <div> {this.props.failureMessage} </div>
+      )
+    }
     return (
       <div className="pad">
         <Table celled inverted selectable style={table}>
           <Table.Body>
-            {this.state.rows}
+            {this.getRows(this.props.securities)}
           </Table.Body>
         </Table>
       </div>
@@ -52,16 +45,10 @@ class Prices extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+  securities: getSecurities(state),
+  isFetching: getIsFetchingSecurities(state),
+  failureMessage: getSecuritiesFailure(state)
+})
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      increment: () => ({ type: 'counter.increment' }),
-      decrement: () => ({ type: 'counter.decrement' }),
-      setSize: size => ({ type: 'counter.setSize', size })
-    },
-    dispatch
-  )
-
-export default connect(mapStateToProps, mapDispatchToProps)(Prices)
+export default connect(mapStateToProps, actions)(Prices)
