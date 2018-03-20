@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import ReactHighcharts from 'react-highcharts'
 import Highcharts from 'highcharts'
-import HighchartsExporter from 'highcharts/modules/exporting'
 import DateRangeSelector from './DateRangeSelector'
 import data from '../lib/sample-chart-data'
 import { lightBlue, darkBlue, darkBg } from '../lib/styles'
@@ -76,9 +75,7 @@ const config = {
 }
 
 class NetWorthChart extends React.Component {
-  async componentDidMount() {
-    HighchartsExporter(Highcharts)
-  }
+  componentDidMount() {}
 
   render() {
     return (
