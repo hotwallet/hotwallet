@@ -42,7 +42,10 @@ const boxStyle = {
 
 const button = {
   display: 'inline-block',
+  border: 'none',
+  outline: 'none',
   borderBottom: `1px solid ${lightBg}`,
+  padding: 0,
   paddingBottom: 5,
   marginRight: 20,
   marginBottom: 5,
@@ -75,11 +78,11 @@ class DateRangeSelector extends React.Component {
         {dateRanges.map(range => {
           const buttonStyle = this.isSelected(range) ? selected : button
           return (
-            <a href="#" onClick={e => this.handleDateRangeClick(e, range)}
+            <button onClick={e => this.handleDateRangeClick(e, range)}
               style={buttonStyle}
               key={range.label}>
               {range.label}
-            </a>
+            </button>
           )
         })}
       </div>
