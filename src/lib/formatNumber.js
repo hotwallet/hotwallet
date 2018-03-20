@@ -13,7 +13,6 @@ export function roundToSignificantFigures(num, digits = 3) {
   return shifted / magnitude
 }
 
-
 export function formatFiat(num, currency) {
   const currencyOptions = {
     style: 'currency',
@@ -32,13 +31,14 @@ export function formatFiat(num, currency) {
 export function shortenLargeNumber(num, baseCurrency) {
   const units = ['k', 'M', 'B', 'T']
   let decimal
-  const symbol = (typeof baseCurrency === 'string') ?
-    Number(0).toLocaleString('en-US', {
+  const symbol = (typeof baseCurrency === 'string')
+    ? Number(0).toLocaleString('en-US', {
       style: 'currency',
       currency: baseCurrency
-    }).substr(0, 1) : ''
+    }).substr(0, 1)
+    : ''
   for (let i = units.length - 1; i >= 0; i--) {
-    decimal = Math.pow(1000, i+1)
+    decimal = Math.pow(1000, i + 1)
     if (num <= -decimal || num >= decimal) {
       const number = (num / decimal)
       return symbol + (number > 100 ? number.toFixed(0) : number.toFixed(1)) + units[i]

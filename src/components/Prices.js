@@ -39,9 +39,9 @@ class Prices extends React.Component {
           <Table.Cell>{rank}</Table.Cell>
           <Table.Cell>
             <Image src={this.getIcon(security.symbol)}
-                   inline={true}
-                   verticalAlign="middle"
-                   style={{ marginRight: 10 }}
+              inline={true}
+              verticalAlign="middle"
+              style={{ marginRight: 10 }}
             />
             {security.name}
           </Table.Cell>
