@@ -2,6 +2,8 @@ import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import counterReducer, * as counter from './counter'
 import securitiesReducer, * as securities from './securities'
+import portfolio from './portfolio'
+import user from './user'
 
 // selectors
 export const getIsFetchingSecurities = function (state) {
@@ -22,6 +24,8 @@ export const getCounter = function (state) {
 
 // reducers
 export default combineReducers({
+  portfolio,
+  user,
   router: routerReducer,
   securities: securitiesReducer,
   counter: counterReducer

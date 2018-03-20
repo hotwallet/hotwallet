@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { darkBg } from '../lib/styles'
 
 class Header extends React.Component {
   render() {
@@ -12,7 +13,7 @@ class Header extends React.Component {
 }
 
 const headerStyle = {
-  backgroundColor: '#1c242a',
+  backgroundColor: darkBg,
   padding: '15px 20px',
   textTransform: 'uppercase'
 }
