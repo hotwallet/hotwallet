@@ -25,6 +25,7 @@ button {
   cursor: pointer;
 }
 
-.highcharts-credits {
+.highcharts-credits,
+.highcharts-contextbutton {
   display: none !important;
 }
