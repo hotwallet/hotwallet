@@ -83,12 +83,7 @@ class DateRangeSelector extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  startDate: state.portfolio.startDate,
-  endDate: state.portfolio.endDate,
-  granularity: state.portfolio.granularity,
-  label: state.portfolio.label
-})
+const mapStateToProps = state => state.portfolio.range
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
