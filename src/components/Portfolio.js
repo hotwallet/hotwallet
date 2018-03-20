@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { border } from '../lib/styles'
 import Prices from './Prices'
+import NetWorthChart from './NetWorthChart'
 
 class Settings extends React.Component {
   componentDidMount() {}
@@ -10,7 +11,9 @@ class Settings extends React.Component {
     return (
       <div>
         <h1>Portfolio</h1>
-        <div className="charts" style={chartsStyle} />
+        <div className="charts" style={chartsStyle}>
+          <NetWorthChart />
+        </div>
         <Prices />
       </div>
     )
@@ -18,8 +21,7 @@ class Settings extends React.Component {
 }
 
 const chartsStyle = {
-  borderBottom: border,
-  height: 300
+  borderBottom: border
 }
 
 const mapStateToProps = state => ({

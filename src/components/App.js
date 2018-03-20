@@ -5,7 +5,7 @@ import Counter from './Counter'
 import Portfolio from './Portfolio'
 import Settings from './Settings'
 import Header from './Header'
-import { border } from '../lib/styles'
+import { border, lightBlue } from '../lib/styles'
 import 'semantic-ui-css/semantic.min.css'
 
 const navItems = {
@@ -20,7 +20,7 @@ class App extends React.Component {
       <div>
         <Header />
         <div>
-          <style>{`.nav li:hover{background-color:${highlightColor}`}</style>
+          <style>{`.nav li:hover{background-color:${highlightColor}}`}</style>
           <ul className="nav" style={ulStyle}>
             {this.getNavLinks()}
           </ul>
@@ -65,7 +65,8 @@ const ulStyle = {
 
 const inactiveStyle = {
   padding: '15px 20px',
-  display: 'block'
+  display: 'block',
+  color: lightBlue
 }
 
 const activeStyle = Object.assign({
