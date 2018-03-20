@@ -1,6 +1,9 @@
 import client from '../lib/tarragonClient.js'
 import { getIsFetchingSecurities } from '../reducers'
-import { SECURITIES_FETCH, SECURITIES_FETCH_SUCCESS, SECURITIES_FETCH_FAILURE } from './types'
+
+export const SECURITIES_FETCH = 'SECURITIES_FETCH'
+export const SECURITIES_FETCH_SUCCESS = 'SECURITIES_FETCH_SUCCESS'
+export const SECURITIES_FETCH_FAILURE = 'SECURITIES_FETCH_FAILURE'
 
 export const fetchSecurities = () => (dispatch, getState) => {
   if (getIsFetchingSecurities(getState(), 'securities')) {
