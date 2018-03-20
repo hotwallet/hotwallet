@@ -17,5 +17,4 @@ export const saveState = (state) => {
   } catch (err) {
     // ignore write errors
   }
-
 }
