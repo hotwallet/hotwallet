@@ -84,7 +84,7 @@ class NetWorthChart extends React.Component {
     return (
       <div>
         <DateRangeSelector />
-        <ReactHighcharts config={config}></ReactHighcharts>
+        <ReactHighcharts config={config} />
       </div>
     )
   }

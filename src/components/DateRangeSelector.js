@@ -72,8 +72,8 @@ class DateRangeSelector extends React.Component {
           const buttonStyle = this.isSelected(range) ? selected : button
           return (
             <a href="js://" onClick={() => props.setDateRange(range)}
-               style={buttonStyle}
-               key={range.label}>
+              style={buttonStyle}
+              key={range.label}>
               {range.label}
             </a>
           )
