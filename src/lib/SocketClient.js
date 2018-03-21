@@ -17,7 +17,7 @@ export default class SocketClient {
   subscribeToPriceUpdates() {
     const state = store.getState()
     const baseCurrency = state.user.baseCurrency
-    const visibleSecurities = state.securities.securities.slice(0,100)
+    const visibleSecurities = state.securities.securities.slice(0, 100)
     visibleSecurities.forEach(security => {
       const room = `securities:${security.symbol}:${baseCurrency}`
       this.socket.emit('join', room)
