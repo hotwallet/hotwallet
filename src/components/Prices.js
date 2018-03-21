@@ -14,7 +14,7 @@ class Prices extends React.Component {
   }
 
   getIcon(symbol) {
-    return `https://chnnl.s3.amazonaws.com/tarragon/icons/16x16/${symbol}.png`
+    return `https://chnnl.s3.amazonaws.com/tarragon/icons/32x32/${symbol}.png`
   }
 
   formatPrice(num) {
@@ -43,7 +43,7 @@ class Prices extends React.Component {
               verticalAlign="middle"
               style={{ marginRight: 10 }}
             />
-            {security.name}
+            {security.symbol}
           </Table.Cell>
           <Table.Cell textAlign="right">{this.formatPrice(security.price)}</Table.Cell>
           <Table.Cell textAlign="right" style={deltaStyle}>{delta}</Table.Cell>

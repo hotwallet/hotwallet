@@ -1,2 +1,2 @@
-// export const serverUrl = 'https://tarragon-server.gadgetlabs.com'
-export const serverUrl = 'http://localhost:3000'
+export const serverUrl = 'https://tarragon-server.herokuapp.com'
+// export const serverUrl = 'http://localhost:3000'
