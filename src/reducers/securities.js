@@ -1,4 +1,9 @@
-import { SECURITIES_FETCH, SECURITIES_FETCH_SUCCESS, SECURITIES_FETCH_FAILURE } from '../actions'
+import {
+  SECURITIES_FETCH,
+  SECURITIES_FETCH_SUCCESS,
+  SECURITIES_FETCH_FAILURE,
+  SECURITIES_UPDATE
+} from '../actions'
 
 const initialState = {}
 
@@ -22,6 +27,12 @@ export default (state = initialState, action) => {
       return { securities: action.response, isFetching: false }
     case SECURITIES_FETCH_FAILURE:
       return { ...state, isFetching: false, failureMessage: action.message }
+    case SECURITIES_UPDATE:
+      const symbol = action.security.symbol
+      const securities = state.securities.map(security => {
+        return (security.symbol === symbol) ? action.security : security
+      })
+      return { ...state, securities }
     default:
       return state
   }

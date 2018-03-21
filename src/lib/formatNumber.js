@@ -19,7 +19,7 @@ export function formatFiat(num, currency) {
     currency
   }
   if (num >= 1000) {
-    return Math.floor(num).toLocaleString(language, Object.assign({
+    return num.toLocaleString(language, Object.assign({
       maximumFractionDigits: 0,
       minimumFractionDigits: 0
     }, currencyOptions))

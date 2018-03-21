@@ -8,7 +8,7 @@ import { formatFiat, shortenLargeNumber } from '../lib/formatNumber'
 
 class Prices extends React.Component {
   componentDidMount() {
-    if (!this.props.securities.length) {
+    if (!this.props.securities || !this.props.securities.length) {
       this.props.fetchSecurities()
     }
   }
