@@ -6,34 +6,51 @@ import * as actions from '../actions'
 import { getIsFetchingSecurities, getSecurities, getSecuritiesFailure } from '../reducers'
 import { formatFiat, shortenLargeNumber } from '../lib/formatNumber'
 
+const symbolStyle = {
+  fontSize: 18,
+  verticalAlign: 'inherit'
+}
+
 class Prices extends React.Component {
   componentDidMount() {
-    if (!this.props.securities.length) {
+    if (!this.props.securities || !this.props.securities.length) {
       this.props.fetchSecurities()
     }
   }
 
   getIcon(symbol) {
-    return `https://chnnl.s3.amazonaws.com/tarragon/icons/16x16/${symbol}.png`
+    return `https://chnnl.s3.amazonaws.com/tarragon/icons/32x32/${symbol}.png`
   }
 
   formatPrice(num) {
     return formatFiat(num, this.props.baseCurrency)
   }
 
+  formatPercentChange(num) {
+    if (Number(num) > 0) {
+      return {
+        style: { color: 'lightgreen' },
+        value: `+${num}%`
+      }
+    }
+    if (Number(num) < 0) {
+      return {
+        style: { color: 'red' },
+        value: `${num}%`
+      }
+    }
+    return {
+      style: {},
+      value: '-'
+    }
+  }
+
   getRows(securities) {
     return securities && securities.slice(0, 150).map((security, i) => {
       const rank = i + 1
-      let deltaStyle
-      let delta = '-'
-      if (Number(security.percentChange7d) > 0) {
-        deltaStyle = { color: 'green' }
-        delta = `+${security.percentChange7d}%`
-      }
-      if (Number(security.percentChange7d) < 0) {
-        deltaStyle = { color: 'red' }
-        delta = `${security.percentChange7d}%`
-      }
+      const delta24h = this.formatPercentChange(security.percentChange24h)
+      const delta7d = this.formatPercentChange(security.percentChange7d)
+      const supply = security.marketCap / security.price
       return (
         <Table.Row key={security.symbol}>
           <Table.Cell>{rank}</Table.Cell>
@@ -41,14 +58,18 @@ class Prices extends React.Component {
             <Image src={this.getIcon(security.symbol)}
               inline={true}
               verticalAlign="middle"
-              style={{ marginRight: 10 }}
+              style={{marginRight: 25}}
             />
-            {security.name}
+            <span style={symbolStyle}>
+              {security.symbol}
+            </span>
           </Table.Cell>
           <Table.Cell textAlign="right">{this.formatPrice(security.price)}</Table.Cell>
-          <Table.Cell textAlign="right" style={deltaStyle}>{delta}</Table.Cell>
+          <Table.Cell textAlign="right" style={delta24h.style}>{delta24h.value}</Table.Cell>
+          <Table.Cell textAlign="right" style={delta7d.style}>{delta7d.value}</Table.Cell>
           <Table.Cell textAlign="center">{0}</Table.Cell>
           <Table.Cell textAlign="center">{0}</Table.Cell>
+          <Table.Cell textAlign="right">{shortenLargeNumber(supply)}</Table.Cell>
           <Table.Cell textAlign="right">{shortenLargeNumber(security.marketCap, this.props.baseCurrency)}</Table.Cell>
         </Table.Row>
       )
@@ -76,9 +97,11 @@ class Prices extends React.Component {
               <Table.HeaderCell>Rank</Table.HeaderCell>
               <Table.HeaderCell>Currency</Table.HeaderCell>
               <Table.HeaderCell textAlign="right">Price</Table.HeaderCell>
-              <Table.HeaderCell textAlign="right">Change</Table.HeaderCell>
+              <Table.HeaderCell textAlign="right">24h</Table.HeaderCell>
+              <Table.HeaderCell textAlign="right">7d</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">Quantity</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">Value</Table.HeaderCell>
+              <Table.HeaderCell textAlign="right">Supply</Table.HeaderCell>
               <Table.HeaderCell textAlign="right">Mkt Cap</Table.HeaderCell>
             </Table.Row>
           </Table.Header>

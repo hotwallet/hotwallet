@@ -4,6 +4,7 @@ import { getIsFetchingSecurities } from '../reducers'
 export const SECURITIES_FETCH = 'SECURITIES_FETCH'
 export const SECURITIES_FETCH_SUCCESS = 'SECURITIES_FETCH_SUCCESS'
 export const SECURITIES_FETCH_FAILURE = 'SECURITIES_FETCH_FAILURE'
+export const SECURITIES_UPDATE = 'SECURITIES_UPDATE'
 
 export const fetchSecurities = () => (dispatch, getState) => {
   if (getIsFetchingSecurities(getState(), 'securities')) {
@@ -29,3 +30,8 @@ export const fetchSecurities = () => (dispatch, getState) => {
     }
   )
 }
+
+export const updateSecurity = security => ({
+  type: SECURITIES_UPDATE,
+  security
+})
