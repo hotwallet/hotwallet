@@ -10,6 +10,7 @@ export default class SocketClient {
       this.subscribeToPriceUpdates()
     })
     this.socket.on('security', security => {
+      console.log(security)
       store.dispatch(updateSecurity(security))
     })
   }
