@@ -1,7 +1,7 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { borderColor } from '../lib/styles'
+import { borderColor, lightBlue } from '../lib/styles'
 import { addTransaction } from '../actions/transactions'
 
 class PricesInputQty extends React.Component {
@@ -13,7 +13,7 @@ class PricesInputQty extends React.Component {
   }
 
   render() {
-    const color = (this.props.hover) ? 'red' : borderColor
+    const color = (this.props.hover) ? lightBlue : borderColor
     return (
       <input
         onFocus={e => e.target.select()}
