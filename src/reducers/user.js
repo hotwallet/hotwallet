@@ -1,5 +1,5 @@
 const initialState = {
-  baseCurrency: 'USD'
+  baseCurrency: 'EUR'
 }
 
 export default (state = initialState, action) => {

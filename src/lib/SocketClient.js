@@ -17,8 +17,12 @@ export default class SocketClient {
   subscribeToPriceUpdates() {
     const state = store.getState()
     const baseCurrency = state.user.baseCurrency
-    const visibleSecurities = state.securities.securities.slice(0, 100)
-    visibleSecurities.forEach(security => {
+    // wait until we have securities to subscribe to
+    if (!state.securities.securities) {
+      return setTimeout(() => this.subscribeToPriceUpdates(), 1000)
+    }
+    const activeSecurities = state.securities.securities.slice(0, 100)
+    activeSecurities.forEach(security => {
       const room = `securities:${security.symbol}:${baseCurrency}`
       this.socket.emit('join', room)
     })

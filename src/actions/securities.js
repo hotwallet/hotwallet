@@ -15,7 +15,8 @@ export const fetchSecurities = () => (dispatch, getState) => {
     type: SECURITIES_FETCH
   })
 
-  client.get('/securities').then(
+  const baseCurrency = getState().user.baseCurrency
+  client.get('/securities', { baseCurrency }).then(
     response => {
       dispatch({
         type: SECURITIES_FETCH_SUCCESS,
