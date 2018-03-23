@@ -7,7 +7,7 @@ import Settings from './Settings'
 import Header from './Header'
 import SideNav from './SideNav'
 import 'semantic-ui-css/semantic.min.css'
-import { sidebarWidth } from '../lib/styles'
+import { sidebarWidth, border } from '../lib/styles'
 
 class App extends React.Component {
   render() {
@@ -28,7 +28,9 @@ class App extends React.Component {
 }
 
 const mainStyle = {
-  marginLeft: sidebarWidth
+  marginLeft: sidebarWidth,
+  maxWidth: 1100,
+  borderRight: border
 }
 
 const mapStateToProps = state => ({
