@@ -29,6 +29,10 @@ class Counter extends React.Component {
           />
 
           <p>
+            Transactions: {props.transactions.length}
+          </p>
+
+          <p>
             <button onClick={() => props.goto('/settings')}>
               Go to Settings
             </button>
@@ -41,7 +45,8 @@ class Counter extends React.Component {
 
 const mapStateToProps = state => ({
   count: state.counter.count,
-  size: state.counter.size
+  size: state.counter.size,
+  transactions: state.transactions
 })
 
 const mapDispatchToProps = dispatch =>

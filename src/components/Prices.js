@@ -1,15 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { table } from '../lib/styles'
-import { Dimmer, Loader, Table, Image } from 'semantic-ui-react'
+import { Dimmer, Loader, Table } from 'semantic-ui-react'
 import * as actions from '../actions'
 import { getIsFetchingSecurities, getSecurities, getSecuritiesFailure } from '../reducers'
-import { formatFiat, shortenLargeNumber } from '../lib/formatNumber'
-
-const symbolStyle = {
-  fontSize: 18,
-  verticalAlign: 'inherit'
-}
+import PricesRow from './PricesRow'
 
 class Prices extends React.Component {
   componentDidMount() {
@@ -18,62 +13,10 @@ class Prices extends React.Component {
     }
   }
 
-  getIcon(symbol) {
-    return `https://chnnl.s3.amazonaws.com/tarragon/icons/32x32/${symbol}.png`
-  }
-
-  formatPrice(num) {
-    return formatFiat(num, this.props.baseCurrency)
-  }
-
-  formatPercentChange(num) {
-    if (Number(num) > 0) {
-      return {
-        style: { color: 'lightgreen' },
-        value: `+${num}%`
-      }
-    }
-    if (Number(num) < 0) {
-      return {
-        style: { color: 'red' },
-        value: `${num}%`
-      }
-    }
-    return {
-      style: {},
-      value: '-'
-    }
-  }
-
   getRows(securities) {
-    return securities && securities.slice(0, 150).map((security, i) => {
-      const rank = i + 1
-      const delta24h = this.formatPercentChange(security.percentChange24h)
-      const delta7d = this.formatPercentChange(security.percentChange7d)
-      const supply = security.marketCap / security.price
-      return (
-        <Table.Row key={security.symbol}>
-          <Table.Cell>{rank}</Table.Cell>
-          <Table.Cell>
-            <Image src={this.getIcon(security.symbol)}
-              inline={true}
-              verticalAlign="middle"
-              style={{marginRight: 25}}
-            />
-            <span style={symbolStyle}>
-              {security.symbol}
-            </span>
-          </Table.Cell>
-          <Table.Cell textAlign="right">{this.formatPrice(security.price)}</Table.Cell>
-          <Table.Cell textAlign="right" style={delta24h.style}>{delta24h.value}</Table.Cell>
-          <Table.Cell textAlign="right" style={delta7d.style}>{delta7d.value}</Table.Cell>
-          <Table.Cell textAlign="center">{0}</Table.Cell>
-          <Table.Cell textAlign="center">{0}</Table.Cell>
-          <Table.Cell textAlign="right">{shortenLargeNumber(supply)}</Table.Cell>
-          <Table.Cell textAlign="right">{shortenLargeNumber(security.marketCap, this.props.baseCurrency)}</Table.Cell>
-        </Table.Row>
-      )
-    })
+    return securities && securities.slice(0, 150).map((security, i) =>
+      <PricesRow key={security.symbol} security={security} />
+    )
   }
 
   render() {

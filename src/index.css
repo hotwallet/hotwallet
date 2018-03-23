@@ -29,3 +29,7 @@ button {
 .highcharts-contextbutton {
   display: none !important;
 }
+
+input::selection {
+  background: #46b8e7;
+}
