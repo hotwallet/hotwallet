@@ -19,21 +19,23 @@ class CurrencyPopup extends React.Component {
     currencies.unshift(baseCurrency)
     const style = {
       ...popupStyle,
-      ...this.props.style
+      display: this.props.active ? 'block' : 'none'
     }
     return (
-      <div style={style}>
-        {currencies.map(currency =>
-          <div key={currency}>
-            <CurrencyButton
-              currency={currency}
-              onClick={() => {
-                this.props.setBaseCurrency(currency)
-                if (this.props.onClick) this.props.onClick()
-              }}
-            />
-          </div>
-        )}
+      <div>
+        <div style={style}>
+          {currencies.map(currency =>
+            <div key={currency}>
+              <CurrencyButton
+                currency={currency}
+                onClick={() => {
+                  this.props.setBaseCurrency(currency)
+                  if (this.props.onClick) this.props.onClick()
+                }}
+              />
+            </div>
+          )}
+        </div>
       </div>
     )
   }
@@ -42,9 +44,10 @@ class CurrencyPopup extends React.Component {
 const popupStyle = {
   position: 'absolute',
   backgroundColor: darkBg,
-  zIndex: 10,
-  padding: '0 8px 10px',
-  marginLeft: -8
+  zIndex: 1100,
+  padding: 8,
+  marginLeft: -8,
+  marginTop: -8
 }
 
 const mapStateToProps = state => ({
