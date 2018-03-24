@@ -17,7 +17,7 @@ class CurrencySelector extends React.Component {
     return (
       <div>
         <CurrencyPopup
-          style={{display: this.state.active ? 'block' : 'none'}}
+          active={this.state.active}
           onClick={() => this.setState({ active: false })}
         />
         <CurrencyButton
