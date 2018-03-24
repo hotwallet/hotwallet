@@ -1,4 +1,4 @@
-import client from '../lib/tarragonClient.js'
+import client from '../lib/tarragonClient'
 import { getIsFetchingSecurities } from '../reducers'
 
 export const SECURITIES_FETCH = 'SECURITIES_FETCH'
@@ -22,6 +22,7 @@ export const fetchSecurities = () => (dispatch, getState) => {
         type: SECURITIES_FETCH_SUCCESS,
         response: response
       })
+      client.socket.subscribeToPriceUpdates()
     },
     error => {
       dispatch({
