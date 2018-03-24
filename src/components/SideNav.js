@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import NavLink from './NavLink'
+import { Icon } from 'semantic-ui-react'
 import { border, sidebarWidth } from '../lib/styles'
 
-const navItems = {
-  Portfolio: '/',
-  Counter: '/counter',
-  Settings: '/settings'
-}
+const navItems = [
+  { icon: 'pie chart', uri: '/', name: 'Portfolio' },
+  { icon: 'setting', uri: '/settings', name: 'Settings' }
+]
 
 class SideNav extends React.Component {
   render() {
@@ -21,11 +21,14 @@ class SideNav extends React.Component {
   }
 
   getNavLinks() {
-    return Object.keys(navItems).map((name, i) => {
-      const uri = navItems[name]
+    return navItems.map((navItem, i) => {
       return (
         <li key={i}>
-          <NavLink to={uri} name={name} />
+          <NavLink
+            to={navItem.uri}
+            name={navItem.name}
+            value={<Icon size="large" name={navItem.icon} />}
+          />
         </li>
       )
     })

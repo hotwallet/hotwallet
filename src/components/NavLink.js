@@ -1,12 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { lightBlue } from '../lib/styles'
+import { Popup } from 'semantic-ui-react'
 
 class NavLink extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { hover: false }
+    this.state = {
+      hover: false,
+      showTooltip: false
+    }
   }
 
   render() {
@@ -16,21 +19,31 @@ class NavLink extends React.Component {
     if (props.uri === props.to) linkStyle = activeStyle
     const style = { ...props.style, ...normalStyle, ...linkStyle }
     return (
-      <Link style={style}
-        to={props.to}
-        onMouseOver={() => this.mouseOver()}
-        onMouseOut={() => this.mouseOut()}>
-        {props.name}
-      </Link>
+      <Popup
+        inverted
+        open={this.state.showTooltip}
+        size="tiny"
+        horizontalOffset={-15}
+        trigger={
+          <Link style={style}
+            to={props.to}
+            onClick={() => this.setState({ showTooltip: false })}
+            onMouseOver={() => this.setState({ hover: true, showTooltip: true })}
+            onMouseOut={() => this.setState({ hover: false, showTooltip: false })}
+          >{props.value}</Link>
+        }
+        content={props.name}
+        position="right center"
+      />
     )
   }
 
   mouseOver() {
-    this.setState({ hover: true })
+
   }
 
   mouseOut() {
-    this.setState({ hover: false })
+
   }
 }
 
@@ -39,7 +52,7 @@ const highlightColor = '#282f36'
 const normalStyle = {
   padding: '15px 20px',
   display: 'block',
-  color: lightBlue
+  color: 'gray'
 }
 
 const hoverStyle = {

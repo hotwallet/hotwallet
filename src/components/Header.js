@@ -1,13 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { darkBg, sidebarWidth } from '../lib/styles'
+import { Icon } from 'semantic-ui-react'
+import { darkBg, sidebarWidth, border } from '../lib/styles'
 import CurrencySelector from './CurrencySelector'
 
 class Header extends React.Component {
   render() {
     return (
       <header style={headerStyle}>
-        <div style={logoStyle}>Tarragon</div>
+        <Icon name="bars" size="large" inverted style={logoStyle} />
         <div style={currencySelectorStyle}>
           <CurrencySelector />
         </div>
@@ -28,10 +29,10 @@ const headerStyle = {
 }
 
 const logoStyle = {
-  width: sidebarWidth - 20,
+  width: sidebarWidth,
   display: 'inline-block',
-  marginLeft: 20,
-  color: '#999'
+  color: 'gray',
+  borderRight: border
 }
 
 const mapStateToProps = state => ({

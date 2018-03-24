@@ -74,7 +74,7 @@ class PricesRow extends React.Component {
         <Table.Cell>{rank}</Table.Cell>
         <Table.Cell>
           <Image src={this.getIcon(security.symbol)}
-            inline={true}
+            inline
             verticalAlign="middle"
             style={{marginRight: 25}}
           />
