@@ -8,9 +8,7 @@ import PricesRow from './PricesRow'
 
 class Prices extends React.Component {
   componentDidMount() {
-    if (!this.props.securities || !this.props.securities.length) {
-      this.props.fetchSecurities()
-    }
+    this.props.fetchSecurities()
   }
 
   getRows(securities) {
