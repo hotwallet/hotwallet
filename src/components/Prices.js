@@ -5,10 +5,17 @@ import { Dimmer, Loader, Table } from 'semantic-ui-react'
 import * as actions from '../actions'
 import { getIsFetchingSecurities, getSecurities, getSecuritiesFailure } from '../reducers'
 import PricesRow from './PricesRow'
+import PricesFilters from './PricesFilters'
+import moment from 'moment'
 
 class Prices extends React.Component {
   componentDidMount() {
-    this.props.fetchSecurities()
+    // fetch all prices if they haven't been updated in the past 2 minutes
+    const updatedAt = this.props.updatedAt
+    const diff = moment().diff(updatedAt, 'seconds')
+    if (!updatedAt || diff > 120) {
+      this.props.fetchSecurities()
+    }
   }
 
   getRows(securities) {
@@ -32,6 +39,7 @@ class Prices extends React.Component {
     }
     return (
       <div className="pad">
+        <PricesFilters />
         <Table inverted selectable style={table}>
           <Table.Header>
             <Table.Row>
@@ -56,6 +64,7 @@ class Prices extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  updatedAt: state.securities.updatedAt,
   baseCurrency: state.user.baseCurrency,
   securities: getSecurities(state),
   isFetching: getIsFetchingSecurities(state),

@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import NavLink from './NavLink'
 import { Icon } from 'semantic-ui-react'
-import { border, sidebarWidth } from '../lib/styles'
+import { sidebarWidth } from '../lib/styles'
 
 const navItems = [
   { icon: 'pie chart', uri: '/', name: 'Portfolio' },
@@ -36,9 +36,8 @@ class SideNav extends React.Component {
 }
 
 const ulStyle = {
-  position: 'fixed',
+  position: 'absolute',
   width: sidebarWidth,
-  borderRight: border,
   height: '100%',
   margin: 0,
   padding: 0,

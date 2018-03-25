@@ -30,7 +30,8 @@ class App extends React.Component {
 const mainStyle = {
   marginLeft: sidebarWidth,
   maxWidth: 1100,
-  borderRight: border
+  borderRight: border,
+  borderLeft: border
 }
 
 const mapStateToProps = state => ({

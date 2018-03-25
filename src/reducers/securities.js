@@ -20,11 +20,17 @@ export const getFailureMessage = function (state) {
 }
 
 export default (state = initialState, action) => {
+  const now = new Date()
   switch (action.type) {
     case SECURITIES_FETCH:
       return { ...state, isFetching: true }
     case SECURITIES_FETCH_SUCCESS:
-      return { securities: action.response, isFetching: false }
+      return {
+        ...state,
+        securities: action.response,
+        isFetching: false,
+        updatedAt: now
+      }
     case SECURITIES_FETCH_FAILURE:
       return { ...state, isFetching: false, failureMessage: action.message }
     case SECURITIES_UPDATE:
@@ -32,7 +38,7 @@ export default (state = initialState, action) => {
       const securities = state.securities.map(security => {
         return (security.symbol === symbol) ? action.security : security
       })
-      return { ...state, securities }
+      return { ...state, securities, updatedAt: now }
     default:
       return state
   }

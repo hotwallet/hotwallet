@@ -54,8 +54,7 @@ class PricesRow extends React.Component {
   getBalance(symbol) {
     // TODO: account for multiple wallets
     const latestTx = this.props.transactions.find(tx => tx.symbol === symbol)
-    if (!latestTx) return 0
-    return latestTx.balance
+    if (latestTx) return latestTx.balance
   }
 
   render() {
