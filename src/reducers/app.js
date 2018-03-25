@@ -1,6 +1,8 @@
 import { SET_DEVICE } from '../actions/app'
 
-const initialState = {}
+const initialState = {
+  device: {}
+}
 
 export default (state = initialState, action) => {
   switch (action.type) {
