@@ -31,7 +31,7 @@ const dateRanges = [
   }
 ]
 
-const color = '#999'
+const color = 'gray'
 
 const boxStyle = {
   marginTop: 15,

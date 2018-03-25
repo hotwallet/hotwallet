@@ -18,10 +18,23 @@ class Prices extends React.Component {
     }
   }
 
+  // TODO: this function is also in PricesRow:54
+  getBalance(symbol) {
+    // TODO: account for multiple wallets
+    const latestTx = this.props.transactions.find(tx => tx.symbol === symbol)
+    if (latestTx) return latestTx.balance
+  }
+
   getRows(securities) {
-    return securities && securities.slice(0, 150).map((security, i) =>
-      <PricesRow key={security.symbol} security={security} />
-    )
+    return securities && securities.slice(0, 100)
+      .filter(security => {
+        if (!this.props.balancesOnly) return true
+        const balance = this.getBalance(security.symbol)
+        if (balance || balance === 0) return true
+      })
+      .map((security, i) => (
+        <PricesRow key={security.symbol} security={security} />
+      ))
   }
 
   render() {
@@ -48,7 +61,7 @@ class Prices extends React.Component {
               <Table.HeaderCell textAlign="right">Price</Table.HeaderCell>
               <Table.HeaderCell textAlign="right">24h</Table.HeaderCell>
               <Table.HeaderCell textAlign="right">7d</Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">Quantity</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">Balance</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">Value</Table.HeaderCell>
               <Table.HeaderCell textAlign="right">Supply</Table.HeaderCell>
               <Table.HeaderCell textAlign="right">Mkt Cap</Table.HeaderCell>
@@ -68,7 +81,9 @@ const mapStateToProps = state => ({
   baseCurrency: state.user.baseCurrency,
   securities: getSecurities(state),
   isFetching: getIsFetchingSecurities(state),
-  failureMessage: getSecuritiesFailure(state)
+  failureMessage: getSecuritiesFailure(state),
+  balancesOnly: state.securities.balancesOnly,
+  transactions: state.transactions
 })
 
 export default connect(mapStateToProps, actions)(Prices)
