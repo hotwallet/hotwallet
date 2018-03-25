@@ -9,6 +9,9 @@ export default (state = initialState, action) => {
     case SET_DEVICE:
       return { ...state, device: { ...action.device } }
     default:
-      return state
+      return {
+        device: {},
+        ...state
+      }
   }
 }
