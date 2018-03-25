@@ -31,6 +31,7 @@ class Prices extends React.Component {
         if (!this.props.balancesOnly) return true
         const balance = this.getBalance(security.symbol)
         if (balance || balance === 0) return true
+        return false
       })
       .map((security, i) => (
         <PricesRow key={security.symbol} security={security} />
@@ -50,21 +51,21 @@ class Prices extends React.Component {
         <div> {this.props.failureMessage} </div>
       )
     }
+    const isMobile = this.props.isMobile
     return (
       <div className="pad">
         <PricesFilters />
-        <Table inverted selectable style={table}>
+        <Table inverted unstackable selectable style={table}>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>Rank</Table.HeaderCell>
               <Table.HeaderCell>Currency</Table.HeaderCell>
               <Table.HeaderCell textAlign="right">Price</Table.HeaderCell>
-              <Table.HeaderCell textAlign="right">24h</Table.HeaderCell>
-              <Table.HeaderCell textAlign="right">7d</Table.HeaderCell>
+              {isMobile ? null : <Table.HeaderCell textAlign="right">24h</Table.HeaderCell>}
+              {isMobile ? null : <Table.HeaderCell textAlign="right">7d</Table.HeaderCell>}
               <Table.HeaderCell textAlign="center">Balance</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">Value</Table.HeaderCell>
-              <Table.HeaderCell textAlign="right">Supply</Table.HeaderCell>
-              <Table.HeaderCell textAlign="right">Mkt Cap</Table.HeaderCell>
+              {isMobile ? null : <Table.HeaderCell textAlign="right">Supply</Table.HeaderCell>}
+              {isMobile ? null : <Table.HeaderCell textAlign="right">Mkt Cap</Table.HeaderCell>}
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -83,7 +84,8 @@ const mapStateToProps = state => ({
   isFetching: getIsFetchingSecurities(state),
   failureMessage: getSecuritiesFailure(state),
   balancesOnly: state.securities.balancesOnly,
-  transactions: state.transactions
+  transactions: state.transactions,
+  isMobile: state.app.device.isMobile
 })
 
 export default connect(mapStateToProps, actions)(Prices)

@@ -58,9 +58,9 @@ class PricesRow extends React.Component {
   }
 
   render() {
+    const isMobile = this.props.isMobile
     const security = this.props.security
     const baseCurrency = this.props.baseCurrency
-    const rank = 1
     const delta24h = this.formatPercentChange(security.percentChange24h)
     const delta7d = this.formatPercentChange(security.percentChange7d)
     const supply = security.marketCap / security.price
@@ -70,20 +70,19 @@ class PricesRow extends React.Component {
       <Table.Row
         onMouseOver={() => this.mouseOver()}
         onMouseOut={() => this.mouseOut()}>
-        <Table.Cell>{rank}</Table.Cell>
         <Table.Cell>
           <Image src={this.getIcon(security.symbol)}
             inline
             verticalAlign="middle"
-            style={{marginRight: 25}}
+            style={{marginRight: 10}}
           />
           <span style={symbolStyle}>
             {security.symbol}
           </span>
         </Table.Cell>
         <Table.Cell textAlign="right">{this.formatPrice(security.price)}</Table.Cell>
-        <Table.Cell textAlign="right" style={delta24h.style}>{delta24h.value}</Table.Cell>
-        <Table.Cell textAlign="right" style={delta7d.style}>{delta7d.value}</Table.Cell>
+        {isMobile ? null : <Table.Cell textAlign="right" style={delta24h.style}>{delta24h.value}</Table.Cell>}
+        {isMobile ? null : <Table.Cell textAlign="right" style={delta7d.style}>{delta7d.value}</Table.Cell>}
         <Table.Cell textAlign="center">
           <PricesInputQty
             hover={this.state.hover}
@@ -92,8 +91,8 @@ class PricesRow extends React.Component {
           />
         </Table.Cell>
         <Table.Cell textAlign="center">{balance ? fiatValue : '-'}</Table.Cell>
-        <Table.Cell textAlign="right">{shortenLargeNumber(supply)}</Table.Cell>
-        <Table.Cell textAlign="right">{shortenLargeNumber(security.marketCap, this.props.baseCurrency)}</Table.Cell>
+        {isMobile ? null : <Table.Cell textAlign="right">{shortenLargeNumber(supply)}</Table.Cell>}
+        {isMobile ? null : <Table.Cell textAlign="right">{shortenLargeNumber(security.marketCap, this.props.baseCurrency)}</Table.Cell>}
       </Table.Row>
     )
   }
@@ -101,7 +100,8 @@ class PricesRow extends React.Component {
 
 const mapStateToProps = state => ({
   baseCurrency: state.user.baseCurrency,
-  transactions: state.transactions
+  transactions: state.transactions,
+  isMobile: state.app.device.isMobile
 })
 
 export default connect(mapStateToProps, actions)(PricesRow)

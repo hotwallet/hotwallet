@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
+import app from './app'
 import counterReducer, * as counter from './counter'
 import securitiesReducer, * as securities from './securities'
 import portfolio from './portfolio'
@@ -25,6 +26,7 @@ export const getCounter = function (state) {
 
 // reducers
 export default combineReducers({
+  app,
   portfolio,
   transactions,
   user,

@@ -12,7 +12,7 @@ export default class SocketClient {
     this.socket.on('security', security => {
       const state = store.getState()
       const baseCurrency = state.user.baseCurrency
-      console.log(security.symbol, security.baseCurrency, security.price)
+      // console.log(security.symbol, security.baseCurrency, security.price)
       if (security.baseCurrency === baseCurrency) {
         store.dispatch(updateSecurity(security))
       }

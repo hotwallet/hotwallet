@@ -16,7 +16,8 @@ const config = {
     // zoomType: 'x',
     backgroundColor: null,
     plotBackgroundColor: darkBg,
-    spacing: [25, 25, 25, 25]
+    spacing: [25, 25, 25, 25],
+    height: 300
   },
   title: {
     text: null
