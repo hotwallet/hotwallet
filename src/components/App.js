@@ -67,7 +67,7 @@ const routeStyle = {
 
 const mapStateToProps = state => ({
   uri: state.router.location.pathname,
-  isMobile: state.app.device.isMobile
+  isMobile: state.app.device && state.app.device.isMobile
 })
 
 const mapDispatchToProps = dispatch =>
