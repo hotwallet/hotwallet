@@ -91,7 +91,7 @@ class PricesRow extends React.Component {
             balance={balance}
           />
         </Table.Cell>
-        <Table.Cell textAlign="center">{fiatValue}</Table.Cell>
+        <Table.Cell textAlign="center">{balance ? fiatValue : '-'}</Table.Cell>
         <Table.Cell textAlign="right">{shortenLargeNumber(supply)}</Table.Cell>
         <Table.Cell textAlign="right">{shortenLargeNumber(security.marketCap, this.props.baseCurrency)}</Table.Cell>
       </Table.Row>
