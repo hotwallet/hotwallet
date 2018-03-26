@@ -5,11 +5,6 @@ import { mapDispatchToProps } from '../actions'
 import { formatFiat, shortenLargeNumber } from '../lib/formatNumber'
 import PricesInputQty from './PricesInputQty'
 
-const symbolStyle = {
-  fontSize: 18,
-  verticalAlign: 'inherit'
-}
-
 class PricesRow extends React.Component {
   constructor(props) {
     super(props)
@@ -25,7 +20,8 @@ class PricesRow extends React.Component {
   }
 
   getIcon(symbol) {
-    return `https://chnnl.s3.amazonaws.com/tarragon/icons/32x32/${symbol}.png`
+    const size = this.props.isMobile ? '16x16' : '32x32'
+    return `https://chnnl.s3.amazonaws.com/tarragon/icons/${size}/${symbol}.png`
   }
 
   formatPrice(num) {
@@ -59,6 +55,10 @@ class PricesRow extends React.Component {
 
   render() {
     const isMobile = this.props.isMobile
+    const symbolStyle = {
+      fontSize: isMobile ? null : 18,
+      verticalAlign: 'inherit'
+    }
     const security = this.props.security
     const baseCurrency = this.props.baseCurrency
     const delta24h = this.formatPercentChange(security.percentChange24h)

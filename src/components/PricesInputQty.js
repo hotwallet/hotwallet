@@ -38,7 +38,7 @@ class PricesInputQty extends React.Component {
         style={{
           width: isMobile ? 80 : 100,
           backgroundColor: 'none',
-          padding: '0.5em 0.5em 0.5em 1em',
+          padding: isMobile ? '0.25em 0.5em 0.25em 1em' : '0.5em 0.5em 0.5em 1em',
           border: `1px solid ${color}`,
           textAlign: 'center',
           outline: 'none'
