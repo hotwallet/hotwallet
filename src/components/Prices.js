@@ -1,11 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { table } from '../lib/styles'
+import { table, desktopPadding, mobilePadding } from '../lib/styles'
 import { Dimmer, Loader, Table } from 'semantic-ui-react'
 import * as actions from '../actions'
 import { getIsFetchingSecurities, getSecurities, getSecuritiesFailure } from '../reducers'
 import PricesRow from './PricesRow'
-import PricesFilters from './PricesFilters'
 import moment from 'moment'
 
 class Prices extends React.Component {
@@ -26,12 +25,20 @@ class Prices extends React.Component {
   }
 
   getRows(securities) {
+    const query = this.props.query
     return securities && securities.slice(0, 100)
+      // show balances only toggle
       .filter(security => {
-        if (!this.props.balancesOnly) return true
+        if (!this.props.balancesOnly || this.props.query) return true
         const balance = this.getBalance(security.symbol)
-        if (balance || balance === 0) return true
-        return false
+        return (balance || balance === 0)
+      })
+      // search query
+      .filter(security => {
+        if (!query) return true
+        const lowerCaseQuery = query.toLowerCase()
+        return security.symbol.includes(query.toUpperCase()) ||
+          security.name.toLowerCase().includes(lowerCaseQuery)
       })
       .map((security, i) => (
         <PricesRow key={security.symbol} security={security} />
@@ -52,9 +59,11 @@ class Prices extends React.Component {
       )
     }
     const isMobile = this.props.isMobile
+    const padding = isMobile ? mobilePadding : desktopPadding
     return (
-      <div className="pad">
-        <PricesFilters />
+      <div style={{
+        padding
+      }}>
         <Table inverted unstackable selectable style={table}>
           <Table.Header>
             <Table.Row>
@@ -85,7 +94,8 @@ const mapStateToProps = state => ({
   failureMessage: getSecuritiesFailure(state),
   balancesOnly: state.securities.balancesOnly,
   transactions: state.transactions,
-  isMobile: state.app.device.isMobile
+  isMobile: state.app.isMobile,
+  query: state.app.filterSymbolsQuery
 })
 
 export default connect(mapStateToProps, actions)(Prices)

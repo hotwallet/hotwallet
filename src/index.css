@@ -19,6 +19,7 @@ h1 {
 
 .pad {
   padding: 20px;
+  padding-right: 0;
 }
 
 button {
@@ -44,16 +45,10 @@ input::selection {
   background-color: #222;
 }
 
-
-
-.cf:before,
-.cf:after {
-  content: " ";
-  display: table;
+.ui.inverted.input > input {
+  background-color: rgba(0,0,0,.15);
+  color: #fff;
 }
-.cf:after {
-  clear: both;
-}
-.cf {
-  *zoom: 1;
+.ui.inverted.icon.input > i.icon {
+  color: #fff;
 }

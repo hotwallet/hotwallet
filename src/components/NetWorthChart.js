@@ -4,19 +4,18 @@ import ReactHighcharts from 'react-highcharts'
 import Highcharts from 'highcharts'
 import DateRangeSelector from './DateRangeSelector'
 import data from '../lib/sample-chart-data'
-import { lightBlue, darkBlue, darkBg } from '../lib/styles'
+import { lightBlue, darkBlue, darkBg, desktopPadding, mobilePadding } from '../lib/styles'
 
 const gridLineColor = '#323a42'
 const gridLineWidth = 2
 const lineColor = lightBlue
 const lineWidth = 1.5
 
-const config = {
+const chartConfig = {
   chart: {
     // zoomType: 'x',
     backgroundColor: null,
     plotBackgroundColor: darkBg,
-    spacing: [25, 25, 25, 25],
     height: 300
   },
   title: {
@@ -79,17 +78,23 @@ class NetWorthChart extends React.Component {
   componentDidMount() {}
 
   render() {
+    const padding = this.props.isMobile ? mobilePadding : desktopPadding
+    chartConfig.chart.spacing = [padding, 0, padding, padding]
+    if (this.props.isMobile) {
+      chartConfig.chart.spacing = [padding, padding, padding, padding]
+    }
     return (
       <div>
         <DateRangeSelector />
-        <ReactHighcharts config={config} />
+        <ReactHighcharts config={chartConfig} />
       </div>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  count: state.counter.count
+  count: state.counter.count,
+  isMobile: state.app.isMobile
 })
 
 export default connect(mapStateToProps)(NetWorthChart)

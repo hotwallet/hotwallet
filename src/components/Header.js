@@ -6,6 +6,13 @@ import CurrencySelector from './CurrencySelector'
 
 class Header extends React.Component {
   render() {
+    const isMobile = this.props.isMobile
+    const logoStyle = {
+      width: isMobile ? 50 : sidebarWidth,
+      display: 'inline-block',
+      color: 'gray',
+      borderRight: border
+    }
     return (
       <header style={headerStyle}>
         <Icon name="bars" size="large" inverted style={logoStyle} />
@@ -28,15 +35,8 @@ const headerStyle = {
   textTransform: 'uppercase'
 }
 
-const logoStyle = {
-  width: sidebarWidth,
-  display: 'inline-block',
-  color: 'gray',
-  borderRight: border
-}
-
 const mapStateToProps = state => ({
-  user: {}
+  isMobile: state.app.isMobile
 })
 
 export default connect(mapStateToProps)(Header)

@@ -14,6 +14,7 @@ import { setDevice } from '../actions/app'
 
 class App extends React.Component {
   componentDidMount() {
+    this.onResize()
     let resizeTimer
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer)
@@ -39,7 +40,6 @@ class App extends React.Component {
     const mainStyle = {
       marginLeft: this.isMobile() ? 0 : sidebarWidth,
       maxWidth: 1100,
-      borderRight: border,
       borderLeft: border
     }
     return (
@@ -67,7 +67,7 @@ const routeStyle = {
 
 const mapStateToProps = state => ({
   uri: state.router.location.pathname,
-  isMobile: state.app.device.isMobile
+  isMobile: state.app.isMobile
 })
 
 const mapDispatchToProps = dispatch =>

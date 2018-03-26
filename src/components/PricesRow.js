@@ -101,7 +101,7 @@ class PricesRow extends React.Component {
 const mapStateToProps = state => ({
   baseCurrency: state.user.baseCurrency,
   transactions: state.transactions,
-  isMobile: state.app.device.isMobile
+  isMobile: state.app.isMobile
 })
 
 export default connect(mapStateToProps, actions)(PricesRow)

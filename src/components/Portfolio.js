@@ -3,17 +3,18 @@ import { connect } from 'react-redux'
 import { border } from '../lib/styles'
 import Prices from './Prices'
 import NetWorthChart from './NetWorthChart'
+import PricesFilters from './PricesFilters'
+import H1 from './H1'
 
 class Settings extends React.Component {
-  componentDidMount() {}
-
   render() {
     return (
       <div>
-        <h1>Portfolio</h1>
+        <H1 text="Portfolio" />
         <div className="charts" style={chartsStyle}>
           <NetWorthChart />
         </div>
+        <PricesFilters />
         <Prices />
       </div>
     )

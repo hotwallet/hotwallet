@@ -11,3 +11,6 @@ export const darkBlue = '#1377af'
 export const sidebarWidth = 65
 
 export const smallFontSize = 12
+
+export const desktopPadding = 25
+export const mobilePadding = 10
