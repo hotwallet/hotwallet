@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { Checkbox, Input, Grid, Button } from 'semantic-ui-react'
 import { mapDispatchToProps } from '../actions'
@@ -10,6 +11,15 @@ class PricesFilters extends React.Component {
     this.props.filterSymbols('')
     this.props.showBalancesOnly(toggle.checked)
   }
+
+  onSearchFocus() {
+    if (this.props.isMobile) {
+      const node = ReactDOM.findDOMNode(this.input)
+      const viewportOffset = node.getBoundingClientRect()
+      window.scrollTo(0, viewportOffset.top - mobilePadding)
+    }
+  }
+
   render() {
     const isMobile = this.props.isMobile
     const padding = isMobile ? mobilePadding : desktopPadding
@@ -27,6 +37,7 @@ class PricesFilters extends React.Component {
             <Grid.Column width={8}>
               <Input
                 icon="search"
+                onFocus={e => this.onSearchFocus(e)}
                 style={{
                   width: isMobile ? 150 : null
                 }}
