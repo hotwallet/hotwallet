@@ -12,7 +12,7 @@ class Prices extends React.Component {
     // fetch all prices if they haven't been updated in the past 2 minutes
     const updatedAt = this.props.updatedAt
     const diff = moment().diff(updatedAt, 'seconds')
-    if (!updatedAt || diff > 120) {
+    if (!updatedAt || diff > 120 || this.props.failureMessage) {
       this.props.fetchSecurities()
     }
   }
@@ -55,7 +55,7 @@ class Prices extends React.Component {
     }
     if (this.props.failureMessage) {
       return (
-        <div> {this.props.failureMessage} </div>
+        <div>Failed to fetch symbols:  {this.props.failureMessage} </div>
       )
     }
     const isMobile = this.props.isMobile

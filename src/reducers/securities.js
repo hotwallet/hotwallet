@@ -34,7 +34,8 @@ export default (state = initialState, action) => {
         ...state,
         securities: action.response,
         isFetching: false,
-        updatedAt: now
+        updatedAt: now,
+        failureMessage: undefined
       }
 
     case SECURITIES_FETCH_FAILURE:
@@ -52,7 +53,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         securities,
-        updatedAt: now
+        updatedAt: now,
+        failureMessage: undefined
       }
 
     case SECURITIES_BALANCES_ONLY:
