@@ -30,7 +30,7 @@ class PricesFilters extends React.Component {
                 style={{
                   width: isMobile ? 150 : null
                 }}
-                ref={input => this.input = input}
+                ref={input => { this.input = input }}
                 defaultValue={this.props.query}
                 inverted
                 placeholder="Find symbol"
@@ -44,13 +44,13 @@ class PricesFilters extends React.Component {
                 onChange={(e, toggle) => this.onToggle(toggle)}
                 toggle
                 style={{
-                position: 'relative',
-                top: 6,
-                left: 8
-              }}
+                  position: 'relative',
+                  top: 6,
+                  left: 8
+                }}
               />
             </Grid.Column>
-            {isMobile ? null :
+            {isMobile ? null : (
               <Grid.Column
                 width={4}
                 textAlign="center"
@@ -61,7 +61,7 @@ class PricesFilters extends React.Component {
                   compact
                 >Import</Button>
               </Grid.Column>
-            }
+            )}
           </Grid.Row>
         </Grid>
       </div>
