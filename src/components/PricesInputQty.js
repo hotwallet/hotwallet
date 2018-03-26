@@ -1,8 +1,7 @@
 import React from 'react'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { borderColor, lightBlue } from '../lib/styles'
-import { addTransaction } from '../actions/transactions'
+import { mapDispatchToProps } from '../actions'
 import isNumeric from '../lib/isNumeric'
 
 class PricesInputQty extends React.Component {
@@ -26,6 +25,7 @@ class PricesInputQty extends React.Component {
   }
 
   render() {
+    const isMobile = this.props.isMobile
     const color = (this.props.hover) ? lightBlue : borderColor
     return (
       <input
@@ -36,7 +36,7 @@ class PricesInputQty extends React.Component {
         defaultValue={this.props.balance}
         type="number"
         style={{
-          width: 100,
+          width: isMobile ? 80 : 100,
           backgroundColor: 'none',
           padding: '0.5em 0.5em 0.5em 1em',
           border: `1px solid ${color}`,
@@ -48,14 +48,8 @@ class PricesInputQty extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({})
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      addTransaction
-    },
-    dispatch
-  )
+const mapStateToProps = state => ({
+  isMobile: state.app.isMobile
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(PricesInputQty)

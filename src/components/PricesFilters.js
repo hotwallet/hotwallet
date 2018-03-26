@@ -16,7 +16,7 @@ class PricesFilters extends React.Component {
     return (
       <div style={{
         borderBottom: border,
-        padding: `${desktopPadding}px ${padding}px`
+        padding
       }}>
         <Grid
           columns={3}

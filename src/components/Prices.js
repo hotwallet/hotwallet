@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { table, desktopPadding, mobilePadding } from '../lib/styles'
 import { Dimmer, Loader, Table } from 'semantic-ui-react'
-import * as actions from '../actions'
+import { mapDispatchToProps } from '../actions'
 import { getIsFetchingSecurities, getSecurities, getSecuritiesFailure } from '../reducers'
 import PricesRow from './PricesRow'
 import moment from 'moment'
@@ -98,4 +98,4 @@ const mapStateToProps = state => ({
   query: state.app.filterSymbolsQuery
 })
 
-export default connect(mapStateToProps, actions)(Prices)
+export default connect(mapStateToProps, mapDispatchToProps)(Prices)

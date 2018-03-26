@@ -1,23 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import H1 from './H1'
 
 class Settings extends React.Component {
-  componentDidMount() {}
-
   render() {
     return (
       <div>
-        <h1>Settings</h1>
-        <div className="pad">
-          <p>Count: {this.props.count}</p>
-        </div>
+        <H1 text="Settings" />
       </div>
     )
   }
 }
 
-const mapStateToProps = state => ({
-  count: state.counter.count
-})
+const mapStateToProps = state => ({})
 
 export default connect(mapStateToProps)(Settings)

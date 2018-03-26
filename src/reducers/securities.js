@@ -4,7 +4,7 @@ import {
   SECURITIES_FETCH_FAILURE,
   SECURITIES_UPDATE,
   SECURITIES_BALANCES_ONLY
-} from '../actions'
+} from '../actions/securities'
 
 const initialState = {}
 

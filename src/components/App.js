@@ -1,8 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import { Route } from 'react-router-dom'
-import Counter from './Counter'
 import Portfolio from './Portfolio'
 import Settings from './Settings'
 import Header from './Header'
@@ -10,7 +8,7 @@ import Footer from './Footer'
 import SideNav from './SideNav'
 import 'semantic-ui-css/semantic.min.css'
 import { sidebarWidth, border } from '../lib/styles'
-import { setDevice } from '../actions/app'
+import { mapDispatchToProps } from '../actions'
 
 class App extends React.Component {
   componentDidMount() {
@@ -29,7 +27,15 @@ class App extends React.Component {
       document.documentElement.clientWidth ||
       document.body.clientWidth
     const isMobile = (width <= 775)
-    this.props.setDevice({ isMobile, width })
+    const isTablet = (width > 775 && width < 1165)
+    const isDesktop = (width >= 1165)
+    this.props.setDevice({
+      isMobile,
+      isTablet,
+      isDesktop,
+      width,
+      deviceType: isMobile ? 'mobile' : isTablet ? 'tablet' : 'desktop'
+    })
   }
 
   isMobile() {
@@ -50,7 +56,6 @@ class App extends React.Component {
           <main style={mainStyle}>
             <div style={routeStyle}>
               <Route exact path="/" component={Portfolio} />
-              <Route exact path="/counter" component={Counter} />
               <Route exact path="/settings" component={Settings} />
             </div>
             <Footer />
@@ -69,13 +74,5 @@ const mapStateToProps = state => ({
   uri: state.router.location.pathname,
   isMobile: state.app.isMobile
 })
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      setDevice
-    },
-    dispatch
-  )
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

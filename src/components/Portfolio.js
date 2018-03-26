@@ -25,8 +25,6 @@ const chartsStyle = {
   borderBottom: border
 }
 
-const mapStateToProps = state => ({
-  count: state.counter.count
-})
+const mapStateToProps = state => ({})
 
 export default connect(mapStateToProps)(Settings)

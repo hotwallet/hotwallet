@@ -2,13 +2,16 @@ import { bindActionCreators } from 'redux'
 
 import * as app from './app'
 import * as securities from './securities'
-
-export * from './securities'
-export * from './counter'
+import * as portfolio from './portfolio'
+import * as transactions from './transactions'
+import * as user from './user'
 
 export const mapDispatchToProps = dispatch => {
   return bindActionCreators({
     ...app,
-    ...securities
+    ...portfolio,
+    ...securities,
+    ...transactions,
+    ...user
   }, dispatch)
 }

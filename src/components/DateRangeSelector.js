@@ -1,9 +1,8 @@
 import React from 'react'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import moment from 'moment'
-import { lightBg, lightBlue } from '../lib/styles'
-import { setDateRange } from '../actions/portfolio'
+import { lightBg, lightBlue, padding } from '../lib/styles'
+import { mapDispatchToProps } from '../actions'
 
 const dateFormat = 'YYYY-MM-DD'
 
@@ -33,13 +32,6 @@ const dateRanges = [
 
 const color = 'gray'
 
-const boxStyle = {
-  marginTop: 15,
-  marginLeft: 25,
-  fontSize: 11,
-  color
-}
-
 const button = {
   display: 'inline-block',
   border: 'none',
@@ -59,10 +51,8 @@ const selected = {
 }
 
 class DateRangeSelector extends React.Component {
-  componentDidMount() {}
-
   isSelected(range) {
-    const label = this.props.label
+    const label = this.props.range.label
     if (!label && range.isDefault) return true
     return (range.label === label)
   }
@@ -73,6 +63,12 @@ class DateRangeSelector extends React.Component {
   }
 
   render() {
+    const boxStyle = {
+      marginTop: 15,
+      marginLeft: padding[this.props.deviceType],
+      fontSize: 11,
+      color
+    }
     return (
       <div style={boxStyle}>
         {dateRanges.map(range => {
@@ -90,14 +86,9 @@ class DateRangeSelector extends React.Component {
   }
 }
 
-const mapStateToProps = state => state.portfolio.range
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      setDateRange
-    },
-    dispatch
-  )
+const mapStateToProps = state => ({
+  range: state.portfolio.range,
+  deviceType: state.app.deviceType
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(DateRangeSelector)

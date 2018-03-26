@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Table, Image } from 'semantic-ui-react'
-import * as actions from '../actions'
+import { mapDispatchToProps } from '../actions'
 import { formatFiat, shortenLargeNumber } from '../lib/formatNumber'
 import PricesInputQty from './PricesInputQty'
 
@@ -104,4 +104,4 @@ const mapStateToProps = state => ({
   isMobile: state.app.isMobile
 })
 
-export default connect(mapStateToProps, actions)(PricesRow)
+export default connect(mapStateToProps, mapDispatchToProps)(PricesRow)

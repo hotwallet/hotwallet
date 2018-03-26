@@ -13,4 +13,10 @@ export const sidebarWidth = 65
 export const smallFontSize = 12
 
 export const desktopPadding = 25
-export const mobilePadding = 10
+export const mobilePadding = 7
+
+export const padding = {
+  mobile: mobilePadding,
+  tablet: desktopPadding,
+  desktop: desktopPadding
+}
