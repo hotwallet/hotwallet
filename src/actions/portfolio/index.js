@@ -12,4 +12,3 @@ export const setDateRange = range => (dispatch, getState) => {
   })
   getPriceHistoryData()(dispatch, getState)
 }
-
