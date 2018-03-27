@@ -11,8 +11,14 @@ const today = moment().utc().format(dateFormat)
 const dateRanges = [
   {
     isDefault: true,
+    label: '1 week',
+    startDate: moment().utc().subtract(1, 'week').format(dateFormat),
+    endDate: today,
+    granularity: 'day'
+  },
+  {
     label: '1 month',
-    startDate: moment().utc().subtract(1, 'months').format(dateFormat),
+    startDate: moment().utc().subtract(1, 'month').format(dateFormat),
     endDate: today,
     granularity: 'day'
   },
@@ -51,6 +57,13 @@ const selected = {
 }
 
 class DateRangeSelector extends React.Component {
+  componentDidMount() {
+    if (!this.props.range.startDate) {
+      const defaultRange = dateRanges.find(r => r.isDefault)
+      this.props.setDateRange(defaultRange)
+    }
+  }
+
   isSelected(range) {
     const label = this.props.range.label
     if (!label && range.isDefault) return true
