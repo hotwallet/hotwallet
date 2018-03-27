@@ -3,8 +3,12 @@ import { connect } from 'react-redux'
 import ReactHighcharts from 'react-highcharts'
 import Highcharts from 'highcharts'
 import DateRangeSelector from './DateRangeSelector'
-import data from '../lib/sample-chart-data'
 import { lightBlue, darkBlue, darkBg, desktopPadding, mobilePadding } from '../lib/styles'
+import { mapDispatchToProps } from '../actions'
+
+Highcharts.setOptions({
+  global: { useUTC: false }
+})
 
 const gridLineColor = '#323a42'
 const gridLineWidth = 2
@@ -12,9 +16,13 @@ const lineColor = lightBlue
 const lineWidth = 1.5
 
 class NetWorthChart extends React.Component {
+  componentDidMount() {
+    this.props.getPriceHistoryData()
+  }
   render() {
     const isMobile = this.props.isMobile
     const isTablet = this.props.isTablet
+    const data = this.props.priceHistoryData
     const chartConfig = {
       chart: {
         // zoomType: 'x',
@@ -44,7 +52,9 @@ class NetWorthChart extends React.Component {
         title: false,
         lineWidth: 0,
         gridLineWidth,
-        gridLineColor
+        gridLineColor,
+        min: 0,
+        minRange: 1000
       },
       legend: {
         enabled: false
@@ -94,7 +104,8 @@ class NetWorthChart extends React.Component {
 
 const mapStateToProps = state => ({
   isMobile: state.app.isMobile,
-  isTablet: state.app.isTablet
+  isTablet: state.app.isTablet,
+  priceHistoryData: state.portfolio.priceHistoryData
 })
 
-export default connect(mapStateToProps)(NetWorthChart)
+export default connect(mapStateToProps, mapDispatchToProps)(NetWorthChart)

@@ -69,7 +69,8 @@ class PricesRow extends React.Component {
     return (
       <Table.Row
         onMouseOver={() => this.mouseOver()}
-        onMouseOut={() => this.mouseOut()}>
+        onMouseOut={() => this.mouseOut()}
+      >
         <Table.Cell>
           <Image src={this.getIcon(security.symbol)}
             inline

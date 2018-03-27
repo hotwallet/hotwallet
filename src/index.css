@@ -6,20 +6,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: #2b333a;
-  color: #fff;
-}
-
-h1 {
-  font-size: 21px;
-  font-weight: normal;
-  margin: 0;
-  padding: 15px 20px 35px;
-  border-bottom: 1px solid #49525a;
-}
-
-.pad {
-  padding: 20px;
-  padding-right: 0;
+  color: #eee;
 }
 
 button {
