@@ -59,10 +59,12 @@ class Prices extends React.Component {
       )
     }
     const isMobile = this.props.isMobile
+    const isDesktop = this.props.isDesktop
     const padding = isMobile ? mobilePadding : desktopPadding
     return (
       <div style={{
-        padding
+        padding,
+        paddingRight: isDesktop ? 0 : padding
       }}>
         <Table inverted unstackable selectable style={table}>
           <Table.Header>
@@ -95,6 +97,7 @@ const mapStateToProps = state => ({
   balancesOnly: state.securities.balancesOnly,
   transactions: state.transactions,
   isMobile: state.app.isMobile,
+  isDesktop: state.app.isDesktop,
   query: state.app.filterSymbolsQuery
 })
 

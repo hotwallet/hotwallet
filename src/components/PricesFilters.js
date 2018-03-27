@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
-import { Checkbox, Input, Grid, Button } from 'semantic-ui-react'
+import { Checkbox, Input, Grid } from 'semantic-ui-react'
 import { mapDispatchToProps } from '../actions'
-import { border, desktopPadding, mobilePadding } from '../lib/styles'
+import { desktopPadding, mobilePadding } from '../lib/styles'
 
 class PricesFilters extends React.Component {
   onToggle(toggle) {
@@ -22,14 +22,14 @@ class PricesFilters extends React.Component {
 
   render() {
     const isMobile = this.props.isMobile
+    const isTablet = this.props.isTablet
     const padding = isMobile ? mobilePadding : desktopPadding
     return (
       <div style={{
-        borderBottom: border,
-        padding
+        padding: `${padding}px ${padding}px 0`
       }}>
         <Grid
-          columns={3}
+          columns={2}
           inverted
           divided
         >
@@ -48,31 +48,31 @@ class PricesFilters extends React.Component {
                 onChange={e => this.props.filterSymbols(e.target.value)}
               />
             </Grid.Column>
-            <Grid.Column width={isMobile ? 8 : 4} textAlign="center">
-              <span style={{ color: 'gray', textAlign: 'right' }}>Balances only</span>
-              <Checkbox
-                checked={this.props.balancesOnly && !this.props.query}
-                onChange={(e, toggle) => this.onToggle(toggle)}
-                toggle
+            <Grid.Column
+              width={8}
+              textAlign="right"
+            >
+              <label
                 style={{
-                  position: 'relative',
-                  top: 6,
-                  left: 8
+                  color: 'gray',
+                  textAlign: 'right',
+                  cursor: 'pointer'
                 }}
-              />
-            </Grid.Column>
-            {isMobile ? null : (
-              <Grid.Column
-                width={4}
-                textAlign="center"
               >
-                <Button
-                  inverted
-                  basic
-                  compact
-                >Import</Button>
-              </Grid.Column>
-            )}
+                Balances only
+                <Checkbox
+                  checked={this.props.balancesOnly && !this.props.query}
+                  onChange={(e, toggle) => this.onToggle(toggle)}
+                  toggle
+                  style={{
+                    position: 'relative',
+                    top: 6,
+                    left: 10,
+                    marginRight: isTablet ? padding : isMobile ? 20 : 0
+                  }}
+                />
+              </label>
+            </Grid.Column>
           </Grid.Row>
         </Grid>
       </div>
@@ -83,7 +83,8 @@ class PricesFilters extends React.Component {
 const mapStateToProps = state => ({
   balancesOnly: state.securities.balancesOnly,
   query: state.app.filterSymbolsQuery,
-  isMobile: state.app.isMobile
+  isMobile: state.app.isMobile,
+  isTablet: state.app.isTablet
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PricesFilters)

@@ -26,8 +26,8 @@ class App extends React.Component {
     const width = window.innerWidth ||
       document.documentElement.clientWidth ||
       document.body.clientWidth
-    const isMobile = (width <= 775)
-    const isTablet = (width > 775 && width < 1165)
+    const isMobile = (width <= 765)
+    const isTablet = (width > 765 && width < 1165)
     const isDesktop = (width >= 1165)
     this.props.setDevice({
       isMobile,
@@ -38,21 +38,18 @@ class App extends React.Component {
     })
   }
 
-  isMobile() {
-    return this.props.isMobile
-  }
-
   render() {
+    const isMobile = this.props.isMobile
     const mainStyle = {
-      marginLeft: this.isMobile() ? 0 : sidebarWidth,
+      marginLeft: isMobile ? 0 : sidebarWidth,
       maxWidth: 1100,
-      borderLeft: border
+      borderLeft: isMobile ? 'none' : border
     }
     return (
       <div>
         <Header />
-        <div>
-          {this.isMobile() ? null : <SideNav />}
+        <div style={{ borderBottom: border }}>
+          {isMobile ? null : <SideNav />}
           <main style={mainStyle}>
             <div style={routeStyle}>
               <Route exact path="/" component={Portfolio} />
@@ -67,7 +64,7 @@ class App extends React.Component {
 }
 
 const routeStyle = {
-  minHeight: 300
+  minHeight: 400
 }
 
 const mapStateToProps = state => ({
