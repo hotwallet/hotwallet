@@ -12,11 +12,15 @@ class PricesFilters extends React.Component {
     this.props.showBalancesOnly(toggle.checked)
   }
 
-  onSearchFocus() {
+  onSearchFocus(e) {
+    e.target.select()
     if (this.props.isMobile) {
       const node = ReactDOM.findDOMNode(this.input)
       const viewportOffset = node.getBoundingClientRect()
-      window.scrollTo(0, viewportOffset.top - mobilePadding)
+      setTimeout(() => {
+        // allow time for keyboard to open
+        window.scrollTo(0, viewportOffset.top - mobilePadding)
+      }, 100)
     }
   }
 
