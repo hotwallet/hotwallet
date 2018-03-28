@@ -9,6 +9,7 @@ import SideNav from './SideNav'
 import 'semantic-ui-css/semantic.min.css'
 import { sidebarWidth, border } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
+import { getProps } from '../selector'
 
 class App extends React.Component {
   componentDidMount() {
@@ -67,9 +68,9 @@ const routeStyle = {
   minHeight: 400
 }
 
-const mapStateToProps = state => ({
-  uri: state.router.location.pathname,
-  isMobile: state.app.isMobile
-})
+const mapStateToProps = getProps(selector => ({
+  uri: selector.uri(),
+  isMobile: selector.isMobile()
+}))
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
