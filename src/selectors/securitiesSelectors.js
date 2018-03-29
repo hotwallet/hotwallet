@@ -37,33 +37,33 @@ export const getVisibleSecurities = createSelector(
   }
 )
 
-export const getCachedVisibleSecurities = createCachedSelector(
-  getSecurities,
-  getBalancesOnlyFilter,
-  getQuery,
-  (state, someArg) => someArg,
-  (securities, isHidingEmptyBalances, query, someArg) => {
-    return securities && securities.slice(0, 100)
-      .map(security => ({
-        ...security,
-        balance: getBalance(state, security.symbol)
-      }))
-      // toggle hiding empty balances
-      .filter(security => {
-        if (!isHidingEmptyBalances || query) return true
-        return (security.balance || security.balance === 0)
-      })
-      // search query
-      .filter(security => {
-        if (!query) return true
-        const lowerCaseQuery = query.toLowerCase()
-        return security.symbol.includes(query.toUpperCase()) ||
-          security.name.toLowerCase().includes(lowerCaseQuery)
-      })
-  }
-)(
-  (state, someArg) => someArg
-)
+// export const getCachedVisibleSecurities = createCachedSelector(
+//   getSecurities,
+//   getBalancesOnlyFilter,
+//   getQuery,
+//   (state, someArg) => someArg,
+//   (securities, isHidingEmptyBalances, query, someArg) => {
+//     return securities && securities.slice(0, 100)
+//       .map(security => ({
+//         ...security,
+//         balance: getBalance(state, security.symbol)
+//       }))
+//       // toggle hiding empty balances
+//       .filter(security => {
+//         if (!isHidingEmptyBalances || query) return true
+//         return (security.balance || security.balance === 0)
+//       })
+//       // search query
+//       .filter(security => {
+//         if (!query) return true
+//         const lowerCaseQuery = query.toLowerCase()
+//         return security.symbol.includes(query.toUpperCase()) ||
+//           security.name.toLowerCase().includes(lowerCaseQuery)
+//       })
+//   }
+// )(
+//   (state, someArg) => someArg
+// )
 
 export const getBalance = createCachedSelector(
   [getSecurity, getTransactionsForSymbol],

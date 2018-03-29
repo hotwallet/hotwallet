@@ -4,7 +4,6 @@ import { Dimmer, Loader, Table } from 'semantic-ui-react'
 import PricesRow from './PricesRow'
 
 class Prices extends React.Component {
-
   getRows(securities) {
     return securities.map(security => (
       <PricesRow key={security.symbol} security={security} />
