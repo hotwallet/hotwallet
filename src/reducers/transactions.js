@@ -7,12 +7,14 @@ const initialState = []
 export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_MANUAL_TRANSACTION:
+      const transaction = action.transaction
       const walletId = 'manual'
       const txTime = new Date()
       const newTx = {
         id: v4(),
         txTime,
-        ...action.transaction,
+        ...transaction,
+        balance: Number(transaction.balance),
         walletId
       }
       const symbol = newTx.symbol

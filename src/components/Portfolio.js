@@ -4,13 +4,13 @@ import { border } from '../lib/styles'
 import Prices from './Prices'
 import NetWorthChart from './NetWorthChart'
 import PricesFilters from './PricesFilters'
-import H1 from './H1'
+import PortfolioHeader from './PortfolioHeader'
 
 class Settings extends React.Component {
   render() {
     return (
       <div>
-        <H1 text="Portfolio" />
+        <PortfolioHeader />
         <div className="charts" style={chartsStyle}>
           <NetWorthChart />
         </div>

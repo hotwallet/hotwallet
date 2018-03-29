@@ -5,7 +5,7 @@ import { Icon } from 'semantic-ui-react'
 import { sidebarWidth } from '../lib/styles'
 
 const navItems = [
-  { icon: 'pie chart', uri: '/', name: 'Portfolio' },
+  { icon: 'home', uri: '/', name: 'Portfolio' },
   { icon: 'setting', uri: '/settings', name: 'Settings' }
 ]
 

@@ -86,7 +86,6 @@ class NetWorthChart extends React.Component {
           threshold: null
         }
       },
-
       series: [{
         type: 'area',
         name: 'Portfolio value',
@@ -94,7 +93,19 @@ class NetWorthChart extends React.Component {
       }]
     }
     return (
-      <div>
+      <div style={{ position: 'relative' }}>
+        {this.props.transactions.length === 0 ? (
+          <div style={{
+          position: 'absolute',
+          top: '47%',
+          marginTop: '-0.25em',
+          marginLeft: '1em',
+          width: '100%',
+          textAlign: 'center',
+          fontSize: 20,
+          zIndex: 200,
+          padding: '0 100px'
+        }}>Enter balances below to track your portfolio</div>) : null}
         <DateRangeSelector />
         <ReactHighcharts config={chartConfig} />
       </div>
@@ -105,7 +116,8 @@ class NetWorthChart extends React.Component {
 const mapStateToProps = state => ({
   isMobile: state.app.isMobile,
   isTablet: state.app.isTablet,
-  priceHistoryData: state.portfolio.priceHistoryData
+  priceHistoryData: state.portfolio.priceHistoryData,
+  transactions: state.transactions
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NetWorthChart)

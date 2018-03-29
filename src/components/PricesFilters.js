@@ -63,7 +63,7 @@ class PricesFilters extends React.Component {
                   cursor: 'pointer'
                 }}
               >
-                Balances only
+                {this.props.balancesOnly ? 'Hiding' : 'Hide'} empty balances
                 <Checkbox
                   checked={this.props.balancesOnly && !this.props.query}
                   onChange={(e, toggle) => this.onToggle(toggle)}
