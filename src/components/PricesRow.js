@@ -47,12 +47,6 @@ class PricesRow extends React.Component {
     }
   }
 
-  getBalance(symbol) {
-    // TODO: account for multiple wallets
-    const latestTx = this.props.transactions.find(tx => tx.symbol === symbol)
-    if (latestTx) return latestTx.balance
-  }
-
   render() {
     const isMobile = this.props.isMobile
     const symbolStyle = {
@@ -64,7 +58,7 @@ class PricesRow extends React.Component {
     const delta24h = this.formatPercentChange(security.percentChange24h)
     const delta7d = this.formatPercentChange(security.percentChange7d)
     const supply = security.marketCap / security.price
-    const balance = this.getBalance(security.symbol)
+    const balance = security.balance
     const fiatValue = formatFiat(balance * security.price, baseCurrency)
     return (
       <Table.Row

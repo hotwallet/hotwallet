@@ -45,15 +45,15 @@ class PortfolioHeader extends React.Component {
           <div>{this.getTotalValue()}</div>
         </div>
         <div style={colStyle}>
-          <div style={labelStyle}>Today's change</div>
+          <div style={labelStyle}>Today</div>
           <div style={{ color: 'gray' }}>-</div>
         </div>
         <div style={colStyle}>
-          <div style={labelStyle}>7 day change</div>
+          <div style={labelStyle}>7 day</div>
           <div style={{ color: 'gray' }}>-</div>
         </div>
         <div style={colStyle}>
-          <div style={labelStyle}>30 day change</div>
+          <div style={labelStyle}>30 day</div>
           <div style={{ color: 'gray' }}>-</div>
         </div>
       </div>

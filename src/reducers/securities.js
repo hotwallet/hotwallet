@@ -8,18 +8,6 @@ import {
 
 const initialState = {}
 
-export const getSecurities = function (state) {
-  return state.securities
-}
-
-export const getIsFetching = function (state) {
-  return state.isFetching
-}
-
-export const getFailureMessage = function (state) {
-  return state.failureMessage
-}
-
 export default (state = initialState, action) => {
   const now = new Date()
   switch (action.type) {
