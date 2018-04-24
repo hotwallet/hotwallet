@@ -9,6 +9,7 @@ import SideNav from './SideNav'
 import 'semantic-ui-css/semantic.min.css'
 import { sidebarWidth, border } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
+import withTracker from './withTracker'
 
 class App extends React.Component {
   componentDidMount() {
@@ -52,8 +53,8 @@ class App extends React.Component {
           {isMobile ? null : <SideNav />}
           <main style={mainStyle}>
             <div style={routeStyle}>
-              <Route exact path="/" component={Portfolio} />
-              <Route exact path="/settings" component={Settings} />
+              <Route exact path="/" component={withTracker(Portfolio)} />
+              <Route exact path="/settings" component={withTracker(Settings)} />
             </div>
             <Footer />
           </main>
