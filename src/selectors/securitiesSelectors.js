@@ -1,7 +1,6 @@
-import { createSelector } from 'reselect'
+import { createSelector, createStructuredSelector } from 'reselect'
 import createCachedSelector from 're-reselect'
 
-export const getState = state => state
 export const getSecurities = state => state.securities.securities
 export const getBalancesOnlyFilter = state => state.securities.balancesOnly
 export const getQuery = state => state.app.filterSymbolsQuery
@@ -14,8 +13,13 @@ export const getSecurity = (state, symbol) => {
   return getSecurities(state).find(s => s.symbol === symbol)
 }
 
+export const getStateSlices = createStructuredSelector({
+  securities: state => state.securities,
+  transactions: state => state.transactions
+})
+
 export const getVisibleSecurities = createSelector(
-  [getState, getSecurities, getBalancesOnlyFilter, getQuery],
+  [getStateSlices, getSecurities, getBalancesOnlyFilter, getQuery],
   (state, securities, isHidingEmptyBalances, query) => {
     return securities && securities.slice(0, 100)
       // getSecurityWithBalance is cached for each symbol
