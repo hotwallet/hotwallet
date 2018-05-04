@@ -18,10 +18,8 @@ export const getVisibleSecurities = createSelector(
   [getState, getSecurities, getBalancesOnlyFilter, getQuery],
   (state, securities, isHidingEmptyBalances, query) => {
     return securities && securities.slice(0, 100)
-      .map(security => ({
-        ...security,
-        balance: getBalance(state, security.symbol)
-      }))
+      // getSecurityWithBalance is cached for each symbol
+      .map(security => getSecurityWithBalance(state, security.symbol))
       // toggle hiding empty balances
       .filter(security => {
         if (!isHidingEmptyBalances || query) return true
@@ -80,6 +78,13 @@ export const getBalance = createCachedSelector(
     })
     return balance
   }
+)(
+  (state, symbol) => symbol
+)
+
+export const getSecurityWithBalance = createCachedSelector(
+  [getSecurity, getBalance],
+  (security, balance) => ({...security, balance })
 )(
   (state, symbol) => symbol
 )
