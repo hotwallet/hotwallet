@@ -84,7 +84,7 @@ export const getBalance = createCachedSelector(
 
 export const getSecurityWithBalance = createCachedSelector(
   [getSecurity, getBalance],
-  (security, balance) => ({...security, balance })
+  (security, balance) => ({...security, balance})
 )(
   (state, symbol) => symbol
 )
