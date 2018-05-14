@@ -1,4 +1,6 @@
 import client from '../lib/tarragonClient'
+import { normalize } from 'normalizr'
+import * as schema from './schema'
 
 export const SECURITIES_FETCH = 'SECURITIES_FETCH'
 export const SECURITIES_FETCH_SUCCESS = 'SECURITIES_FETCH_SUCCESS'
@@ -16,7 +18,7 @@ export const fetchSecurities = () => (dispatch, getState) => {
     .then(response => {
       dispatch({
         type: SECURITIES_FETCH_SUCCESS,
-        response: response
+        response: normalize(response, schema.arrayOfSecurities)
       })
       client.socket.subscribeToPriceUpdates()
     })

@@ -9,7 +9,7 @@ class PortfolioHeader extends React.Component {
     const baseCurrency = this.props.baseCurrency
     this.props.transactions.forEach(tx => {
       if (totals[tx.symbol] !== undefined) return
-      const security = this.props.securities.find(s =>
+      const security = this.props.securities && this.props.securities.find(s =>
         s.symbol === tx.symbol && s.baseCurrency === baseCurrency
       )
       if (!security) return

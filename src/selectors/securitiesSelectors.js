@@ -1,8 +1,8 @@
 import { createSelector, createStructuredSelector } from 'reselect'
 import createCachedSelector from 're-reselect'
 
-export const getSecurities = state => state.securities.securities
-export const getBalancesOnlyFilter = state => state.securities.balancesOnly
+export const getSecurities = state => Object.values(state.securities.bySymbol)
+export const getBalancesOnlyFilter = state => state.securities.metadata.balancesOnly
 export const getQuery = state => state.app.filterSymbolsQuery
 
 export const getTransactionsForSymbol = (state, symbol) => {
