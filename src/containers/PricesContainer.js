@@ -4,6 +4,7 @@ import { mapDispatchToProps } from '../actions'
 import { getVisibleSecurities } from '../selectors/securitiesSelectors'
 import moment from 'moment'
 import Prices from '../components/Prices'
+import PropTypes from 'prop-types'
 
 class PricesContainer extends React.Component {
   componentDidMount() {
@@ -20,13 +21,26 @@ class PricesContainer extends React.Component {
   }
 }
 
+PricesContainer.propTypes = {
+  updatedAt: PropTypes.string,
+  baseCurrency: PropTypes.string.isRequired,
+  securities: PropTypes.array.isRequired,
+  isFetching: PropTypes.bool,
+  failureMessage: PropTypes.string,
+  balancesOnly: PropTypes.bool,
+  transactions: PropTypes.array.isRequired,
+  isMobile: PropTypes.bool,
+  isDesktop: PropTypes.bool,
+  query: PropTypes.string
+}
+
 const mapStateToProps = (state, props) => ({
-  updatedAt: state.securities.updatedAt,
+  updatedAt: state.securities.metadata.updatedAt,
   baseCurrency: state.user.baseCurrency,
   securities: getVisibleSecurities(state, props),
-  isFetching: state.securities.isFetching,
-  failureMessage: state.securities.failureMessage,
-  balancesOnly: state.securities.balancesOnly,
+  isFetching: state.securities.metadata.isFetching,
+  failureMessage: state.securities.metadata.failureMessage,
+  balancesOnly: state.securities.metadata.balancesOnly,
   transactions: state.transactions,
   isMobile: state.app.isMobile,
   isDesktop: state.app.isDesktop,

@@ -1,10 +1,9 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { borderColor, lightBlue } from '../lib/styles'
-import { mapDispatchToProps } from '../actions'
 import isNumeric from '../lib/isNumeric'
+import PropTypes from 'prop-types'
 
-class PricesInputQty extends React.Component {
+class PricesInputQty extends React.PureComponent {
   changeValue(e) {
     const value = e.target.value
     if (this.validateValue(e)) {
@@ -48,8 +47,12 @@ class PricesInputQty extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  isMobile: state.app.isMobile
-})
+PricesInputQty.propTypes = {
+  hover: PropTypes.bool,
+  addTransaction: PropTypes.func.isRequired,
+  balance: PropTypes.number,
+  symbol: PropTypes.string.isRequired,
+  isMobile: PropTypes.bool
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(PricesInputQty)
+export default PricesInputQty

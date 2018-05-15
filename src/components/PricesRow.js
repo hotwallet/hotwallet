@@ -1,11 +1,10 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { Table, Image } from 'semantic-ui-react'
-import { mapDispatchToProps } from '../actions'
 import { formatFiat, shortenLargeNumber } from '../lib/formatNumber'
 import PricesInputQty from './PricesInputQty'
+import PropTypes from 'prop-types'
 
-class PricesRow extends React.Component {
+class PricesRow extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = { hover: false }
@@ -83,6 +82,7 @@ class PricesRow extends React.Component {
             hover={this.state.hover}
             symbol={security.symbol}
             balance={balance}
+            addTransaction={this.props.addTransaction}
           />
         </Table.Cell>
         <Table.Cell textAlign="center">{balance ? fiatValue : '-'}</Table.Cell>
@@ -93,10 +93,11 @@ class PricesRow extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  baseCurrency: state.user.baseCurrency,
-  transactions: state.transactions,
-  isMobile: state.app.isMobile
-})
+PricesRow.propTypes = {
+  addTransaction: PropTypes.func.isRequired,
+  isMobile: PropTypes.bool,
+  baseCurrency: PropTypes.string.isRequired,
+  security: PropTypes.object.isRequired
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(PricesRow)
+export default PricesRow

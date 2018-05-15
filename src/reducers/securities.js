@@ -46,7 +46,7 @@ const bySymbol = (state = {}, action) => {
 }
 
 const metadata = (state = {}, action) => {
-  const now = new Date()
+  const now = new Date().toISOString()
   switch (action.type) {
     case SECURITIES_FETCH:
       return {

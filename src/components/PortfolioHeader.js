@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mobilePadding, desktopPadding, border, smallFontSize } from '../lib/styles'
 import { formatFiat } from '../lib/formatNumber'
+import { getSecurities } from '../selectors/securitiesSelectors'
 
 class PortfolioHeader extends React.Component {
   getTotalValue() {
@@ -64,7 +65,7 @@ class PortfolioHeader extends React.Component {
 const mapStateToProps = state => ({
   isMobile: state.app.isMobile,
   transactions: state.transactions,
-  securities: state.securities.securities,
+  securities: getSecurities(state),
   baseCurrency: state.user.baseCurrency
 })
 

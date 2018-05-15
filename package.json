@@ -7,6 +7,7 @@
     "idiot": "^2.0.1",
     "moment": "^2.21.0",
     "normalizr": "^3.2.4",
+    "prop-types": "^15.6.1",
     "re-reselect": "^1.0.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

@@ -2,11 +2,16 @@ import React from 'react'
 import { table, desktopPadding, mobilePadding } from '../lib/styles'
 import { Dimmer, Loader, Table } from 'semantic-ui-react'
 import PricesRow from './PricesRow'
+import PropTypes from 'prop-types'
 
-class Prices extends React.Component {
+class Prices extends React.PureComponent {
   getRows(securities) {
     return securities.map(security => (
-      <PricesRow key={security.symbol} security={security} />
+      <PricesRow key={security.symbol}
+        security={security}
+        addTransaction={this.props.addTransaction}
+        baseCurrency={this.props.baseCurrency}
+        isMobile={this.props.isMobile} />
     ))
   }
 
@@ -51,6 +56,15 @@ class Prices extends React.Component {
       </div>
     )
   }
+}
+
+Prices.propTypes = {
+  addTransaction: PropTypes.func.isRequired,
+  securities: PropTypes.array.isRequired,
+  isFetching: PropTypes.bool,
+  failureMessage: PropTypes.string,
+  isMobile: PropTypes.bool,
+  isDesktop: PropTypes.bool
 }
 
 export default Prices
