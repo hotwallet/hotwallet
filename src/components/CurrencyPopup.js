@@ -1,21 +1,12 @@
 import React from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
 import { darkBg } from '../lib/styles'
 import CurrencyButton from './CurrencyButton'
-import { setBaseCurrency } from '../actions/user'
+import { PropTypes } from 'prop-types'
 
-const supportedCurrencies = [
-  'USD', 'EUR', 'AUD', 'BRL', 'CAD', 'CHF', 'CLP', 'CNY', 'CZK', 'DKK',
-  'GBP', 'HKD', 'HUF', 'IDR', 'ILS', 'INR', 'JPY', 'KRW', 'MXN',
-  'MYR', 'NOK', 'NZD', 'PHP', 'PKR', 'PLN', 'RUB', 'SEK', 'SGD', 'THB',
-  'TRY', 'TWD', 'ZAR'
-]
-
-class CurrencyPopup extends React.Component {
+class CurrencyPopup extends React.PureComponent {
   render() {
     const baseCurrency = this.props.baseCurrency
-    const currencies = supportedCurrencies.filter(c => c !== baseCurrency)
+    const currencies = this.props.currencies.filter(c => c !== baseCurrency)
     currencies.unshift(baseCurrency)
     const style = {
       ...popupStyle,
@@ -41,6 +32,13 @@ class CurrencyPopup extends React.Component {
   }
 }
 
+CurrencyPopup.propTypes = {
+  baseCurrency: PropTypes.string.isRequired,
+  setBaseCurrency: PropTypes.func.isRequired,
+  currencies: PropTypes.array.isRequired,
+  onClick: PropTypes.func
+}
+
 const popupStyle = {
   position: 'absolute',
   backgroundColor: darkBg,
@@ -50,16 +48,4 @@ const popupStyle = {
   marginTop: -8
 }
 
-const mapStateToProps = state => ({
-  baseCurrency: state.user.baseCurrency
-})
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      setBaseCurrency
-    },
-    dispatch
-  )
-
-export default connect(mapStateToProps, mapDispatchToProps)(CurrencyPopup)
+export default CurrencyPopup

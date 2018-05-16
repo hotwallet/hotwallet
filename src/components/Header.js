@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
 import { darkBg, sidebarWidth, border } from '../lib/styles'
-import CurrencySelector from './CurrencySelector'
+import CurrencyContainer from '../containers/CurrencyContainer'
 
 class Header extends React.Component {
   render() {
@@ -17,7 +17,7 @@ class Header extends React.Component {
       <header style={headerStyle}>
         <Icon name="bars" size="large" inverted style={logoStyle} />
         <div style={currencySelectorStyle}>
-          <CurrencySelector />
+          <CurrencyContainer />
         </div>
       </header>
     )
