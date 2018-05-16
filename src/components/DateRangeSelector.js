@@ -1,8 +1,7 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import moment from 'moment'
 import { lightBg, lightBlue, padding } from '../lib/styles'
-import { mapDispatchToProps } from '../actions'
+import { PropTypes } from 'prop-types'
 
 const dateFormat = 'YYYY-MM-DD'
 
@@ -56,7 +55,7 @@ const selected = {
   borderBottom: `1px solid ${lightBlue}`
 }
 
-class DateRangeSelector extends React.Component {
+class DateRangeSelector extends React.PureComponent {
   componentDidMount() {
     if (!this.props.range.startDate) {
       const defaultRange = dateRanges.find(r => r.isDefault)
@@ -99,9 +98,10 @@ class DateRangeSelector extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  range: state.portfolio.range,
-  deviceType: state.app.deviceType
-})
+DateRangeSelector.propTypes = {
+  range: PropTypes.object.isRequired,
+  deviceType: PropTypes.string,
+  setDateRange: PropTypes.func.isRequired
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(DateRangeSelector)
+export default DateRangeSelector
