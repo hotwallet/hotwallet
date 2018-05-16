@@ -17,7 +17,7 @@ const allSymbols = (state = [], action) => {
       if (state.indexOf(action.security.result) === -1) {
         return [
           ...state,
-          action.response.result
+          action.security.result
         ]
       }
       return state
