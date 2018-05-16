@@ -60,6 +60,7 @@ class Prices extends React.PureComponent {
 
 Prices.propTypes = {
   addTransaction: PropTypes.func.isRequired,
+  baseCurrency: PropTypes.string.isRequired,
   securities: PropTypes.array.isRequired,
   isFetching: PropTypes.bool,
   failureMessage: PropTypes.string,

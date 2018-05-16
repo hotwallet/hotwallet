@@ -4,7 +4,6 @@ import { mapDispatchToProps } from '../actions'
 import { getVisibleSecurities } from '../selectors/securitiesSelectors'
 import moment from 'moment'
 import Prices from '../components/Prices'
-import PropTypes from 'prop-types'
 
 class PricesContainer extends React.Component {
   componentDidMount() {
@@ -17,22 +16,31 @@ class PricesContainer extends React.Component {
   }
 
   render() {
-    return React.createElement(Prices, { ...this.props })
+    return React.createElement(Prices, {
+      addTransaction: this.props.addTransaction,
+      securities: this.props.securities,
+      isFetching: this.props.isFetching,
+      failureMessage: this.props.failureMessage,
+      isMobile: this.props.isMobile,
+      isDesktop: this.props.isDesktop,
+      baseCurrency: this.props.baseCurrency
+    })
   }
 }
 
-PricesContainer.propTypes = {
-  updatedAt: PropTypes.string,
-  baseCurrency: PropTypes.string.isRequired,
-  securities: PropTypes.array.isRequired,
-  isFetching: PropTypes.bool,
-  failureMessage: PropTypes.string,
-  balancesOnly: PropTypes.bool,
-  transactions: PropTypes.array.isRequired,
-  isMobile: PropTypes.bool,
-  isDesktop: PropTypes.bool,
-  query: PropTypes.string
-}
+// Unrequired?
+// PricesContainer.propTypes = {
+//   updatedAt: PropTypes.string,
+//   baseCurrency: PropTypes.string.isRequired,
+//   securities: PropTypes.array.isRequired,
+//   isFetching: PropTypes.bool,
+//   failureMessage: PropTypes.string,
+//   balancesOnly: PropTypes.bool,
+//   transactions: PropTypes.array.isRequired,
+//   isMobile: PropTypes.bool,
+//   isDesktop: PropTypes.bool,
+//   query: PropTypes.string
+// }
 
 const mapStateToProps = (state, props) => ({
   updatedAt: state.securities.metadata.updatedAt,
@@ -40,11 +48,8 @@ const mapStateToProps = (state, props) => ({
   securities: getVisibleSecurities(state, props),
   isFetching: state.securities.metadata.isFetching,
   failureMessage: state.securities.metadata.failureMessage,
-  balancesOnly: state.securities.metadata.balancesOnly,
-  transactions: state.transactions,
   isMobile: state.app.isMobile,
-  isDesktop: state.app.isDesktop,
-  query: state.app.filterSymbolsQuery
+  isDesktop: state.app.isDesktop
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PricesContainer)
