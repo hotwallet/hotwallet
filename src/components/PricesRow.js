@@ -82,7 +82,7 @@ class PricesRow extends React.PureComponent {
             hover={this.state.hover}
             symbol={security.symbol}
             balance={balance}
-            addTransaction={this.props.addTransaction}
+            addManualTransaction={this.props.addManualTransaction}
           />
         </Table.Cell>
         <Table.Cell textAlign="center">{balance ? fiatValue : '-'}</Table.Cell>
@@ -94,7 +94,7 @@ class PricesRow extends React.PureComponent {
 }
 
 PricesRow.propTypes = {
-  addTransaction: PropTypes.func.isRequired,
+  addManualTransaction: PropTypes.func.isRequired,
   isMobile: PropTypes.bool,
   baseCurrency: PropTypes.string.isRequired,
   security: PropTypes.object.isRequired

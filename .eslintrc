@@ -1,7 +1,11 @@
 {
   "extends": ["standard", "standard-jsx"],
+  "plugins": ["eslint-plugin-jest"],
   "rules": {
     "jsx-quotes": ["error", "prefer-double"],
     "space-before-function-paren": ["error", {"anonymous": "always", "named": "never", "asyncArrow": "always"}]
+  },
+  "env": {
+    "jest/globals": true
   }
 }

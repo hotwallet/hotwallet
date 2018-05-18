@@ -9,7 +9,7 @@ class Prices extends React.PureComponent {
     return securities.map(security => (
       <PricesRow key={security.symbol}
         security={security}
-        addTransaction={this.props.addTransaction}
+        addManualTransaction={this.props.addManualTransaction}
         baseCurrency={this.props.baseCurrency}
         isMobile={this.props.isMobile} />
     ))
@@ -59,7 +59,7 @@ class Prices extends React.PureComponent {
 }
 
 Prices.propTypes = {
-  addTransaction: PropTypes.func.isRequired,
+  addManualTransaction: PropTypes.func.isRequired,
   baseCurrency: PropTypes.string.isRequired,
   securities: PropTypes.array.isRequired,
   isFetching: PropTypes.bool,

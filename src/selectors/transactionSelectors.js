@@ -5,7 +5,7 @@ export const getTransactionsById = state => state.transactions.byId
 
 export const getTransactionsBySymbol = state => state.transactions.bySymbol
 
-export const getTransactionBySymbolSlice = createSelector(
+export const getTransactionsBySymbolSlice = createSelector(
   [getTransactionsBySymbol],
   txbs => ({transactions: {bySymbol: txbs}})
 )
@@ -42,7 +42,7 @@ export const getBalanceForSymbol = createCachedSelector(
 )
 
 export const getBalancesBySymbol = createSelector(
-  [getTransactionBySymbolSlice],
+  [getTransactionsBySymbolSlice],
   (bySymbolSlice) => {
     const balancesBySymbol = {}
     const symbols = Object.keys(bySymbolSlice.transactions.bySymbol)

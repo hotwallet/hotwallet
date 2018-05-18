@@ -17,7 +17,7 @@ class PricesContainer extends React.Component {
 
   render() {
     return React.createElement(Prices, {
-      addTransaction: this.props.addTransaction,
+      addManualTransaction: this.props.addManualTransaction,
       securities: this.props.securities,
       isFetching: this.props.isFetching,
       failureMessage: this.props.failureMessage,
