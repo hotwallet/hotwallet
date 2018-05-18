@@ -3,6 +3,7 @@ import moment from 'moment'
 import set from 'lodash/set'
 import find from 'lodash/find'
 import { UPDATE_PRICE_HISTORY_DATA } from './index'
+import { getAllTransactions } from '../../selectors/transactionSelectors'
 
 // TODO: this needs to be refactored/optimized
 const getPriceHistoryData = () => (dispatch, getState) => {
@@ -12,7 +13,7 @@ const getPriceHistoryData = () => (dispatch, getState) => {
   const DATE_FORMAT = 'YYYY-MM-DD'
   const balances = {}
   const symbols = []
-  state.transactions.forEach(transaction => {
+  getAllTransactions(state).forEach(transaction => {
     const date = moment(transaction.txTime).format(DATE_FORMAT)
     const symbol = transaction.symbol
     const walletId = transaction.walletId

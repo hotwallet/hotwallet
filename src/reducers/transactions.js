@@ -1,29 +1,55 @@
-import { ADD_MANUAL_TRANSACTION } from '../actions/transactions'
-import find from 'lodash/find'
-import { v4 } from 'uuid'
+import { ADD_TRANSACTION } from '../actions/transactions'
+import { combineReducers } from 'redux'
 
-const initialState = []
-
-export default (state = initialState, action) => {
+const allTransactions = (state = [], action) => {
+  let tx = action.transaction
   switch (action.type) {
-    case ADD_MANUAL_TRANSACTION:
-      const transaction = action.transaction
-      const walletId = 'manual'
-      const txTime = new Date()
-      const newTx = {
-        id: v4(),
-        txTime,
-        ...transaction,
-        balance: Number(transaction.balance),
-        walletId
+    case ADD_TRANSACTION:
+      if (state.filter(txId => txId === tx.id).length > 0) {
+        return state
       }
-      const symbol = newTx.symbol
-      const existingTx = find(state, { symbol, txTime, walletId })
-      if (existingTx) {
-        return state.map(tx => tx.id === existingTx.id ? newTx : tx)
-      }
-      return [newTx, ...state]
+      return [...state, tx.id]
     default:
       return state
   }
 }
+
+const byId = (state = {}, action) => {
+  let tx = action.transaction
+  switch (action.type) {
+    case ADD_TRANSACTION:
+      return {...state, [tx.id]: tx}
+    default:
+      return state
+  }
+}
+
+const bySymbol = (state = {}, action) => {
+  let tx = action.transaction
+  switch (action.type) {
+    case ADD_TRANSACTION:
+      if (state[tx.symbol] !== undefined) {
+        return {...state, [tx.symbol]: [...state[tx.symbol], tx]}
+      }
+      return {...state, [tx.symbol]: [tx]}
+
+    default:
+      return state
+  }
+}
+
+const byWalletId = (state = {}, action) => {
+  let tx = action.transaction
+  switch (action.type) {
+    case ADD_TRANSACTION:
+      if (state[tx.walletId] !== undefined) {
+        return {...state, [tx.walletId]: [...state[tx.walletId], tx]}
+      }
+      return {...state, [tx.walletId]: [tx]}
+
+    default:
+      return state
+  }
+}
+
+export default combineReducers({allTransactions, byId, bySymbol, byWalletId})

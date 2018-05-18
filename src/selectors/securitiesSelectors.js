@@ -1,13 +1,10 @@
 import { createSelector, createStructuredSelector } from 'reselect'
+import { getBalanceForSymbol } from './transactionSelectors'
 import createCachedSelector from 're-reselect'
 
 export const getSecurities = state => Object.values(state.securities.bySymbol)
 export const getBalancesOnlyFilter = state => state.securities.metadata.balancesOnly
 export const getQuery = state => state.app.filterSymbolsQuery
-
-export const getTransactionsForSymbol = (state, symbol) => {
-  return state.transactions.filter(t => t.symbol === symbol)
-}
 
 export const getSecurity = (state, symbol) => {
   return getSecurities(state).find(s => s.symbol === symbol)
@@ -67,27 +64,8 @@ export const getVisibleSecurities = createSelector(
 //   (state, someArg) => someArg
 // )
 
-export const getBalance = createCachedSelector(
-  [getSecurity, getTransactionsForSymbol],
-  (security, transactions) => {
-    const balancesByWalletId = {}
-    transactions.forEach(tx => {
-      if (balancesByWalletId[tx.walletId] !== undefined) return
-      balancesByWalletId[tx.walletId] = tx.balance
-    })
-    let balance
-    Object.keys(balancesByWalletId).forEach(walletId => {
-      if (!balance) balance = 0
-      balance += balancesByWalletId[walletId]
-    })
-    return balance
-  }
-)(
-  (state, symbol) => symbol
-)
-
 export const getSecurityWithBalance = createCachedSelector(
-  [getSecurity, getBalance],
+  [getSecurity, getBalanceForSymbol],
   (security, balance) => ({...security, balance})
 )(
   (state, symbol) => symbol
