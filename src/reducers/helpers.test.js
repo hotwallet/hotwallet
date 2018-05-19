@@ -8,43 +8,43 @@ const oneToManyMapping = {
 }
 
 describe('addToIdList', () => {
-  test('doesn\' add existing entities to list', () => {
+  test('Doesn\'t add existing entities to list', () => {
     expect(helpers.addToIdList(idList, [{id: '1'}, {id: '3'}], 'id')).toEqual(['1', '2', '3'])
   })
 
-  test('returns same list if no changes required', () => {
+  test('Returns same list if no changes required', () => {
     expect(helpers.addToIdList(idList, [{id: '1'}, {id: '2'}], 'id')).toBe(idList)
   })
 
-  test('adds non-existing entities to list', () => {
+  test('Adds non-existing entities to list', () => {
     expect(helpers.addToIdList(idList, [{id: '1'}, {id: '5'}], 'id')).toEqual(['1', '2', '5'])
   })
 })
 
 describe('removeFromIdList', () => {
-  test('doesn\'t do anything if ids not in list', () => {
+  test('Doesn\'t do anything if ids not in list', () => {
     expect(helpers.removeFromIdList(idList, ['6', '7'])).toBe(idList)
   })
 
-  test('returns list without ids specified', () => {
+  test('Returns list without ids specified', () => {
     expect(helpers.removeFromIdList(idList, ['2', '4'])).toEqual(['1'])
   })
 })
 
 describe('addToOneToOneMapping', () => {
-  test('doesn\' add existing entities to mapping', () => {
+  test('Doesn\'t add existing entities to mapping', () => {
     expect(
       helpers.addToOneToOneMapping(oneToOneMapping, [{id: '1'}, {id: '3'}], 'id')
     ).toEqual({'1': {id: '1'}, '2': {id: '2'}, '3': {id: '3'}})
   })
 
-  test('returns same mapping if no changes required', () => {
+  test('Returns same mapping if no changes required', () => {
     expect(
       helpers.addToOneToOneMapping(oneToOneMapping, [oneToOneMapping['1']], 'id')
     ).toBe(oneToOneMapping)
   })
 
-  test('adds non-existing entities to list', () => {
+  test('Adds non-existing entities to list', () => {
     expect(
       helpers.addToOneToOneMapping(oneToOneMapping, [{id: '5'}, {id: '6'}], 'id')
     ).toEqual({'1': {id: '1'}, '2': {id: '2'}, '5': {id: '5'}, '6': {id: '6'}})
@@ -52,13 +52,13 @@ describe('addToOneToOneMapping', () => {
 })
 
 describe('removeFromOneToOneMapping', () => {
-  test('removes existing elements from mapping', () => {
+  test('Removes existing elements from mapping', () => {
     expect(
       helpers.removeFromOneToOneMapping(oneToOneMapping, ['1', '3'], 'id')
     ).toEqual({'2': {id: '2'}})
   })
 
-  test('returns same mapping if no changes required', () => {
+  test('Returns same mapping if no changes required', () => {
     expect(
       helpers.removeFromOneToOneMapping(oneToOneMapping, ['7', '5'], 'id')
     ).toBe(oneToOneMapping)
@@ -80,7 +80,7 @@ describe('addToOneToManyMapping', () => {
     })
   })
 
-  test('returns same mapping if no changes required', () => {
+  test('Returns same mapping if no changes required', () => {
     expect(
       helpers.addToOneToManyMapping(oneToManyMapping, [oneToManyMapping.a[0]], 'cat')
     ).toBe(oneToManyMapping)
@@ -100,7 +100,7 @@ describe('removeFromOneToManyMapping', () => {
     })
   })
 
-  test('returns same mapping if no changes required', () => {
+  test('Returns same mapping if no changes required', () => {
     expect(
       helpers.removeFromOneToManyMapping(oneToManyMapping, ['7'], 'id')
     ).toBe(oneToManyMapping)
