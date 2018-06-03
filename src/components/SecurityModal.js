@@ -5,7 +5,7 @@ import { lightBg } from '../lib/styles'
 
 class SecurityModal extends React.Component {
   render() {
-    const { isModalOpen, header, onClose, security } = this.props
+    const { isModalOpen, header, onClose } = this.props
     return (
       <Modal
         closeIcon
