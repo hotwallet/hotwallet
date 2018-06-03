@@ -3,8 +3,10 @@ import {
   UPDATE_PRICE_HISTORY_DATA
 } from '../actions/portfolio'
 
+import { dateRanges } from '../components/DateRangeSelector'
+
 const initialState = {
-  range: {}
+  range: dateRanges.find(dateRange => !!dateRange.isDefault)
 }
 
 export default (state = initialState, action) => {

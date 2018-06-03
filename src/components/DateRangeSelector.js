@@ -7,7 +7,7 @@ const dateFormat = 'YYYY-MM-DD'
 
 const today = moment().utc().format(dateFormat)
 
-const dateRanges = [
+export const dateRanges = [
   {
     isDefault: true,
     label: '1 week',
