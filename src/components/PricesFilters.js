@@ -119,7 +119,7 @@ class PricesFilters extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  balancesOnly: state.securities.balancesOnly,
+  balancesOnly: state.securities.metadata.balancesOnly,
   query: state.app.filterSymbolsQuery,
   isMobile: state.app.isMobile,
   isTablet: state.app.isTablet
