@@ -2,6 +2,8 @@ import io from 'socket.io-client'
 import * as config from '../config'
 import store from '../store'
 import { updateSecurity } from '../actions/securities'
+import * as schema from '../actions/schema'
+import { normalize } from 'normalizr'
 
 export default class SocketClient {
   start() {
@@ -14,7 +16,8 @@ export default class SocketClient {
       const baseCurrency = state.user.baseCurrency
       // console.log(security.symbol, security.baseCurrency, security.price)
       if (security.baseCurrency === baseCurrency) {
-        store.dispatch(updateSecurity(security))
+        const normalizedSecurity = normalize(security, schema.security)
+        store.dispatch(updateSecurity(normalizedSecurity))
       }
     })
   }
@@ -23,12 +26,13 @@ export default class SocketClient {
     const state = store.getState()
     const baseCurrency = state.user.baseCurrency
     // wait until we have securities to subscribe to
-    if (!state.securities.securities) {
+    // TODO: this may change over time, so subscribing just at the start is inadequate
+    if (!state.securities.allSymbols || state.securities.allSymbols.length === 0) {
       return setTimeout(() => this.subscribeToPriceUpdates(), 1000)
     }
-    const activeSecurities = state.securities.securities.slice(0, 100)
-    activeSecurities.forEach(security => {
-      const room = `securities:${security.symbol}:${baseCurrency}`
+    const activeSymbols = state.securities.allSymbols.slice(0, 100)
+    activeSymbols.forEach(symbol => {
+      const room = `securities:${symbol}:${baseCurrency}`
       this.socket.emit('join', room)
     })
   }

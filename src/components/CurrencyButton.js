@@ -1,10 +1,10 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
 import { lightBg } from '../lib/styles'
 import CurrencyIcon from './CurrencyIcon'
+import { PropTypes } from 'prop-types'
 
-class CurrencyButton extends React.Component {
+class CurrencyButton extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -34,6 +34,12 @@ class CurrencyButton extends React.Component {
   }
 }
 
+CurrencyButton.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  currency: PropTypes.string.isRequired,
+  caret: PropTypes.bool
+}
+
 const buttonStyle = {
   border: 'none',
   borderRadius: 4,
@@ -46,8 +52,4 @@ const buttonStyleHover = {
   backgroundColor: lightBg
 }
 
-const mapStateToProps = state => ({
-  baseCurrency: state.user.baseCurrency
-})
-
-export default connect(mapStateToProps)(CurrencyButton)
+export default CurrencyButton

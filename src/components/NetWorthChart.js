@@ -106,7 +106,11 @@ class NetWorthChart extends React.Component {
             zIndex: 200,
             padding: '0 100px'
           }}>Enter balances below to track your portfolio</div>) : null}
-        <DateRangeSelector />
+        <DateRangeSelector
+          range={this.props.range}
+          baseCurrency={this.props.baseCurrency}
+          deviceType={this.props.deviceType}
+          setDateRange={this.props.setDateRange} />
         <ReactHighcharts config={chartConfig} />
       </div>
     )
@@ -115,9 +119,12 @@ class NetWorthChart extends React.Component {
 
 const mapStateToProps = state => ({
   isMobile: state.app.isMobile,
+  deviceType: state.app.deviceType,
   isTablet: state.app.isTablet,
   priceHistoryData: state.portfolio.priceHistoryData,
-  transactions: state.transactions
+  transactions: state.transactions,
+  range: state.portfolio.range,
+  baseCurrency: state.user.baseCurrency
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NetWorthChart)

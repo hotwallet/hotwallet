@@ -1,48 +1,18 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { table, desktopPadding, mobilePadding } from '../lib/styles'
 import { Dimmer, Loader, Table } from 'semantic-ui-react'
-import { mapDispatchToProps } from '../actions'
-import { getIsFetchingSecurities, getSecurities, getSecuritiesFailure } from '../reducers'
 import PricesRow from './PricesRow'
-import moment from 'moment'
+import PropTypes from 'prop-types'
 
-class Prices extends React.Component {
-  componentDidMount() {
-    // fetch all prices if they haven't been updated in the past 2 minutes
-    const updatedAt = this.props.updatedAt
-    const diff = moment().diff(updatedAt, 'seconds')
-    if (!updatedAt || diff > 120 || this.props.failureMessage) {
-      this.props.fetchSecurities()
-    }
-  }
-
-  // TODO: this function is also in PricesRow:54
-  getBalance(symbol) {
-    // TODO: account for multiple wallets
-    const latestTx = this.props.transactions.find(tx => tx.symbol === symbol)
-    if (latestTx) return latestTx.balance
-  }
-
+class Prices extends React.PureComponent {
   getRows(securities) {
-    const query = this.props.query
-    return securities && securities.slice(0, 100)
-      // show balances only toggle
-      .filter(security => {
-        if (!this.props.balancesOnly || this.props.query) return true
-        const balance = this.getBalance(security.symbol)
-        return (balance || balance === 0)
-      })
-      // search query
-      .filter(security => {
-        if (!query) return true
-        const lowerCaseQuery = query.toLowerCase()
-        return security.symbol.includes(query.toUpperCase()) ||
-          security.name.toLowerCase().includes(lowerCaseQuery)
-      })
-      .map((security, i) => (
-        <PricesRow key={security.symbol} security={security} />
-      ))
+    return securities.map(security => (
+      <PricesRow key={security.symbol}
+        security={security}
+        addManualTransaction={this.props.addManualTransaction}
+        baseCurrency={this.props.baseCurrency}
+        isMobile={this.props.isMobile} />
+    ))
   }
 
   render() {
@@ -88,17 +58,14 @@ class Prices extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  updatedAt: state.securities.updatedAt,
-  baseCurrency: state.user.baseCurrency,
-  securities: getSecurities(state),
-  isFetching: getIsFetchingSecurities(state),
-  failureMessage: getSecuritiesFailure(state),
-  balancesOnly: state.securities.balancesOnly,
-  transactions: state.transactions,
-  isMobile: state.app.isMobile,
-  isDesktop: state.app.isDesktop,
-  query: state.app.filterSymbolsQuery
-})
+Prices.propTypes = {
+  addManualTransaction: PropTypes.func.isRequired,
+  baseCurrency: PropTypes.string.isRequired,
+  securities: PropTypes.array.isRequired,
+  isFetching: PropTypes.bool,
+  failureMessage: PropTypes.string,
+  isMobile: PropTypes.bool,
+  isDesktop: PropTypes.bool
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Prices)
+export default Prices

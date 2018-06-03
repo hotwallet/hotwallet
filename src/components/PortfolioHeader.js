@@ -2,20 +2,21 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mobilePadding, desktopPadding, border, smallFontSize } from '../lib/styles'
 import { formatFiat } from '../lib/formatNumber'
+import { getSecurities } from '../selectors/securitiesSelectors'
+import { getBalancesBySymbol } from '../selectors/transactionSelectors'
 
 class PortfolioHeader extends React.Component {
   getTotalValue() {
-    const totals = {}
     const baseCurrency = this.props.baseCurrency
-    this.props.transactions.forEach(tx => {
-      if (totals[tx.symbol] !== undefined) return
-      const security = this.props.securities.find(s =>
-        s.symbol === tx.symbol && s.baseCurrency === baseCurrency
+    const balancesBySymbol = this.props.balancesBySymbol
+    const value = Object.keys(balancesBySymbol).reduce((total, symbol) => {
+      const security = this.props.securities && this.props.securities.find(s =>
+        s.symbol === symbol && s.baseCurrency === baseCurrency
       )
-      if (!security) return
-      totals[tx.symbol] = Number(tx.balance) * security.price
-    })
-    const value = Object.keys(totals).reduce((total, symbol) => total + totals[symbol], 0)
+      if (!security) return total
+
+      return total + balancesBySymbol[symbol] * security.price
+    }, 0)
     return formatFiat(value, baseCurrency)
   }
 
@@ -45,15 +46,15 @@ class PortfolioHeader extends React.Component {
           <div>{this.getTotalValue()}</div>
         </div>
         <div style={colStyle}>
-          <div style={labelStyle}>Today's change</div>
+          <div style={labelStyle}>Today</div>
           <div style={{ color: 'gray' }}>-</div>
         </div>
         <div style={colStyle}>
-          <div style={labelStyle}>7 day change</div>
+          <div style={labelStyle}>7 day</div>
           <div style={{ color: 'gray' }}>-</div>
         </div>
         <div style={colStyle}>
-          <div style={labelStyle}>30 day change</div>
+          <div style={labelStyle}>30 day</div>
           <div style={{ color: 'gray' }}>-</div>
         </div>
       </div>
@@ -63,8 +64,8 @@ class PortfolioHeader extends React.Component {
 
 const mapStateToProps = state => ({
   isMobile: state.app.isMobile,
-  transactions: state.transactions,
-  securities: state.securities.securities,
+  balancesBySymbol: getBalancesBySymbol(state),
+  securities: getSecurities(state),
   baseCurrency: state.user.baseCurrency
 })
 

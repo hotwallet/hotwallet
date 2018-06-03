@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { border } from '../lib/styles'
-import Prices from './Prices'
+import PricesContainer from '../containers/PricesContainer'
 import NetWorthChart from './NetWorthChart'
 import PricesFilters from './PricesFilters'
 import PortfolioHeader from './PortfolioHeader'
@@ -15,7 +15,7 @@ class Settings extends React.Component {
           <NetWorthChart />
         </div>
         <PricesFilters />
-        <Prices />
+        <PricesContainer />
       </div>
     )
   }

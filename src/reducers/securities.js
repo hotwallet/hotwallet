@@ -1,3 +1,4 @@
+import { combineReducers } from 'redux'
 import {
   SECURITIES_FETCH,
   SECURITIES_FETCH_SUCCESS,
@@ -6,22 +7,46 @@ import {
   SECURITIES_BALANCES_ONLY
 } from '../actions/securities'
 
-const initialState = {}
-
-export const getSecurities = function (state) {
-  return state.securities
+const allSymbols = (state = [], action) => {
+  switch (action.type) {
+    case SECURITIES_FETCH_SUCCESS:
+      return [
+        ...action.response.result
+      ]
+    case SECURITIES_UPDATE:
+      if (state.indexOf(action.security.result) === -1) {
+        return [
+          ...state,
+          action.security.result
+        ]
+      }
+      return state
+    default:
+      return state
+  }
 }
 
-export const getIsFetching = function (state) {
-  return state.isFetching
+const bySymbol = (state = {}, action) => {
+  switch (action.type) {
+    case SECURITIES_FETCH_SUCCESS:
+      return {
+        ...state,
+        ...action.response.entities.security
+      }
+
+    case SECURITIES_UPDATE:
+      return {
+        ...state,
+        ...action.security.entities.security
+      }
+
+    default:
+      return state
+  }
 }
 
-export const getFailureMessage = function (state) {
-  return state.failureMessage
-}
-
-export default (state = initialState, action) => {
-  const now = new Date()
+const metadata = (state = {}, action) => {
+  const now = new Date().toISOString()
   switch (action.type) {
     case SECURITIES_FETCH:
       return {
@@ -32,7 +57,6 @@ export default (state = initialState, action) => {
     case SECURITIES_FETCH_SUCCESS:
       return {
         ...state,
-        securities: action.response,
         isFetching: false,
         updatedAt: now,
         failureMessage: undefined
@@ -46,13 +70,8 @@ export default (state = initialState, action) => {
       }
 
     case SECURITIES_UPDATE:
-      const symbol = action.security.symbol
-      const securities = state.securities.map(security => {
-        return (security.symbol === symbol) ? action.security : security
-      })
       return {
         ...state,
-        securities,
         updatedAt: now,
         failureMessage: undefined
       }
@@ -67,3 +86,5 @@ export default (state = initialState, action) => {
       return state
   }
 }
+
+export default combineReducers({allSymbols, bySymbol, metadata})

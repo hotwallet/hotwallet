@@ -6,6 +6,9 @@
     "highcharts": "^6.0.7",
     "idiot": "^2.0.1",
     "moment": "^2.21.0",
+    "normalizr": "^3.2.4",
+    "prop-types": "^15.6.1",
+    "re-reselect": "^1.0.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-ga": "^2.5.0",
@@ -16,6 +19,7 @@
     "react-router-redux": "next",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
+    "reselect": "^3.0.1",
     "sanitize.css": "^5.0.0",
     "semantic-ui-css": "^2.3.0",
     "semantic-ui-react": "^0.78.3",
@@ -26,13 +30,15 @@
     "build": "react-scripts build",
     "test": "yarn run eslint && react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "eslint": "eslint ./"
+    "eslint": "eslint ./",
+    "prepush": "yarn run eslint"
   },
   "devDependencies": {
-    "eslint": "^4.18.2",
+    "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-config-standard-jsx": "^5.0.0",
     "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jest": "^21.15.1",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-react": "^7.7.0",
@@ -42,7 +48,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "npm run eslint"
+      "pre-push": "yarn run eslint"
     }
   }
 }

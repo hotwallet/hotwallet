@@ -1,11 +1,10 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { Table, Image } from 'semantic-ui-react'
-import { mapDispatchToProps } from '../actions'
 import { formatFiat, shortenLargeNumber } from '../lib/formatNumber'
 import PricesInputQty from './PricesInputQty'
+import PropTypes from 'prop-types'
 
-class PricesRow extends React.Component {
+class PricesRow extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = { hover: false }
@@ -47,12 +46,6 @@ class PricesRow extends React.Component {
     }
   }
 
-  getBalance(symbol) {
-    // TODO: account for multiple wallets
-    const latestTx = this.props.transactions.find(tx => tx.symbol === symbol)
-    if (latestTx) return latestTx.balance
-  }
-
   render() {
     const isMobile = this.props.isMobile
     const symbolStyle = {
@@ -64,7 +57,7 @@ class PricesRow extends React.Component {
     const delta24h = this.formatPercentChange(security.percentChange24h)
     const delta7d = this.formatPercentChange(security.percentChange7d)
     const supply = security.marketCap / security.price
-    const balance = this.getBalance(security.symbol)
+    const balance = security.balance
     const fiatValue = formatFiat(balance * security.price, baseCurrency)
     return (
       <Table.Row
@@ -89,6 +82,7 @@ class PricesRow extends React.Component {
             hover={this.state.hover}
             symbol={security.symbol}
             balance={balance}
+            addManualTransaction={this.props.addManualTransaction}
           />
         </Table.Cell>
         <Table.Cell textAlign="center">{balance ? fiatValue : '-'}</Table.Cell>
@@ -99,10 +93,11 @@ class PricesRow extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  baseCurrency: state.user.baseCurrency,
-  transactions: state.transactions,
-  isMobile: state.app.isMobile
-})
+PricesRow.propTypes = {
+  addManualTransaction: PropTypes.func.isRequired,
+  isMobile: PropTypes.bool,
+  baseCurrency: PropTypes.string.isRequired,
+  security: PropTypes.object.isRequired
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(PricesRow)
+export default PricesRow

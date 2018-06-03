@@ -1,7 +1,7 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import { PropTypes } from 'prop-types'
 
-class CurrencyIcon extends React.Component {
+class CurrencyIcon extends React.PureComponent {
   render() {
     const currency = this.props.currency
     const flagClass = `currency-flag currency-flag-${currency.toLowerCase()}`
@@ -16,6 +16,11 @@ class CurrencyIcon extends React.Component {
   }
 }
 
+CurrencyIcon.propTypes = {
+  currency: PropTypes.string.isRequired,
+  style: PropTypes.object
+}
+
 const flagStyle = {
   display: 'inline-block',
   position: 'relative',
@@ -23,8 +28,4 @@ const flagStyle = {
   top: 3
 }
 
-const mapStateToProps = state => ({
-  baseCurrency: state.user.baseCurrency
-})
-
-export default connect(mapStateToProps)(CurrencyIcon)
+export default CurrencyIcon
