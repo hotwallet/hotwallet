@@ -25,13 +25,15 @@ class PricesInputQty extends React.PureComponent {
 
   render() {
     const isMobile = this.props.isMobile
-    const color = (this.props.hover) ? lightBlue : borderColor
+    const color = (this.props.isRowHover) ? lightBlue : borderColor
     return (
       <input
         min={0}
         onFocus={e => e.target.select()}
         onKeyUp={e => this.validateValue(e)}
         onChange={e => this.changeValue(e)}
+        onMouseOver={e => this.props.setInputQtyHoverState(true)}
+        onMouseOut={e => this.props.setInputQtyHoverState(false)}
         defaultValue={this.props.balance}
         type="number"
         style={{
@@ -48,7 +50,8 @@ class PricesInputQty extends React.PureComponent {
 }
 
 PricesInputQty.propTypes = {
-  hover: PropTypes.bool,
+  isRowHover: PropTypes.bool,
+  setInputQtyHoverState: PropTypes.func.isRequired,
   addManualTransaction: PropTypes.func.isRequired,
   balance: PropTypes.number,
   symbol: PropTypes.string.isRequired,

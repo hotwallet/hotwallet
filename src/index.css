@@ -39,3 +39,11 @@ input::selection {
 .ui.inverted.icon.input > i.icon {
   color: #fff;
 }
+
+.ui.modal > .header,
+.ui.modal > .content {
+  background: none;
+}
+.ui.page.modals.transition.visible {
+  display: flex !important;
+}

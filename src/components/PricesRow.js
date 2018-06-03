@@ -2,12 +2,17 @@ import React from 'react'
 import { Table, Image } from 'semantic-ui-react'
 import { formatFiat, shortenLargeNumber } from '../lib/formatNumber'
 import PricesInputQty from './PricesInputQty'
+import SecurityModal from './SecurityModal'
 import PropTypes from 'prop-types'
 
 class PricesRow extends React.PureComponent {
   constructor(props) {
     super(props)
-    this.state = { hover: false }
+    this.state = {
+      hover: false,
+      inputQtyHover: false,
+      isModalOpen: false
+    }
   }
 
   mouseOver() {
@@ -46,11 +51,16 @@ class PricesRow extends React.PureComponent {
     }
   }
 
+  onRowClick() {
+    if (this.state.inputQtyHover) return
+    this.setState({ isModalOpen: true })
+  }
+
   render() {
     const isMobile = this.props.isMobile
     const symbolStyle = {
       fontSize: isMobile ? null : 18,
-      verticalAlign: 'inherit'
+      verticalAlign: 'middle'
     }
     const security = this.props.security
     const baseCurrency = this.props.baseCurrency
@@ -59,29 +69,43 @@ class PricesRow extends React.PureComponent {
     const supply = security.marketCap / security.price
     const balance = security.balance
     const fiatValue = formatFiat(balance * security.price, baseCurrency)
+    const getSecurityIcon = label => (
+      <div>
+        <Image src={this.getIcon(security.symbol)}
+          inline
+          verticalAlign="middle"
+          style={{marginRight: 12}}
+        />
+        <span style={symbolStyle}>
+          {label}
+        </span>
+      </div>
+    )
+
     return (
       <Table.Row
+        onClick={() => this.onRowClick()}
         onMouseOver={() => this.mouseOver()}
         onMouseOut={() => this.mouseOut()}
+        style={{ cursor: 'pointer' }}
       >
-        <Table.Cell>
-          <Image src={this.getIcon(security.symbol)}
-            inline
-            verticalAlign="middle"
-            style={{marginRight: 10}}
-          />
-          <span style={symbolStyle}>
-            {security.symbol}
-          </span>
-        </Table.Cell>
+        <SecurityModal
+          security={security}
+          isModalOpen={this.state.isModalOpen}
+          header={getSecurityIcon(security.name)}
+          onClose={() => this.setState({ isModalOpen: false })}
+        />
+
+        <Table.Cell>{getSecurityIcon(security.symbol)}</Table.Cell>
         <Table.Cell textAlign="right">{this.formatPrice(security.price)}</Table.Cell>
         {isMobile ? null : <Table.Cell textAlign="right" style={delta24h.style}>{delta24h.value}</Table.Cell>}
         {isMobile ? null : <Table.Cell textAlign="right" style={delta7d.style}>{delta7d.value}</Table.Cell>}
         <Table.Cell textAlign="center">
           <PricesInputQty
-            hover={this.state.hover}
+            isRowHover={this.state.hover}
             symbol={security.symbol}
             balance={balance}
+            setInputQtyHoverState={val => this.setState({ inputQtyHover: val })}
             addManualTransaction={this.props.addManualTransaction}
           />
         </Table.Cell>
