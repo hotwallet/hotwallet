@@ -7,7 +7,7 @@ class PricesInputQty extends React.PureComponent {
   changeValue(e) {
     const value = e.target.value
     if (this.validateValue(e)) {
-      this.props.addTransaction({
+      this.props.addManualTransaction({
         symbol: this.props.symbol,
         balance: value
       })
@@ -49,7 +49,7 @@ class PricesInputQty extends React.PureComponent {
 
 PricesInputQty.propTypes = {
   hover: PropTypes.bool,
-  addTransaction: PropTypes.func.isRequired,
+  addManualTransaction: PropTypes.func.isRequired,
   balance: PropTypes.number,
   symbol: PropTypes.string.isRequired,
   isMobile: PropTypes.bool
