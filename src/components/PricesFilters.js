@@ -6,6 +6,13 @@ import { mapDispatchToProps } from '../actions'
 import { desktopPadding, mobilePadding } from '../lib/styles'
 
 class PricesFilters extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { value: '' }
+    this.onChange = this.onChange.bind(this)
+    this.filterChange = this.filterChange.bind(this)
+  }
+
   onToggle(toggle) {
     this.input.inputRef.value = ''
     this.props.filterSymbols('')
@@ -24,10 +31,36 @@ class PricesFilters extends React.Component {
     }
   }
 
+  onChange(e) {
+    this.filterChange(e.target.value)
+  }
+
+  filterChange(value) {
+    this.setState({
+      hasInput: value !== '',
+      value: value
+    })
+    this.props.filterSymbols(value)
+  }
+
   render() {
     const isMobile = this.props.isMobile
     const isTablet = this.props.isTablet
     const padding = isMobile ? mobilePadding : desktopPadding
+
+    let inputProps
+    if (this.state.hasInput) {
+      inputProps = {
+        action: {
+          color: 'grey',
+          icon: 'delete',
+          onClick: () => this.filterChange('')
+        }
+      }
+    } else {
+      inputProps = { icon: 'search' }
+    }
+
     return (
       <div style={{
         padding: `${padding}px ${padding}px 0`
@@ -40,7 +73,7 @@ class PricesFilters extends React.Component {
           <Grid.Row>
             <Grid.Column width={8}>
               <Input
-                icon="search"
+                {...inputProps}
                 onFocus={e => this.onSearchFocus(e)}
                 style={{
                   width: isMobile ? 150 : null
@@ -49,7 +82,8 @@ class PricesFilters extends React.Component {
                 defaultValue={this.props.query}
                 inverted
                 placeholder="Find symbol"
-                onChange={e => this.props.filterSymbols(e.target.value)}
+                onChange={this.onChange}
+                value={this.state.value}
               />
             </Grid.Column>
             <Grid.Column
