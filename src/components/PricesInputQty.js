@@ -32,7 +32,7 @@ class PricesInputQty extends React.PureComponent {
           if (ref) ref.focus()
         }}
         min={0}
-        // onFocus={e => e.target.select()}
+        onFocus={e => e.target.select()}
         onKeyUp={e => this.validateValue(e)}
         onChange={e => this.changeValue(e)}
         defaultValue={this.props.balance}
