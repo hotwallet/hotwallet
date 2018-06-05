@@ -28,19 +28,20 @@ class PricesInputQty extends React.PureComponent {
     const color = (this.props.isRowHover) ? lightBlue : borderColor
     return (
       <input
+        ref={ref => {
+          if (ref) ref.focus()
+        }}
         min={0}
-        onFocus={e => e.target.select()}
+        // onFocus={e => e.target.select()}
         onKeyUp={e => this.validateValue(e)}
         onChange={e => this.changeValue(e)}
-        onMouseOver={e => this.props.setInputQtyHoverState(true)}
-        onMouseOut={e => this.props.setInputQtyHoverState(false)}
         defaultValue={this.props.balance}
         type="number"
         style={{
-          width: isMobile ? 80 : 100,
+          width: isMobile ? 90 : 110,
           backgroundColor: 'none',
           padding: isMobile ? '0.25em 0.5em 0.25em 1em' : '0.5em 0.5em 0.5em 1em',
-          border: `1px solid ${color}`,
+          border: `2px solid ${color}`,
           textAlign: 'center',
           outline: 'none'
         }}
@@ -50,8 +51,6 @@ class PricesInputQty extends React.PureComponent {
 }
 
 PricesInputQty.propTypes = {
-  isRowHover: PropTypes.bool,
-  setInputQtyHoverState: PropTypes.func.isRequired,
   addManualTransaction: PropTypes.func.isRequired,
   balance: PropTypes.number,
   symbol: PropTypes.string.isRequired,

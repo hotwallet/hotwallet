@@ -1,7 +1,7 @@
 import React from 'react'
 import { Table, Image } from 'semantic-ui-react'
 import { formatFiat, shortenLargeNumber } from '../lib/formatNumber'
-import PricesInputQty from './PricesInputQty'
+import { borderColor, lightBlue } from '../lib/styles'
 import SecurityModal from './SecurityModal'
 import PropTypes from 'prop-types'
 
@@ -69,6 +69,7 @@ class PricesRow extends React.PureComponent {
     const supply = security.marketCap / security.price
     const balance = security.balance
     const fiatValue = formatFiat(balance * security.price, baseCurrency)
+    const balanceBorderColor = (this.state.hover) ? lightBlue : borderColor
     const getSecurityIcon = label => (
       <div>
         <Image src={this.getIcon(security.symbol)}
@@ -94,6 +95,8 @@ class PricesRow extends React.PureComponent {
           isModalOpen={this.state.isModalOpen}
           header={getSecurityIcon(security.name)}
           onClose={() => this.setState({ isModalOpen: false })}
+          balance={balance}
+          addManualTransaction={this.props.addManualTransaction}
         />
 
         <Table.Cell>{getSecurityIcon(security.symbol)}</Table.Cell>
@@ -101,13 +104,12 @@ class PricesRow extends React.PureComponent {
         {isMobile ? null : <Table.Cell textAlign="right" style={delta24h.style}>{delta24h.value}</Table.Cell>}
         {isMobile ? null : <Table.Cell textAlign="right" style={delta7d.style}>{delta7d.value}</Table.Cell>}
         <Table.Cell textAlign="center">
-          <PricesInputQty
-            isRowHover={this.state.hover}
-            symbol={security.symbol}
-            balance={balance}
-            setInputQtyHoverState={val => this.setState({ inputQtyHover: val })}
-            addManualTransaction={this.props.addManualTransaction}
-          />
+          <div style={{
+            width: isMobile ? 80 : 100,
+            padding: isMobile ? '0.25em 1em' : '0.5em 1em',
+            border: `2px solid ${balanceBorderColor}`,
+            textAlign: 'center'
+          }}>{balance || '\u00A0'}</div>
         </Table.Cell>
         <Table.Cell textAlign="center">{balance ? fiatValue : '-'}</Table.Cell>
         {isMobile ? null : <Table.Cell textAlign="right">{shortenLargeNumber(supply)}</Table.Cell>}

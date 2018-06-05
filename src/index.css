@@ -19,7 +19,8 @@ button {
 }
 
 input::selection {
-  background: #46b8e7;
+  background: #1678c2;
+  color: #fff;
 }
 
 .ui.toggle.checkbox input:focus:checked~.box:before,
