@@ -79,10 +79,11 @@ class SecurityModal extends React.Component {
               </Table.Row>
             </Table.Body>
           </Table>
+          <Button color="blue" fluid style={buttonStyle} onClick={onClose}>Done</Button>
           <Divider horizontal section style={dividerStyle}>Import balances</Divider>
-          <Button basic inverted color="blue" fluid style={buttonStyle}>Import from Binance</Button>
-          <Button basic inverted color="blue" fluid style={buttonStyle}>Import Bitcoin address</Button>
-          <Button basic inverted color="blue" fluid style={buttonStyle}>Import Bitcoin xpub</Button>
+          <Button color="black" fluid style={buttonStyle}>Import from Binance</Button>
+          <Button color="black" fluid style={buttonStyle}>Import Bitcoin address</Button>
+          <Button color="black" fluid style={buttonStyle}>Import Bitcoin xpub</Button>
         </Modal.Content>
       </Modal>
     )
