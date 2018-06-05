@@ -43,7 +43,7 @@ class SecurityModal extends React.Component {
         <Modal.Header style={{ color: '#fff' }}>{header}</Modal.Header>
         <Modal.Content>
           <Divider horizontal fitted style={dividerStyle}>Manual Entry</Divider>
-          <Table basic='very' celled collapsing>
+          <Table basic="very" celled collapsing>
             <Table.Body>
               <Table.Row style={rowStyle}>
                 <Table.Cell>
