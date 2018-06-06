@@ -3,8 +3,51 @@ import { connect } from 'react-redux'
 import { Modal, Button, Table, Input, Divider } from 'semantic-ui-react'
 import { lightBg, borderColor } from '../lib/styles'
 import PricesInputQty from './PricesInputQty'
+import { binanceSymbols, supportedWallets } from '../config'
+
+const buttonStyle = {
+  marginBottom: 10
+}
+const rowStyle = {
+  color: '#fff',
+  textAlign: 'center'
+}
+const dividerStyle = {
+  color: '#999'
+}
+const labelStyle = {
+  marginBottom: 5,
+  display: 'inline-block'
+}
 
 class SecurityModal extends React.Component {
+  getImportButtons() {
+    return [
+      this.getImportWalletButton(),
+      this.getImportBinanceButton()
+    ].filter(Boolean)
+  }
+
+  getImportBinanceButton() {
+    const { security } = this.props
+    if (!binanceSymbols.includes(security.symbol)) return
+    return (
+      <Button key="import-binance" color="black" fluid style={buttonStyle}>Import from Binance</Button>
+    )
+  }
+
+  getImportWalletButton() {
+    const { security } = this.props
+    const wallet = Object.keys(supportedWallets).find(w => {
+      const symbols = supportedWallets[w]
+      return symbols.find(s => s === security.symbol)
+    })
+    if (!wallet) return
+    return (
+      <Button key="import-wallet" color="black" fluid style={buttonStyle}>Import {wallet} wallet</Button>
+    )
+  }
+
   render() {
     const {
       isModalOpen,
@@ -16,20 +59,8 @@ class SecurityModal extends React.Component {
       addManualTransaction
     } = this.props
 
-    const buttonStyle = {
-      marginBottom: 10
-    }
-    const rowStyle = {
-      color: '#fff',
-      textAlign: 'center'
-    }
-    const dividerStyle = {
-      color: '#999'
-    }
-    const labelStyle = {
-      marginBottom: 5,
-      display: 'inline-block'
-    }
+    const importButtons = this.getImportButtons()
+
     return (
       <Modal
         closeIcon
@@ -80,10 +111,14 @@ class SecurityModal extends React.Component {
             </Table.Body>
           </Table>
           <Button color="blue" fluid style={buttonStyle} onClick={onClose}>Done</Button>
-          <Divider horizontal section style={dividerStyle}>Import balances</Divider>
-          <Button color="black" fluid style={buttonStyle}>Import from Binance</Button>
-          <Button color="black" fluid style={buttonStyle}>Import Bitcoin address</Button>
-          <Button color="black" fluid style={buttonStyle}>Import Bitcoin xpub</Button>
+
+          {importButtons.length ? (
+            <div>
+              <Divider horizontal section style={dividerStyle}>Import balances</Divider>
+              {importButtons}
+            </div>
+          ) : ''}
+
         </Modal.Content>
       </Modal>
     )

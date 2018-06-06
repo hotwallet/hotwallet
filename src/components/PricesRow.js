@@ -28,6 +28,10 @@ class PricesRow extends React.PureComponent {
     return `https://chnnl.s3.amazonaws.com/tarragon/icons/${size}/${symbol}.png`
   }
 
+  getCMCHref() {
+    return `https://coinmarketcap.com/currencies/${this.props.security.slug}/`
+  }
+
   formatPrice(num) {
     return formatFiat(num, this.props.baseCurrency)
   }
@@ -49,11 +53,6 @@ class PricesRow extends React.PureComponent {
       style: {},
       value: '-'
     }
-  }
-
-  onRowClick() {
-    if (this.state.inputQtyHover) return
-    this.setState({ isModalOpen: true })
   }
 
   render() {
@@ -85,10 +84,8 @@ class PricesRow extends React.PureComponent {
 
     return (
       <Table.Row
-        onClick={() => this.onRowClick()}
         onMouseOver={() => this.mouseOver()}
         onMouseOut={() => this.mouseOut()}
-        style={{ cursor: 'pointer' }}
       >
         <SecurityModal
           security={security}
@@ -99,17 +96,23 @@ class PricesRow extends React.PureComponent {
           addManualTransaction={this.props.addManualTransaction}
         />
 
-        <Table.Cell>{getSecurityIcon(security.symbol)}</Table.Cell>
+        <Table.Cell>
+          <a style={{ color: '#fff' }} href={this.getCMCHref()}>{getSecurityIcon(security.symbol)}</a>
+        </Table.Cell>
         <Table.Cell textAlign="right">{this.formatPrice(security.price)}</Table.Cell>
         {isMobile ? null : <Table.Cell textAlign="right" style={delta24h.style}>{delta24h.value}</Table.Cell>}
         {isMobile ? null : <Table.Cell textAlign="right" style={delta7d.style}>{delta7d.value}</Table.Cell>}
         <Table.Cell textAlign="center">
-          <div style={{
-            width: isMobile ? 80 : 100,
-            padding: isMobile ? '0.25em 1em' : '0.5em 1em',
-            border: `2px solid ${balanceBorderColor}`,
-            textAlign: 'center'
-          }}>{balance || '\u00A0'}</div>
+          <div
+            onClick={() => this.setState({ isModalOpen: true })}
+            style={{
+              cursor: 'pointer',
+              width: isMobile ? 80 : 100,
+              padding: isMobile ? '0.25em 1em' : '0.5em 1em',
+              border: `2px solid ${balanceBorderColor}`,
+              textAlign: 'center',
+              margin: '0 auto'
+            }}>{(balance >= 0) ? balance : '\u00A0'}</div>
         </Table.Cell>
         <Table.Cell textAlign="center">{balance ? fiatValue : '-'}</Table.Cell>
         {isMobile ? null : <Table.Cell textAlign="right">{shortenLargeNumber(supply)}</Table.Cell>}

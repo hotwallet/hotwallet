@@ -45,6 +45,11 @@ input::selection {
 .ui.modal > .content {
   background: none;
 }
+
+/* semantic ui modal alignment bug fix */
 .ui.page.modals.transition.visible {
   display: flex !important;
+}
+.ui.modal {
+  margin-top: 0 !important;
 }
