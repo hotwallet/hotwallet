@@ -68,7 +68,7 @@ class SecurityModal extends React.Component {
 
     const importButtons = this.getImportButtons()
     const { symbol } = security
-    const balances = transactionsBySymbol[symbol].reduce((b, val) => {
+    const balances = (transactionsBySymbol[symbol] || []).reduce((b, val) => {
       b[val.walletId] = val.balance
       return b
     }, {})
