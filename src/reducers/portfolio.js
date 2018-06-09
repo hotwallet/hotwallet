@@ -6,7 +6,8 @@ import {
 import { dateRanges } from '../components/DateRangeSelector'
 
 const initialState = {
-  range: dateRanges.find(dateRange => !!dateRange.isDefault)
+  range: dateRanges.find(dateRange => !!dateRange.isDefault),
+  priceHistoryData: []
 }
 
 export default (state = initialState, action) => {
