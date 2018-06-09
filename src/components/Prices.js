@@ -3,15 +3,29 @@ import { table, desktopPadding, mobilePadding } from '../lib/styles'
 import { Dimmer, Loader, Table } from 'semantic-ui-react'
 import PricesRow from './PricesRow'
 import PropTypes from 'prop-types'
+import BinanceSetupModal from './BinanceSetupModal'
 
 class Prices extends React.PureComponent {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isBinanceSetupModalOpen: false
+    }
+  }
+
+  openBinanceSetupModal(val) {
+    this.setState({ isBinanceSetupModalOpen: val })
+  }
+
   getRows(securities) {
     return securities.map(security => (
       <PricesRow key={security.symbol}
         security={security}
         addManualTransaction={this.props.addManualTransaction}
         baseCurrency={this.props.baseCurrency}
-        isMobile={this.props.isMobile} />
+        isMobile={this.props.isMobile}
+        openBinanceSetupModal={val => this.openBinanceSetupModal(val)}
+      />
     ))
   }
 
@@ -53,6 +67,11 @@ class Prices extends React.PureComponent {
             {this.getRows(this.props.securities)}
           </Table.Body>
         </Table>
+        {/* Plugins */}
+        <BinanceSetupModal
+          isModalOpen={this.state.isBinanceSetupModalOpen}
+          openBinanceSetupModal={val => this.openBinanceSetupModal(val)}
+        />
       </div>
     )
   }

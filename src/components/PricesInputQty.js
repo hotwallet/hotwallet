@@ -1,7 +1,7 @@
 import React from 'react'
-import { borderColor, lightBlue } from '../lib/styles'
 import isNumeric from '../lib/isNumeric'
 import PropTypes from 'prop-types'
+import { Input } from 'semantic-ui-react'
 
 class PricesInputQty extends React.PureComponent {
   changeValue(e) {
@@ -24,37 +24,30 @@ class PricesInputQty extends React.PureComponent {
   }
 
   render() {
-    const isMobile = this.props.isMobile
-    const color = (this.props.isRowHover) ? lightBlue : borderColor
     return (
-      <input
-        ref={ref => {
-          if (ref) ref.focus()
-        }}
+      <Input
+        fluid
+        inverted
+        disabled={this.props.disabled}
         min={0}
         onFocus={e => e.target.select()}
         onKeyUp={e => this.validateValue(e)}
         onChange={e => this.changeValue(e)}
         defaultValue={this.props.balance}
         type="number"
-        style={{
-          width: isMobile ? 90 : 110,
-          backgroundColor: 'none',
-          padding: isMobile ? '0.25em 0.5em 0.25em 1em' : '0.5em 0.5em 0.5em 1em',
-          border: `2px solid ${color}`,
-          textAlign: 'center',
-          outline: 'none'
-        }}
+        label={{ basic: true, content: this.props.symbol }}
+        labelPosition="right"
       />
     )
   }
 }
 
 PricesInputQty.propTypes = {
-  addManualTransaction: PropTypes.func.isRequired,
+  addManualTransaction: PropTypes.func,
   balance: PropTypes.number,
   symbol: PropTypes.string.isRequired,
-  isMobile: PropTypes.bool
+  isMobile: PropTypes.bool,
+  disabled: PropTypes.bool
 }
 
 export default PricesInputQty

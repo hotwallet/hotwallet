@@ -14,7 +14,19 @@ export const addManualTransaction = tx => (dispatch, getState) => {
     balance: Number(tx.balance),
     walletId
   }
+  addTransactions([newTx])(dispatch, getState)
+}
 
+export const addBinanceTransaction = tx => (dispatch, getState) => {
+  const walletId = 'Binance'
+  const txTime = new Date().toISOString()
+  const newTx = {
+    id: v4(),
+    txTime,
+    ...tx,
+    balance: Number(tx.balance),
+    walletId
+  }
   addTransactions([newTx])(dispatch, getState)
 }
 
@@ -23,7 +35,6 @@ export const addTransactions = txs => (dispatch, getState) => {
     type: ADD_TRANSACTIONS,
     txs
   })
-
   getPriceHistoryData()(dispatch, getState)
 }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Modal, Button, Table, Input, Divider } from 'semantic-ui-react'
-import { lightBg, borderColor } from '../lib/styles'
+import { Modal, Button, Table, Divider } from 'semantic-ui-react'
+import { lightBg } from '../lib/styles'
 import PricesInputQty from './PricesInputQty'
 import { binanceSymbols, supportedWallets } from '../config'
 
@@ -15,10 +15,6 @@ const rowStyle = {
 const dividerStyle = {
   color: '#999'
 }
-const labelStyle = {
-  marginBottom: 5,
-  display: 'inline-block'
-}
 
 class SecurityModal extends React.Component {
   getImportButtons() {
@@ -29,10 +25,22 @@ class SecurityModal extends React.Component {
   }
 
   getImportBinanceButton() {
-    const { security } = this.props
+    const { security, onClose, openBinanceSetupModal } = this.props
+    if (this.props.binanceApiKey) return
     if (!binanceSymbols.includes(security.symbol)) return
     return (
-      <Button key="import-binance" color="black" fluid style={buttonStyle}>Import from Binance</Button>
+      <Button
+        key="import-binance"
+        color="black"
+        fluid
+        style={buttonStyle}
+        onClick={() => {
+          onClose()
+          openBinanceSetupModal(true)
+        }}
+      >
+        Import from Binance
+      </Button>
     )
   }
 
@@ -54,12 +62,17 @@ class SecurityModal extends React.Component {
       header,
       onClose,
       security,
-      balance,
-      isMobile,
+      transactionsBySymbol,
       addManualTransaction
     } = this.props
 
     const importButtons = this.getImportButtons()
+    const { symbol } = security
+    const balances = transactionsBySymbol[symbol].reduce((b, val) => {
+      b[val.walletId] = val.balance
+      return b
+    }, {})
+    const importedWalletIds = Object.keys(balances).filter(k => k !== 'manual')
 
     return (
       <Modal
@@ -73,41 +86,34 @@ class SecurityModal extends React.Component {
       >
         <Modal.Header style={{ color: '#fff' }}>{header}</Modal.Header>
         <Modal.Content>
-          <Divider horizontal fitted style={dividerStyle}>Manual Entry</Divider>
-          <Table basic="very" celled collapsing>
+          <Table basic="very" celled>
             <Table.Body>
-              <Table.Row style={rowStyle}>
+              <Table.Row style={rowStyle} key="manual">
+                <Table.Cell textAlign="left">
+                  Manual Entry
+                </Table.Cell>
                 <Table.Cell>
-                  <label style={labelStyle}>
-                    Balance
-                  </label>
                   <PricesInputQty
-                    symbol={security.symbol}
-                    balance={balance}
+                    symbol={symbol}
+                    balance={balances.manual}
                     addManualTransaction={addManualTransaction}
                   />
                 </Table.Cell>
-                <Table.Cell>
-                  <label style={labelStyle}>
-                    As of date
-                  </label>
-                  <Input
-                    disabled
-                    transparent
-                    focus
-                    inverted
-                    color="#fff"
-                    type="date"
-                    style={{
-                      backgroundColor: 'none',
-                      padding: isMobile ? '0.25em 0.5em 0.25em 1em' : '0.5em 0.5em 0.5em 1em',
-                      border: `2px solid ${borderColor}`,
-                      textAlign: 'center',
-                      outline: 'none'
-                    }}
-                  />
-                </Table.Cell>
               </Table.Row>
+              {importedWalletIds.map(walletId => (
+                <Table.Row style={rowStyle} key={walletId}>
+                  <Table.Cell textAlign="left">
+                    {walletId}
+                  </Table.Cell>
+                  <Table.Cell>
+                    <PricesInputQty
+                      symbol={symbol}
+                      disabled
+                      balance={balances[walletId]}
+                    />
+                  </Table.Cell>
+                </Table.Row>
+              ))}
             </Table.Body>
           </Table>
           <Button color="blue" fluid style={buttonStyle} onClick={onClose}>Done</Button>
@@ -126,7 +132,9 @@ class SecurityModal extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.app.isMobile
+  isMobile: state.app.isMobile,
+  binanceApiKey: state.binance.apiKey,
+  transactionsBySymbol: state.transactions.bySymbol
 })
 
 export default connect(mapStateToProps)(SecurityModal)
