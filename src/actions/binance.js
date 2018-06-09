@@ -1,5 +1,5 @@
 // TODO: use a more lightweight library
-import Binance from 'binance'
+import BinanceClient from '../lib/BinanceClient'
 import { addBinanceTransaction } from './transactions'
 
 export const SET_BINANCE_API_KEYS = 'SET_BINANCE_API_KEYS'
@@ -12,13 +12,8 @@ export const setBinanceApiKeys = (keys) => ({ type: SET_BINANCE_API_KEYS, keys }
 export const fetchBinanceBalances = () => (dispatch, getState) => {
   const { apiKey, secretKey } = getState().binance
   if (!apiKey || !secretKey) return
-  const binance = new Binance.BinanceRest({
-    key: apiKey,
-    secret: secretKey,
-    recvWindow: 10000
-  })
-  binance._baseUrl = 'https://cors-anywhere.herokuapp.com/https://api.binance.com/'
-  binance.account()
+  const binance = new BinanceClient(apiKey, secretKey)
+  binance.getAccount()
     .then(data => {
       dispatch({
         type: SET_BINANCE_SYNC_TIME
