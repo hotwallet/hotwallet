@@ -33,7 +33,7 @@ class PortfolioHeader extends React.Component {
     const today = data[0][1]
     const target = data[days] && data[days][1]
     if (!target) return 0
-    const change = target - today
+    const change = today - target
     return Math.round(change / this.getTotalValue() * 1000) / 10
   }
 
