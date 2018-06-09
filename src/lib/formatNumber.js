@@ -49,3 +49,22 @@ export function shortenLargeNumber(num, baseCurrency) {
   }
   return `${symbol}${num}`
 }
+
+export function formatPercentChange(num) {
+  if (Number(num) > 0) {
+    return {
+      style: { color: 'lightgreen' },
+      value: `+${num}%`
+    }
+  }
+  if (Number(num) < 0) {
+    return {
+      style: { color: 'red' },
+      value: `${num}%`
+    }
+  }
+  return {
+    style: {},
+    value: '-'
+  }
+}

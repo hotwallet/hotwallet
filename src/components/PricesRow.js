@@ -1,6 +1,11 @@
 import React from 'react'
 import { Table, Image } from 'semantic-ui-react'
-import { formatFiat, shortenLargeNumber, roundToSignificantFigures } from '../lib/formatNumber'
+import {
+  formatFiat,
+  shortenLargeNumber,
+  roundToSignificantFigures,
+  formatPercentChange
+} from '../lib/formatNumber'
 import { borderColor, lightBlue } from '../lib/styles'
 import SecurityModal from './SecurityModal'
 import PropTypes from 'prop-types'
@@ -36,25 +41,6 @@ class PricesRow extends React.PureComponent {
     return formatFiat(num, this.props.baseCurrency)
   }
 
-  formatPercentChange(num) {
-    if (Number(num) > 0) {
-      return {
-        style: { color: 'lightgreen' },
-        value: `+${num}%`
-      }
-    }
-    if (Number(num) < 0) {
-      return {
-        style: { color: 'red' },
-        value: `${num}%`
-      }
-    }
-    return {
-      style: {},
-      value: '-'
-    }
-  }
-
   render() {
     const isMobile = this.props.isMobile
     const symbolStyle = {
@@ -63,8 +49,8 @@ class PricesRow extends React.PureComponent {
     }
     const security = this.props.security
     const baseCurrency = this.props.baseCurrency
-    const delta24h = this.formatPercentChange(security.percentChange24h)
-    const delta7d = this.formatPercentChange(security.percentChange7d)
+    const delta24h = formatPercentChange(security.percentChange24h)
+    const delta7d = formatPercentChange(security.percentChange7d)
     const supply = security.marketCap / security.price
     const balance = security.balance
     const fiatValue = formatFiat(balance * security.price, baseCurrency)
