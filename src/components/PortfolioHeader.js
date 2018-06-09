@@ -29,7 +29,9 @@ class PortfolioHeader extends React.Component {
   }
 
   getChange({ days }) {
-    const data = this.props.priceHistoryData.slice(0).reverse()
+    const priceHistoryData = this.props.priceHistoryData
+    if (!Array.isArray(priceHistoryData)) return 0
+    const data = priceHistoryData.slice(0).reverse()
     const today = data[0] && data[0][1]
     if (!today) return 0
     const target = data[days] && data[days][1]
