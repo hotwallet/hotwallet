@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "binance": "^1.3.3",
     "highcharts": "^6.0.7",
     "idiot": "^2.0.1",
     "moment": "^2.21.0",

@@ -11,6 +11,8 @@ import { sidebarWidth, border } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
 import withTracker from './withTracker'
 
+const fiveMinutes = 1000 * 60 * 5
+
 class App extends React.Component {
   componentDidMount() {
     this.onResize()
@@ -21,6 +23,9 @@ class App extends React.Component {
         this.onResize()
       }, 100)
     })
+    if (this.props.lastBinanceSync + fiveMinutes < Date.now()) {
+      this.props.fetchBinanceBalances()
+    }
   }
 
   onResize() {
@@ -70,7 +75,8 @@ const routeStyle = {
 
 const mapStateToProps = state => ({
   uri: state.router.location.pathname,
-  isMobile: state.app.isMobile
+  isMobile: state.app.isMobile,
+  lastBinanceSync: state.binance.lastSync
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

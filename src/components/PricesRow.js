@@ -1,6 +1,6 @@
 import React from 'react'
 import { Table, Image } from 'semantic-ui-react'
-import { formatFiat, shortenLargeNumber } from '../lib/formatNumber'
+import { formatFiat, shortenLargeNumber, roundToSignificantFigures } from '../lib/formatNumber'
 import { borderColor, lightBlue } from '../lib/styles'
 import SecurityModal from './SecurityModal'
 import PropTypes from 'prop-types'
@@ -94,6 +94,7 @@ class PricesRow extends React.PureComponent {
           onClose={() => this.setState({ isModalOpen: false })}
           balance={balance}
           addManualTransaction={this.props.addManualTransaction}
+          openBinanceSetupModal={this.props.openBinanceSetupModal}
         />
 
         <Table.Cell>
@@ -112,7 +113,7 @@ class PricesRow extends React.PureComponent {
               border: `2px solid ${balanceBorderColor}`,
               textAlign: 'center',
               margin: '0 auto'
-            }}>{(balance >= 0) ? balance : '\u00A0'}</div>
+            }}>{(balance >= 0) ? roundToSignificantFigures(balance) : '\u00A0'}</div>
         </Table.Cell>
         <Table.Cell textAlign="center">{balance ? fiatValue : '-'}</Table.Cell>
         {isMobile ? null : <Table.Cell textAlign="right">{shortenLargeNumber(supply)}</Table.Cell>}
@@ -124,6 +125,7 @@ class PricesRow extends React.PureComponent {
 
 PricesRow.propTypes = {
   addManualTransaction: PropTypes.func.isRequired,
+  openBinanceSetupModal: PropTypes.func.isRequired,
   isMobile: PropTypes.bool,
   baseCurrency: PropTypes.string.isRequired,
   security: PropTypes.object.isRequired

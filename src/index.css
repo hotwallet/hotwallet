@@ -40,6 +40,10 @@ input::selection {
 .ui.inverted.icon.input > i.icon {
   color: #fff;
 }
+.ui.inverted.labeled.input > .ui.basic.label {
+  background-color: rgba(0,0,0,.35);
+  color: #ccc;
+}
 
 .ui.modal > .header,
 .ui.modal > .content {
