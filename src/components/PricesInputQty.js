@@ -4,13 +4,10 @@ import PropTypes from 'prop-types'
 import { Input } from 'semantic-ui-react'
 
 class PricesInputQty extends React.PureComponent {
-  changeValue(e) {
-    const value = e.target.value
-    if (this.validateValue(e)) {
-      this.props.addManualTransaction({
-        symbol: this.props.symbol,
-        balance: value
-      })
+  constructor(props) {
+    super(props)
+    this.state = {
+      hasFocused: false
     }
   }
 
@@ -24,15 +21,25 @@ class PricesInputQty extends React.PureComponent {
   }
 
   render() {
+    const isMobile = this.props.isMobile
     return (
       <Input
         fluid
         inverted
+        ref={ref => {
+          if (ref && !isMobile && !this.state.hasFocused) {
+            ref.focus()
+            this.setState({ hasFocused: true })
+          }
+        }}
         disabled={this.props.disabled}
         min={0}
         onFocus={e => e.target.select()}
         onKeyUp={e => this.validateValue(e)}
-        onChange={e => this.changeValue(e)}
+        onChange={e => {
+          this.validateValue(e)
+          this.props.setBalance(e.target.value)
+        }}
         defaultValue={this.props.balance}
         type="number"
         label={{ basic: true, content: this.props.symbol }}
@@ -43,7 +50,7 @@ class PricesInputQty extends React.PureComponent {
 }
 
 PricesInputQty.propTypes = {
-  addManualTransaction: PropTypes.func,
+  setBalance: PropTypes.func,
   balance: PropTypes.number,
   symbol: PropTypes.string.isRequired,
   isMobile: PropTypes.bool,

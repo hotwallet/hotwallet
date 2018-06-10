@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Modal, Button, Table, Divider } from 'semantic-ui-react'
+import moment from 'moment'
+import { Modal, Button, Table, Divider, Input } from 'semantic-ui-react'
 import { lightBg } from '../lib/styles'
 import PricesInputQty from './PricesInputQty'
 import { binanceSymbols, supportedWallets } from '../config'
@@ -17,6 +18,13 @@ const dividerStyle = {
 }
 
 class SecurityModal extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      manualTxTime: ''
+    }
+  }
+
   getImportButtons() {
     return [
       this.getImportWalletButton(),
@@ -56,6 +64,14 @@ class SecurityModal extends React.Component {
     )
   }
 
+  save() {
+    this.props.addManualTransaction({
+      symbol: this.props.security.symbol,
+      balance: this.state.manualBalance,
+      txTime: this.state.manualTxTime
+    })
+  }
+
   render() {
     const {
       isModalOpen,
@@ -85,18 +101,29 @@ class SecurityModal extends React.Component {
         }}
       >
         <Modal.Header style={{ color: '#fff' }}>{header}</Modal.Header>
-        <Modal.Content>
+        <Modal.Content style={{ paddingTop: 0 }}>
           <Table basic="very" celled>
             <Table.Body>
               <Table.Row style={rowStyle} key="manual">
-                <Table.Cell textAlign="left">
+                <Table.Cell textAlign="left" verticalAlign="top" style={{ paddingTop: 20 }}>
                   Manual Entry
                 </Table.Cell>
-                <Table.Cell>
+                <Table.Cell width="ten">
                   <PricesInputQty
+                    setBalance={manualBalance => this.setState({ manualBalance })}
+                    isMobile={this.props.isMobile}
                     symbol={symbol}
                     balance={balances.manual}
-                    addManualTransaction={addManualTransaction}
+                  />
+                  <Divider fitted horizontal style={{ margin: '5px 0', ...dividerStyle }}>as of</Divider>
+                  <Input
+                    fluid
+                    inverted
+                    onChange={e => {
+                      this.setState({ manualTxTime: new Date(e.target.value).toISOString() })
+                    }}
+                    type="date"
+                    defaultValue={moment().format('YYYY-MM-DD')}
                   />
                 </Table.Cell>
               </Table.Row>
@@ -116,7 +143,10 @@ class SecurityModal extends React.Component {
               ))}
             </Table.Body>
           </Table>
-          <Button color="blue" fluid style={buttonStyle} onClick={onClose}>Done</Button>
+          <Button color="blue" fluid style={buttonStyle} onClick={() => {
+            this.save()
+            onClose()
+          }}>Save</Button>
 
           {importButtons.length ? (
             <div>

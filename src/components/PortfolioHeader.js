@@ -34,10 +34,10 @@ class PortfolioHeader extends React.Component {
     const data = priceHistoryData.slice(0).reverse()
     const today = data[0] && data[0][1]
     if (!today) return 0
-    const target = data[days] && data[days][1]
-    if (!target) return 0
-    const change = today - target
-    return Math.round(change / this.getTotalValue() * 1000) / 10
+    const priorDay = data[days] && data[days][1]
+    if (!priorDay) return 0
+    const change = today - priorDay
+    return Math.round(change / priorDay * 1000) / 10
   }
 
   render() {

@@ -2,6 +2,10 @@ import { ADD_TRANSACTIONS, REMOVE_TRANSACTIONS } from '../actions/transactions'
 import { combineReducers } from 'redux'
 import * as helpers from './helpers'
 
+// TODO:
+// when adding a new manual transaction, remove all existing manual transactions
+// for the given symbol that have a txTime greater than the tx being added
+
 const allTransactions = (state = [], action) => {
   switch (action.type) {
     case ADD_TRANSACTIONS:
