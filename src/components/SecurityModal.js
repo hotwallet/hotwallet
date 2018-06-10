@@ -78,8 +78,7 @@ class SecurityModal extends React.Component {
       header,
       onClose,
       security,
-      transactionsBySymbol,
-      addManualTransaction
+      transactionsBySymbol
     } = this.props
 
     const importButtons = this.getImportButtons()
