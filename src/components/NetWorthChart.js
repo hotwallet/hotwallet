@@ -94,7 +94,7 @@ class NetWorthChart extends React.Component {
     }
     return (
       <div style={{ position: 'relative' }}>
-        {this.props.noTransactions ? (
+        {this.props.hasNoTransactions ? (
           <div style={{
             position: 'absolute',
             top: '47%',
@@ -122,7 +122,7 @@ const mapStateToProps = state => ({
   deviceType: state.app.deviceType,
   isTablet: state.app.isTablet,
   priceHistoryData: state.portfolio.priceHistoryData,
-  noTransactions: !Object.keys(state.transactions.byId).length,
+  hasNoTransactions: !Object.keys(state.transactions.byId).length,
   range: state.portfolio.range,
   baseCurrency: state.user.baseCurrency
 })
