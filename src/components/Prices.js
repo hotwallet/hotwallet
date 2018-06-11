@@ -11,6 +11,7 @@ class Prices extends React.PureComponent {
     this.state = {
       isBinanceSetupModalOpen: false
     }
+    this.openBinanceSetupModal = this.openBinanceSetupModal.bind(this)
   }
 
   openBinanceSetupModal(val) {
@@ -24,7 +25,7 @@ class Prices extends React.PureComponent {
         addManualTransaction={this.props.addManualTransaction}
         baseCurrency={this.props.baseCurrency}
         isMobile={this.props.isMobile}
-        openBinanceSetupModal={val => this.openBinanceSetupModal(val)}
+        openBinanceSetupModal={this.openBinanceSetupModal}
       />
     ))
   }
