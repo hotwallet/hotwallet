@@ -122,7 +122,7 @@ const mapStateToProps = state => ({
   deviceType: state.app.deviceType,
   isTablet: state.app.isTablet,
   priceHistoryData: state.portfolio.priceHistoryData,
-  transactions: state.transactions.allTransactions,
+  transactions: Object.keys(state.transactions.byId),
   range: state.portfolio.range,
   baseCurrency: state.user.baseCurrency
 })
