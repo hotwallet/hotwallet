@@ -1,6 +1,7 @@
 // TODO: use a more lightweight library
 import BinanceClient from '../lib/BinanceClient'
 import { addBinanceTransaction } from './transactions'
+import { getBalanceForSymbol } from '../selectors/transactionSelectors'
 
 export const SET_BINANCE_API_KEYS = 'SET_BINANCE_API_KEYS'
 export const SET_BINANCE_SYNC_TIME = 'SET_BINANCE_SYNC_TIME'
@@ -10,7 +11,8 @@ export const createApiKeyUrl = 'https://www.binance.com/userCenter/createApi.htm
 export const setBinanceApiKeys = (keys) => ({ type: SET_BINANCE_API_KEYS, keys })
 
 export const fetchBinanceBalances = () => (dispatch, getState) => {
-  const { apiKey, secretKey } = getState().binance
+  const state = getState()
+  const { apiKey, secretKey } = state.binance
   if (!apiKey || !secretKey) return
   const binance = new BinanceClient(apiKey, secretKey)
   binance.getAccount()
@@ -19,13 +21,14 @@ export const fetchBinanceBalances = () => (dispatch, getState) => {
         type: SET_BINANCE_SYNC_TIME
       })
       data.balances.forEach(row => {
-        const balance = Number(row.free) + Number(row.locked)
         const symbol = row.asset
-        // TODO: only add the binance transaction if the balance has changed
-        if (balance > 0) {
+        const newBalance = Number(row.free) + Number(row.locked)
+        const oldBalance = getBalanceForSymbol(state, symbol)
+        if (newBalance !== oldBalance) {
+          if (newBalance === 0 && oldBalance === undefined) return
           addBinanceTransaction({
             symbol,
-            balance
+            balance: newBalance
           })(dispatch, getState)
         }
       })

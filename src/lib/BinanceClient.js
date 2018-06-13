@@ -1,5 +1,6 @@
 import https from 'https'
 import crypto from 'crypto'
+import querystring from 'querystring'
 
 let _apiKey = Symbol('api key')
 let _privateKey = Symbol('private key')
@@ -69,33 +70,18 @@ export default class BinanceClient {
         options.headers['x-mbx-apikey'] = this[_apiKey]
       }
 
-      let qs = ''
-
-      let first = true
-      for (let prop in queries) {
-        if (queries.hasOwnProperty(prop)) {
-          if (first) {
-            qs += `?${prop}=${queries[prop]}`
-            first = false
-          } else {
-            qs += `&${prop}=${queries[prop]}`
-          }
-        }
-      }
-
       if (signed === 'SIGNED') {
         queries.timestamp = +Date.now()
-        queries.recvWindow = this.timeout
-
-        if (first) {
-          qs += `?signature=${hmacSHA256(qs.substr(1), this[_privateKey])}`
-          first = false
-        } else {
-          qs += `&signature=${hmacSHA256(qs.substr(1), this[_privateKey])}`
-        }
+        queries.recvWindow = 10000
       }
 
-      options.path += qs
+      let qs = querystring.stringify(queries)
+
+      if (signed === 'SIGNED') {
+        qs = `${qs}&signature=${hmacSHA256(qs, this[_privateKey])}`
+      }
+
+      options.path = `${options.path}?${qs}`
 
       https.request(options, (response) => {
         let data = ''
@@ -167,7 +153,7 @@ export default class BinanceClient {
    * @return {promise}
    */
   getAccount() {
-    const timestamp = new Date().getTime()
+    const timestamp = Date.now()
     return this._sendRequest('GET', 3, 'account', { timestamp }, 'SIGNED').then((res) => {
       return JSON.parse(res)
     })
