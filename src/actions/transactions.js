@@ -7,7 +7,7 @@ export const REMOVE_TRANSACTIONS = 'REMOVE_TRANSACTIONS'
 
 const removeTransactionsAfterNewTx = newTx => (dispatch, getState) => {
   const state = getState()
-  const txs = getTransactionsForSymbol(state, newTx.symbol)
+  const txs = getTransactionsForSymbol(state, newTx.symbol) || []
   const txIdsToRemove = txs.filter(tx => {
     return tx.txTime >= newTx.txTime && tx.walletId === newTx.walletId
   }).map(tx => tx.id)
