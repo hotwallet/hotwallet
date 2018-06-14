@@ -22,7 +22,6 @@ export const setDateRange = range => (dispatch, getState) => {
   refreshChart()(dispatch, getState)
 }
 
-
 export const refreshChart = () => (dispatch, getState) => {
   const state = getState()
   const baseCurrency = state.user.baseCurrency
