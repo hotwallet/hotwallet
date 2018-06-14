@@ -50,7 +50,6 @@ export const refreshChart = () => (dispatch, getState) => {
       }
     })
   }
-  console.log('chartDates:', chartDates)
   Promise.resolve()
     // get the missing price data
     .then(() => {
