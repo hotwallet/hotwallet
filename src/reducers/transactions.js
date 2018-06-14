@@ -6,18 +6,6 @@ import * as helpers from './helpers'
 // when adding a new manual transaction, remove all existing manual transactions
 // for the given symbol that have a txTime greater than the tx being added
 
-const allTransactions = (state = [], action) => {
-  switch (action.type) {
-    case ADD_TRANSACTIONS:
-      return helpers.addToIdList(state, action.txs, 'id')
-    case REMOVE_TRANSACTIONS: {
-      return helpers.removeFromIdList(state, action.txIds)
-    }
-    default:
-      return state
-  }
-}
-
 const byId = (state = {}, action) => {
   switch (action.type) {
     case ADD_TRANSACTIONS:
@@ -51,4 +39,4 @@ const byWalletId = (state = {}, action) => {
   }
 }
 
-export default combineReducers({allTransactions, byId, bySymbol, byWalletId})
+export default combineReducers({byId, bySymbol, byWalletId})
