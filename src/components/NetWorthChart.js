@@ -17,12 +17,15 @@ const lineWidth = 1.5
 
 class NetWorthChart extends React.Component {
   componentDidMount() {
-    this.props.getPriceHistoryData()
+    if (!this.props.chartData.length) {
+      this.props.refreshChart()
+    }
   }
+
   render() {
     const isMobile = this.props.isMobile
     const isTablet = this.props.isTablet
-    const data = this.props.priceHistoryData
+    const data = this.props.chartData
     const chartConfig = {
       chart: {
         // zoomType: 'x',
@@ -54,7 +57,7 @@ class NetWorthChart extends React.Component {
         gridLineWidth,
         gridLineColor,
         min: 0,
-        minRange: 1000
+        minRange: 100
       },
       legend: {
         enabled: false
@@ -107,7 +110,6 @@ class NetWorthChart extends React.Component {
             padding: '0 100px'
           }}>Enter balances below to track your portfolio</div>) : null}
         <DateRangeSelector
-          range={this.props.range}
           baseCurrency={this.props.baseCurrency}
           deviceType={this.props.deviceType}
           setDateRange={this.props.setDateRange} />
@@ -121,9 +123,8 @@ const mapStateToProps = state => ({
   isMobile: state.app.isMobile,
   deviceType: state.app.deviceType,
   isTablet: state.app.isTablet,
-  priceHistoryData: state.portfolio.priceHistoryData,
+  chartData: state.portfolio.chartData,
   transactions: state.transactions.allTransactions,
-  range: state.portfolio.range,
   baseCurrency: state.user.baseCurrency
 })
 
