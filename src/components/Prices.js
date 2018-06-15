@@ -54,7 +54,7 @@ class Prices extends React.PureComponent {
         <Table inverted unstackable selectable style={table}>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>Currency</Table.HeaderCell>
+              <Table.HeaderCell>Symbol</Table.HeaderCell>
               <Table.HeaderCell textAlign="right">Price</Table.HeaderCell>
               {isMobile ? null : <Table.HeaderCell textAlign="right">24h</Table.HeaderCell>}
               {isMobile ? null : <Table.HeaderCell textAlign="right">7d</Table.HeaderCell>}

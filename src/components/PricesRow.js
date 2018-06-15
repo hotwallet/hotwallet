@@ -45,13 +45,15 @@ class PricesRow extends React.PureComponent {
     const isMobile = this.props.isMobile
     const symbolStyle = {
       fontSize: isMobile ? null : 18,
-      verticalAlign: 'middle'
+      verticalAlign: 'middle',
+      display: isMobile ? 'block' : 'inline'
     }
     const security = this.props.security
     const baseCurrency = this.props.baseCurrency
     const delta24h = formatPercentChange(security.percentChange24h)
     const delta7d = formatPercentChange(security.percentChange7d)
     const supply = security.marketCap / security.price
+    const marketCap = shortenLargeNumber(security.marketCap, this.props.baseCurrency)
     const balance = security.balance
     const fiatValue = formatFiat(balance * security.price, baseCurrency)
     const balanceBorderColor = (this.state.hover) ? lightBlue : borderColor
@@ -60,7 +62,7 @@ class PricesRow extends React.PureComponent {
         <Image src={this.getIcon(security.symbol)}
           inline
           verticalAlign="middle"
-          style={{marginRight: 12}}
+          style={isMobile ? { marginLeft: 6 } : { marginRight: 12 }}
         />
         <span style={symbolStyle}>
           {label}
@@ -86,7 +88,16 @@ class PricesRow extends React.PureComponent {
         <Table.Cell>
           <a style={{ color: '#fff' }} href={this.getCMCHref()}>{getSecurityIcon(security.symbol)}</a>
         </Table.Cell>
-        <Table.Cell textAlign="right">{this.formatPrice(security.price)}</Table.Cell>
+        <Table.Cell textAlign="right">
+          <div>{this.formatPrice(security.price)}</div>
+          {isMobile ?
+            <div style={{
+                   ...delta7d.style,
+                   fontSize: 10,
+                   textAlign: 'right'
+                 }}
+            >{delta7d.value}</div> : null}
+        </Table.Cell>
         {isMobile ? null : <Table.Cell textAlign="right" style={delta24h.style}>{delta24h.value}</Table.Cell>}
         {isMobile ? null : <Table.Cell textAlign="right" style={delta7d.style}>{delta7d.value}</Table.Cell>}
         <Table.Cell textAlign="center">
@@ -95,15 +106,24 @@ class PricesRow extends React.PureComponent {
             style={{
               cursor: 'pointer',
               width: isMobile ? 80 : 100,
-              padding: isMobile ? '0.25em 1em' : '0.5em 1em',
+              padding: '0.5em 1em',
               border: `2px solid ${balanceBorderColor}`,
               textAlign: 'center',
               margin: '0 auto'
             }}>{(balance >= 0) ? roundToSignificantFigures(balance) : '\u00A0'}</div>
         </Table.Cell>
-        <Table.Cell textAlign="center">{balance ? fiatValue : '-'}</Table.Cell>
+        <Table.Cell textAlign="center">
+          <div>{balance ? fiatValue : '-'}</div>
+          {isMobile ?
+            <div style={{
+                   color: 'gray',
+                   fontSize: 10,
+                   textAlign: 'center'
+                 }}
+            >{shortenLargeNumber(supply)} / {marketCap}</div> : null}
+        </Table.Cell>
         {isMobile ? null : <Table.Cell textAlign="right">{shortenLargeNumber(supply)}</Table.Cell>}
-        {isMobile ? null : <Table.Cell textAlign="right">{shortenLargeNumber(security.marketCap, this.props.baseCurrency)}</Table.Cell>}
+        {isMobile ? null : <Table.Cell textAlign="right">{marketCap}</Table.Cell>}
       </Table.Row>
     )
   }
