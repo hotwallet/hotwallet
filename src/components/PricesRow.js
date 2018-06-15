@@ -92,10 +92,10 @@ class PricesRow extends React.PureComponent {
           <div>{this.formatPrice(security.price)}</div>
           {isMobile ? (
             <div style={{
-              ...delta7d.style,
+              ...delta24h.style,
               fontSize: 10,
               textAlign: 'right'
-            }}>{delta7d.value}</div>) : null}
+            }}>{delta24h.value}</div>) : null}
         </Table.Cell>
         {isMobile ? null : <Table.Cell textAlign="right" style={delta24h.style}>{delta24h.value}</Table.Cell>}
         {isMobile ? null : <Table.Cell textAlign="right" style={delta7d.style}>{delta7d.value}</Table.Cell>}
