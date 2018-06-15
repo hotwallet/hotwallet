@@ -17,7 +17,7 @@ const lineWidth = 1.5
 
 class NetWorthChart extends React.Component {
   componentDidMount() {
-    if (!this.props.chartData.length) {
+    if (!this.props.chartData || !this.props.chartData.length) {
       this.props.refreshChart()
     }
   }
