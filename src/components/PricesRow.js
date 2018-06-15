@@ -117,7 +117,8 @@ class PricesRow extends React.PureComponent {
             <div style={{
               color: 'gray',
               fontSize: 10,
-              textAlign: 'center'
+              textAlign: 'center',
+              whiteSpace: 'nowrap'
             }}>{shortenLargeNumber(supply)} / {marketCap}</div>) : null}
         </Table.Cell>
         {isMobile ? null : <Table.Cell textAlign="right">{shortenLargeNumber(supply)}</Table.Cell>}
