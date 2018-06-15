@@ -5,16 +5,16 @@ import binance from './binance'
 import portfolio from './portfolio'
 import prices from './prices'
 import securities from './securities'
-import user from './user'
 import transactions from './transactions'
+import user from './user'
 
 export default combineReducers({
   app,
   binance,
   portfolio,
   prices,
-  transactions,
-  user,
   router,
-  securities
+  securities,
+  transactions,
+  user
 })

@@ -1,4 +1,5 @@
 import moment from 'moment'
+import _get from 'lodash/get'
 import { getDailyBalances } from '../selectors/transactionSelectors'
 import client from '../lib/tarragonClient'
 import { setPrices } from './prices'
@@ -68,7 +69,7 @@ export const refreshChart = () => (dispatch, getState) => {
           if (!prices[priceKey]) {
             return total
           }
-          return total + (dailyBalances[date][symbol] * prices[priceKey])
+          return total + (_get(dailyBalances, [date, symbol], 0) * prices[priceKey])
         }, 0)
         chartData.push([
           Number(moment(date).format('x')),
