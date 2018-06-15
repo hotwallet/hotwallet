@@ -30,7 +30,7 @@ export const refreshChart = () => (dispatch, getState) => {
   // get the daily balances for date range
   const dailyBalances = getDailyBalances(state)
   const firstTransactionDate = Object.keys(dailyBalances)[0]
-  const symbols = Object.keys(dailyBalances[firstTransactionDate]) || []
+  const symbols = Object.keys(dailyBalances[firstTransactionDate] || {})
 
   // ensure we have prices for symbols for this date range
   const [qty, unit] = state.portfolio.range.label.split(' ')
