@@ -1,19 +1,29 @@
-import { getPriceHistoryData } from './portfolio/index'
+import { refreshChart } from './portfolio'
 import { v4 } from 'uuid'
+import { getTransactionsForSymbol } from '../selectors/transactionSelectors'
 
 export const ADD_TRANSACTIONS = 'ADD_TRANSACTIONS'
 export const REMOVE_TRANSACTIONS = 'REMOVE_TRANSACTIONS'
 
+const removeTransactionsAfterNewTx = newTx => (dispatch, getState) => {
+  const state = getState()
+  const txs = getTransactionsForSymbol(state, newTx.symbol) || []
+  const txIdsToRemove = txs.filter(tx => {
+    return tx.txTime >= newTx.txTime && tx.walletId === newTx.walletId
+  }).map(tx => tx.id)
+  removeTransactions(txIdsToRemove)(dispatch, getState)
+}
+
 export const addManualTransaction = tx => (dispatch, getState) => {
   const walletId = 'manual'
-  const txTime = new Date().toISOString()
   const newTx = {
     id: v4(),
-    txTime,
     ...tx,
+    txTime: tx.txTime || new Date().toISOString(),
     balance: Number(tx.balance),
     walletId
   }
+  removeTransactionsAfterNewTx(newTx)(dispatch, getState)
   addTransactions([newTx])(dispatch, getState)
 }
 
@@ -35,7 +45,7 @@ export const addTransactions = txs => (dispatch, getState) => {
     type: ADD_TRANSACTIONS,
     txs
   })
-  getPriceHistoryData()(dispatch, getState)
+  refreshChart()(dispatch, getState)
 }
 
 export const removeTransaction = txId => (dispatch, getState) => {

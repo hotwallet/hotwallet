@@ -1,37 +1,24 @@
 import React from 'react'
-import moment from 'moment'
 import { lightBg, lightBlue, padding } from '../lib/styles'
 import { PropTypes } from 'prop-types'
-
-const dateFormat = 'YYYY-MM-DD'
-
-const today = moment().utc().format(dateFormat)
 
 export const dateRanges = [
   {
     isDefault: true,
     label: '1 week',
-    startDate: moment().utc().subtract(1, 'week').format(dateFormat),
-    endDate: today,
     granularity: 'day'
   },
   {
     label: '1 month',
-    startDate: moment().utc().subtract(1, 'month').format(dateFormat),
-    endDate: today,
     granularity: 'day'
   },
   {
     label: '3 months',
-    startDate: moment().utc().subtract(3, 'months').format(dateFormat),
-    endDate: today,
-    granularity: 'week'
+    granularity: 'day'
   },
   {
     label: '1 year',
-    startDate: moment().utc().subtract(12, 'months').format(dateFormat),
-    endDate: today,
-    granularity: 'month'
+    granularity: 'day'
   }
 ]
 
@@ -57,7 +44,7 @@ const selected = {
 
 class DateRangeSelector extends React.PureComponent {
   componentDidMount() {
-    if (!this.props.range.startDate) {
+    if (!this.props.range.label) {
       const defaultRange = dateRanges.find(r => r.isDefault)
       this.props.setDateRange(defaultRange)
     }

@@ -17,12 +17,15 @@ const lineWidth = 1.5
 
 class NetWorthChart extends React.Component {
   componentDidMount() {
-    this.props.getPriceHistoryData()
+    if (!this.props.chartData.length) {
+      this.props.refreshChart()
+    }
   }
+
   render() {
     const isMobile = this.props.isMobile
     const isTablet = this.props.isTablet
-    const data = this.props.priceHistoryData
+    const data = this.props.chartData
     const chartConfig = {
       chart: {
         // zoomType: 'x',
@@ -54,7 +57,7 @@ class NetWorthChart extends React.Component {
         gridLineWidth,
         gridLineColor,
         min: 0,
-        minRange: 1000
+        minRange: 100
       },
       legend: {
         enabled: false
@@ -121,7 +124,7 @@ const mapStateToProps = state => ({
   isMobile: state.app.isMobile,
   deviceType: state.app.deviceType,
   isTablet: state.app.isTablet,
-  priceHistoryData: state.portfolio.priceHistoryData,
+  chartData: state.portfolio.chartData,
   hasNoTransactions: !Object.keys(state.transactions.byId).length,
   range: state.portfolio.range,
   baseCurrency: state.user.baseCurrency

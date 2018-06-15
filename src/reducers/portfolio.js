@@ -1,21 +1,21 @@
 import {
   PORTFOLIO_SET_DATE_RANGE,
-  UPDATE_PRICE_HISTORY_DATA
+  SET_CHART_DATA
 } from '../actions/portfolio'
 
 import { dateRanges } from '../components/DateRangeSelector'
 
 const initialState = {
   range: dateRanges.find(dateRange => !!dateRange.isDefault),
-  priceHistoryData: []
+  chartData: []
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case PORTFOLIO_SET_DATE_RANGE:
       return { ...state, range: action.range }
-    case UPDATE_PRICE_HISTORY_DATA:
-      return { ...state, priceHistoryData: action.priceHistoryData }
+    case SET_CHART_DATA:
+      return { ...state, chartData: action.chartData }
     default:
       return state
   }

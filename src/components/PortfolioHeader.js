@@ -29,9 +29,9 @@ class PortfolioHeader extends React.Component {
   }
 
   getChange({ days }) {
-    const priceHistoryData = this.props.priceHistoryData
-    if (!Array.isArray(priceHistoryData)) return 0
-    const data = priceHistoryData.slice(0).reverse()
+    const chartData = this.props.chartData
+    if (!Array.isArray(chartData)) return 0
+    const data = chartData.slice(0).reverse()
     const today = data[0] && data[0][1]
     if (!today) return 0
     const priorDay = data[days] && data[days][1]
@@ -74,10 +74,12 @@ class PortfolioHeader extends React.Component {
           <div style={labelStyle}>7 day</div>
           {this.getChangeDiv({ days: 7 })}
         </div>
+        {/*
         <div style={colStyle}>
           <div style={labelStyle}>30 day</div>
           {this.getChangeDiv({ days: 30 })}
         </div>
+        */}
       </div>
     )
   }
@@ -88,7 +90,7 @@ const mapStateToProps = state => ({
   balancesBySymbol: getBalancesBySymbol(state),
   securities: getSecurities(state),
   baseCurrency: state.user.baseCurrency,
-  priceHistoryData: state.portfolio.priceHistoryData
+  chartData: state.portfolio.chartData
 })
 
 export default connect(mapStateToProps)(PortfolioHeader)
