@@ -61,42 +61,46 @@ export const getDailyBalances = createSelector(
   (transactions) => {
     if (!transactions) return {}
     const DATE_FORMAT = 'YYYY-MM-DD'
-    // determine daily wallet balances and symbols
+    // get the sparse daily balance of each wallet
     const walletBalances = {}
     const symbols = {}
+    let firstTxDate = moment().format(DATE_FORMAT)
     transactions.forEach(tx => {
       if (!tx.txTime) return
       const date = moment(tx.txTime).format(DATE_FORMAT)
+      firstTxDate = (date < firstTxDate) ? date : firstTxDate
       const symbol = tx.symbol
-      symbols[symbol] = true
       const walletId = tx.walletId
+      _set(symbols, [symbol, walletId], true)
       _set(walletBalances, [date, symbol, walletId], Number(tx.balance))
     })
-    // determine daily symbol balances and the date of the first transaction
-    const symbolBalances = {}
-    let startDate = moment().format(DATE_FORMAT)
-    Object.keys(walletBalances).forEach(date => {
-      startDate = (date < startDate) ? date : startDate
-      Object.keys(walletBalances[date]).forEach(symbol => {
-        Object.keys(walletBalances[date][symbol]).forEach(walletId => {
-          const balance = _get(symbolBalances, [date, symbol], 0)
-          const walletBalance = _get(walletBalances, [date, symbol, walletId])
-          _set(symbolBalances, [date, symbol], balance + walletBalance)
+    // get daily balances of each wallet (fill in sparse days where the balance was unchanged)
+    const dailyWalletBalances = {}
+    for (let m = moment(firstTxDate); m.isBefore(); m.add(1, 'days')) {
+      const date = m.format(DATE_FORMAT)
+      const prevDate = moment(m).subtract(1, 'days').format(DATE_FORMAT)
+      dailyWalletBalances[date] = walletBalances[date] || {}
+      Object.keys(symbols).forEach(symbol => {
+        Object.keys(symbols[symbol]).forEach(walletId => {
+          const walletBalance = _get(dailyWalletBalances, [date, symbol, walletId])
+          if (walletBalance === undefined) {
+            const previousDayBalance = _get(dailyWalletBalances, [prevDate, symbol, walletId], 0)
+            _set(dailyWalletBalances, [date, symbol, walletId], previousDayBalance)
+          }
+        })
+      })
+    }
+    // get the total daily balance for each symbol
+    const dailyBalances = {}
+    Object.keys(dailyWalletBalances).forEach(date => {
+      Object.keys(dailyWalletBalances[date]).forEach(symbol => {
+        Object.keys(dailyWalletBalances[date][symbol]).forEach(walletId => {
+          const subtotal = _get(dailyBalances, [date, symbol], 0)
+          const walletBalance = dailyWalletBalances[date][symbol][walletId]
+          _set(dailyBalances, [date, symbol], subtotal + walletBalance)
         })
       })
     })
-    // populate balances for each day using sparse symbolBalances
-    const dailyBalances = {}
-    for (let m = moment(startDate); m.isBefore(); m.add(1, 'days')) {
-      const date = m.format(DATE_FORMAT)
-      const prevDate = moment(m).subtract(1, 'days').format(DATE_FORMAT)
-      dailyBalances[date] = symbolBalances[date] || {}
-      Object.keys(symbols).forEach(symbol => {
-        if (dailyBalances[date][symbol] === undefined) {
-          dailyBalances[date][symbol] = _get(dailyBalances, [prevDate, symbol], 0)
-        }
-      })
-    }
     return dailyBalances
   }
 )
