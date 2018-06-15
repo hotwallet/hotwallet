@@ -90,13 +90,12 @@ class PricesRow extends React.PureComponent {
         </Table.Cell>
         <Table.Cell textAlign="right">
           <div>{this.formatPrice(security.price)}</div>
-          {isMobile ?
+          {isMobile ? (
             <div style={{
-                   ...delta7d.style,
-                   fontSize: 10,
-                   textAlign: 'right'
-                 }}
-            >{delta7d.value}</div> : null}
+              ...delta7d.style,
+              fontSize: 10,
+              textAlign: 'right'
+            }}>{delta7d.value}</div>) : null}
         </Table.Cell>
         {isMobile ? null : <Table.Cell textAlign="right" style={delta24h.style}>{delta24h.value}</Table.Cell>}
         {isMobile ? null : <Table.Cell textAlign="right" style={delta7d.style}>{delta7d.value}</Table.Cell>}
@@ -114,13 +113,12 @@ class PricesRow extends React.PureComponent {
         </Table.Cell>
         <Table.Cell textAlign="center">
           <div>{balance ? fiatValue : '-'}</div>
-          {isMobile ?
+          {isMobile ? (
             <div style={{
-                   color: 'gray',
-                   fontSize: 10,
-                   textAlign: 'center'
-                 }}
-            >{shortenLargeNumber(supply)} / {marketCap}</div> : null}
+              color: 'gray',
+              fontSize: 10,
+              textAlign: 'center'
+            }}>{shortenLargeNumber(supply)} / {marketCap}</div>) : null}
         </Table.Cell>
         {isMobile ? null : <Table.Cell textAlign="right">{shortenLargeNumber(supply)}</Table.Cell>}
         {isMobile ? null : <Table.Cell textAlign="right">{marketCap}</Table.Cell>}
