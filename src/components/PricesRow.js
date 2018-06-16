@@ -8,20 +8,20 @@ import {
   roundToSignificantFigures,
   formatPercentChange
 } from '../lib/formatNumber'
-import { borderColor, lightBlue } from '../lib/styles'
+import { borderColor } from '../lib/styles'
 import SecurityModal from './SecurityModal'
 import { rowsPerPage, getSecurityWithBalance } from '../selectors/securitiesSelectors'
-// import { getBalanceForSymbol } from '../selectors/transactionSelectors'
 import PropTypes from 'prop-types'
 
 class PricesRow extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      hover: false,
       inputQtyHover: false,
       isModalOpen: false
     }
+    this.renderCount = 0
+    this.balanceBorderTimer = null
   }
 
   handleVisibilityChange(e, data) {
@@ -36,12 +36,12 @@ class PricesRow extends React.Component {
     this.props.setRowSlice([first, last])
   }
 
-  mouseOver() {
-    this.setState(state => ({ hover: true }))
-  }
-
-  mouseOut() {
-    this.setState(state => ({ hover: false }))
+  toggleBalanceBorder() {
+    clearTimeout(this.balanceBorderTimer)
+    this.balanceBorderTimer = setTimeout(() => {
+      // TODO: re-render only the input component with lightBlue border color
+      // console.log('toggle balance border', this.props.symbol)
+    }, 250)
   }
 
   getIcon(symbol) {
@@ -58,6 +58,7 @@ class PricesRow extends React.Component {
   }
 
   render() {
+    this.renderCount += 1
     const isMobile = this.props.isMobile
     const symbolStyle = {
       fontSize: isMobile ? null : 18,
@@ -65,7 +66,6 @@ class PricesRow extends React.Component {
       display: isMobile ? 'block' : 'inline'
     }
     const security = this.props.security
-    console.log('PricesRow', security.symbol, 'render')
     const baseCurrency = this.props.baseCurrency
     const delta24h = formatPercentChange(security.percentChange24h)
     const delta7d = formatPercentChange(security.percentChange7d)
@@ -74,7 +74,7 @@ class PricesRow extends React.Component {
     // const balance = this.props.balance
     const balance = security.balance
     const fiatValue = formatFiat(balance * security.price, baseCurrency)
-    const balanceBorderColor = (this.state.hover) ? lightBlue : borderColor
+    const balanceBorderColor = borderColor
     const getSecurityIcon = label => (
       <div>
         <span style={{ color: 'gray', marginRight: 10, fontSize: 10 }}>
@@ -93,8 +93,8 @@ class PricesRow extends React.Component {
 
     return (
       <Table.Row
-        onMouseOver={() => this.mouseOver()}
-        onMouseOut={() => this.mouseOut()}
+        onMouseOver={() => this.toggleBalanceBorder()}
+        onMouseOut={() => this.toggleBalanceBorder()}
       >
         <SecurityModal
           security={security}
@@ -162,15 +162,12 @@ PricesRow.propTypes = {
   openBinanceSetupModal: PropTypes.func.isRequired,
   isMobile: PropTypes.bool,
   baseCurrency: PropTypes.string.isRequired,
-  // security: PropTypes.object.isRequired,
   symbol: PropTypes.string.isRequired,
   rowIndex: PropTypes.number.isRequired,
   setRowSlice: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state, props) => ({
-  // security: state.securities.bySymbol[props.symbol],
-  // balance: getBalanceForSymbol(state, props.symbol),
   security: getSecurityWithBalance(state, props.symbol)
 })
 
