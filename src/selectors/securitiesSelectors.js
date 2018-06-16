@@ -2,6 +2,8 @@ import { createSelector, createStructuredSelector } from 'reselect'
 import { getBalanceForSymbol } from './transactionSelectors'
 import createCachedSelector from 're-reselect'
 
+export const rowsPerPage = 25
+
 export const getSecurities = state => Object.values(state.securities.bySymbol)
 export const getBalancesOnlyFilter = state => state.securities.metadata.balancesOnly
 export const getQuery = state => state.app.filterSymbolsQuery
@@ -12,15 +14,21 @@ export const getSecurity = (state, symbol) => {
 
 export const getStateSlices = createStructuredSelector({
   securities: state => state.securities,
-  transactions: state => state.transactions
+  transactions: state => state.transactions,
+  rowSlice: state => state.app.rowSlice || [0, rowsPerPage]
 })
 
 export const getVisibleSecurities = createSelector(
   [getStateSlices, getSecurities, getBalancesOnlyFilter, getQuery],
   (state, securities, isHidingEmptyBalances, query) => {
-    return securities && securities.slice(0, 100)
-      // getSecurityWithBalance is cached for each symbol
-      .map(security => getSecurityWithBalance(state, security.symbol))
+    const [first, last] = state.rowSlice
+    const byMktCap = (a, b) => (a.marketCap > b.marketCap) ? -1 : 1
+    const sortedSecurities = securities.slice().sort(byMktCap)
+    return sortedSecurities
+      .map(security => {
+        // getSecurityWithBalance is cached for each symbol
+        return getSecurityWithBalance(state, security.symbol)
+      })
       // toggle hiding empty balances
       .filter(security => {
         if (!isHidingEmptyBalances || query) return true
@@ -33,6 +41,7 @@ export const getVisibleSecurities = createSelector(
         return security.symbol.includes(query.toUpperCase()) ||
           security.name.toLowerCase().includes(lowerCaseQuery)
       })
+      .slice(first, last)
   }
 )
 

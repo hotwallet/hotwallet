@@ -22,7 +22,7 @@
     "reselect": "^3.0.1",
     "sanitize.css": "^5.0.0",
     "semantic-ui-css": "^2.3.0",
-    "semantic-ui-react": "^0.78.3",
+    "semantic-ui-react": "^0.81.1",
     "socket.io-client": "^2.0.4"
   },
   "scripts": {

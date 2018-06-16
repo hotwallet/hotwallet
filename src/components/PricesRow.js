@@ -1,5 +1,7 @@
 import React from 'react'
-import { Table, Image } from 'semantic-ui-react'
+import { connect } from 'react-redux'
+import { Table, Image, Visibility } from 'semantic-ui-react'
+import { mapDispatchToProps } from '../actions'
 import {
   formatFiat,
   shortenLargeNumber,
@@ -8,9 +10,11 @@ import {
 } from '../lib/formatNumber'
 import { borderColor, lightBlue } from '../lib/styles'
 import SecurityModal from './SecurityModal'
+import { rowsPerPage, getSecurityWithBalance } from '../selectors/securitiesSelectors'
+// import { getBalanceForSymbol } from '../selectors/transactionSelectors'
 import PropTypes from 'prop-types'
 
-class PricesRow extends React.PureComponent {
+class PricesRow extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -18,6 +22,18 @@ class PricesRow extends React.PureComponent {
       inputQtyHover: false,
       isModalOpen: false
     }
+  }
+
+  handleVisibilityChange(e, data) {
+    const { calculations } = data
+    const rowIndex = data.rowindex
+    if (rowIndex % rowsPerPage !== 0) return
+    if (calculations.offScreen) {
+      return
+    }
+    let first = (rowIndex <= rowsPerPage) ? 0 : rowIndex - (2 * rowsPerPage)
+    let last = rowIndex + (2 * rowsPerPage)
+    this.props.setRowSlice([first, last])
   }
 
   mouseOver() {
@@ -49,16 +65,21 @@ class PricesRow extends React.PureComponent {
       display: isMobile ? 'block' : 'inline'
     }
     const security = this.props.security
+    console.log('PricesRow', security.symbol, 'render')
     const baseCurrency = this.props.baseCurrency
     const delta24h = formatPercentChange(security.percentChange24h)
     const delta7d = formatPercentChange(security.percentChange7d)
     const supply = security.marketCap / security.price
     const marketCap = shortenLargeNumber(security.marketCap, this.props.baseCurrency)
+    // const balance = this.props.balance
     const balance = security.balance
     const fiatValue = formatFiat(balance * security.price, baseCurrency)
     const balanceBorderColor = (this.state.hover) ? lightBlue : borderColor
     const getSecurityIcon = label => (
       <div>
+        <span style={{ color: 'gray', marginRight: 10, fontSize: 10 }}>
+          {this.props.rowIndex + 1}
+        </span>
         <Image src={this.getIcon(security.symbol)}
           inline
           verticalAlign="middle"
@@ -86,7 +107,15 @@ class PricesRow extends React.PureComponent {
         />
 
         <Table.Cell>
-          <a style={{ color: '#fff' }} href={this.getCMCHref()}>{getSecurityIcon(security.symbol)}</a>
+          {(this.props.rowIndex % rowsPerPage === 0) ? (
+            <Visibility
+              rowindex={this.props.rowIndex}
+              onUpdate={(e, data) => this.handleVisibilityChange(e, data)}
+            />
+          ) : null}
+          <a
+            style={{ color: '#fff' }}
+            href={this.getCMCHref()}>{getSecurityIcon(security.symbol)}</a>
         </Table.Cell>
         <Table.Cell textAlign="right">
           <div>{this.formatPrice(security.price)}</div>
@@ -133,7 +162,16 @@ PricesRow.propTypes = {
   openBinanceSetupModal: PropTypes.func.isRequired,
   isMobile: PropTypes.bool,
   baseCurrency: PropTypes.string.isRequired,
-  security: PropTypes.object.isRequired
+  // security: PropTypes.object.isRequired,
+  symbol: PropTypes.string.isRequired,
+  rowIndex: PropTypes.number.isRequired,
+  setRowSlice: PropTypes.func.isRequired
 }
 
-export default PricesRow
+const mapStateToProps = (state, props) => ({
+  // security: state.securities.bySymbol[props.symbol],
+  // balance: getBalanceForSymbol(state, props.symbol),
+  security: getSecurityWithBalance(state, props.symbol)
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(PricesRow)
