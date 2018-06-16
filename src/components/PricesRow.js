@@ -46,7 +46,7 @@ class PricesRow extends React.Component {
 
   getIcon(symbol) {
     const size = this.props.isMobile ? '16x16' : '32x32'
-    return `https://chnnl.s3.amazonaws.com/tarragon/icons/${size}/${symbol}.png`
+    return `https://chnnl.imgix.net/tarragon/icons/${size}/${symbol}.png`
   }
 
   getCMCHref() {

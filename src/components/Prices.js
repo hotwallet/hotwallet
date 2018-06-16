@@ -33,6 +33,7 @@ class Prices extends React.PureComponent {
   }
 
   render() {
+    console.log('Prices render')
     if (this.props.isFetching) {
       return (
         <Dimmer active>

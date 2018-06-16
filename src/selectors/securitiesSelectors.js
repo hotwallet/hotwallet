@@ -2,7 +2,7 @@ import { createSelector, createStructuredSelector } from 'reselect'
 import { getBalanceForSymbol } from './transactionSelectors'
 import createCachedSelector from 're-reselect'
 
-export const rowsPerPage = 25
+export const rowsPerPage = 35
 
 export const getSecurities = state => Object.values(state.securities.bySymbol)
 export const getBalancesOnlyFilter = state => state.securities.metadata.balancesOnly
