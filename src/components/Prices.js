@@ -18,10 +18,12 @@ class Prices extends React.PureComponent {
     this.setState({ isBinanceSetupModalOpen: val })
   }
 
-  getRows(securities) {
-    return securities.map(security => (
-      <PricesRow key={security.symbol}
-        security={security}
+  getRows(symbols) {
+    return symbols.map((symbol, i) => (
+      <PricesRow key={symbol}
+        rowIndex={i + this.props.symbolOffset}
+        setRowSlice={this.props.setRowSlice}
+        symbol={symbol}
         addManualTransaction={this.props.addManualTransaction}
         baseCurrency={this.props.baseCurrency}
         isMobile={this.props.isMobile}
@@ -31,6 +33,7 @@ class Prices extends React.PureComponent {
   }
 
   render() {
+    console.log('Prices render')
     if (this.props.isFetching) {
       return (
         <Dimmer active>
@@ -46,6 +49,7 @@ class Prices extends React.PureComponent {
     const isMobile = this.props.isMobile
     const isDesktop = this.props.isDesktop
     const padding = isMobile ? mobilePadding : desktopPadding
+    const symbols = this.props.symbolsCSV.split(',')
     return (
       <div style={{
         padding,
@@ -65,7 +69,7 @@ class Prices extends React.PureComponent {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {this.getRows(this.props.securities)}
+            {this.getRows(symbols)}
           </Table.Body>
         </Table>
         {/* Plugins */}
@@ -81,11 +85,14 @@ class Prices extends React.PureComponent {
 Prices.propTypes = {
   addManualTransaction: PropTypes.func.isRequired,
   baseCurrency: PropTypes.string.isRequired,
-  securities: PropTypes.array.isRequired,
+  // securities: PropTypes.array.isRequired,
+  symbolsCSV: PropTypes.string.isRequired,
+  symbolOffset: PropTypes.number.isRequired,
   isFetching: PropTypes.bool,
   failureMessage: PropTypes.string,
   isMobile: PropTypes.bool,
-  isDesktop: PropTypes.bool
+  isDesktop: PropTypes.bool,
+  setRowSlice: PropTypes.func.isRequired
 }
 
 export default Prices

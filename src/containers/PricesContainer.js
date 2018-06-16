@@ -7,10 +7,10 @@ import Prices from '../components/Prices'
 
 class PricesContainer extends React.Component {
   componentDidMount() {
-    // fetch all prices if they haven't been updated in the past 2 minutes
+    // fetch all prices if they haven't been updated in the past hour
     const updatedAt = this.props.updatedAt
-    const diff = moment().diff(updatedAt, 'seconds')
-    if (!updatedAt || diff > 120 || this.props.failureMessage) {
+    const diff = moment().diff(updatedAt, 'hours')
+    if (!updatedAt || diff > 1 || this.props.failureMessage) {
       this.props.fetchSecurities()
     }
   }
@@ -18,12 +18,15 @@ class PricesContainer extends React.Component {
   render() {
     return React.createElement(Prices, {
       addManualTransaction: this.props.addManualTransaction,
-      securities: this.props.securities,
+      // securities: this.props.securities,
+      symbolsCSV: this.props.symbolsCSV,
+      symbolOffset: this.props.symbolOffset,
       isFetching: this.props.isFetching,
       failureMessage: this.props.failureMessage,
       isMobile: this.props.isMobile,
       isDesktop: this.props.isDesktop,
-      baseCurrency: this.props.baseCurrency
+      baseCurrency: this.props.baseCurrency,
+      setRowSlice: this.props.setRowSlice
     })
   }
 }
@@ -42,14 +45,18 @@ class PricesContainer extends React.Component {
 //   query: PropTypes.string
 // }
 
-const mapStateToProps = (state, props) => ({
-  updatedAt: state.securities.metadata.updatedAt,
-  baseCurrency: state.user.baseCurrency,
-  securities: getVisibleSecurities(state, props),
-  isFetching: state.securities.metadata.isFetching,
-  failureMessage: state.securities.metadata.failureMessage,
-  isMobile: state.app.isMobile,
-  isDesktop: state.app.isDesktop
-})
+const mapStateToProps = (state, props) => {
+  return ({
+    // updatedAt: state.securities.metadata.updatedAt,
+    baseCurrency: state.user.baseCurrency,
+    // securities: getVisibleSecurities(state, props),
+    symbolsCSV: getVisibleSecurities(state, props).map(security => security.symbol).join(','),
+    symbolOffset: state.app.rowSlice[0] || 0,
+    isFetching: state.securities.metadata.isFetching,
+    failureMessage: state.securities.metadata.failureMessage,
+    isMobile: state.app.isMobile,
+    isDesktop: state.app.isDesktop
+  })
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(PricesContainer)

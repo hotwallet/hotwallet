@@ -66,7 +66,7 @@ class BinanceSetupModal extends React.Component {
       >
         <Modal.Header style={{ color: '#fff' }}>
           <Image
-            src="https://chnnl.s3.amazonaws.com/tarragon/exchanges/32x32/binance.png"
+            src="https://chnnl.imgix.net/tarragon/exchanges/32x32/binance.png"
             inline
             verticalAlign="middle"
             style={{marginRight: 12}}

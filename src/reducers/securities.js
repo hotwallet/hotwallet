@@ -13,14 +13,14 @@ const allSymbols = (state = [], action) => {
       return [
         ...action.response.result
       ]
-    case SECURITIES_UPDATE:
-      if (state.indexOf(action.security.result) === -1) {
-        return [
-          ...state,
-          action.security.result
-        ]
-      }
-      return state
+    // case SECURITIES_UPDATE:
+    //   if (state.indexOf(action.security.result) === -1) {
+    //     return [
+    //       ...state,
+    //       action.security.result
+    //     ]
+    //   }
+    //   return state
     default:
       return state
   }
@@ -35,6 +35,10 @@ const bySymbol = (state = {}, action) => {
       }
 
     case SECURITIES_UPDATE:
+      const symbol = Object.keys(action.security.entities.security)[0]
+      if (state[symbol].price === action.security.entities.security[symbol].price) {
+        return state
+      }
       return {
         ...state,
         ...action.security.entities.security

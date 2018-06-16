@@ -43,11 +43,12 @@ export function shortenLargeNumber(num, baseCurrency) {
   for (let i = units.length - 1; i >= 0; i--) {
     decimal = Math.pow(1000, i + 1)
     if (num <= -decimal || num >= decimal) {
-      const number = (num / decimal)
+      const number = num / decimal
       return symbol + (number > 100 ? number.toFixed(0) : number.toFixed(1)) + units[i]
     }
   }
-  return `${symbol}${num}`
+  const formattedNum = (num < 1000) ? Math.round(num) : num
+  return `${symbol}${formattedNum}`
 }
 
 export function formatPercentChange(num) {
