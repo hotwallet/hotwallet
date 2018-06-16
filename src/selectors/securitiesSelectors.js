@@ -41,7 +41,7 @@ export const getVisibleSecurities = createSelector(
         return security.symbol.includes(query.toUpperCase()) ||
           security.name.toLowerCase().includes(lowerCaseQuery)
       })
-      .slice(first, last)
+      .slice(first, last + 1)
   }
 )
 
