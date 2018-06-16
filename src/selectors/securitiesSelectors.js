@@ -15,7 +15,7 @@ export const getSecurity = (state, symbol) => {
 export const getStateSlices = createStructuredSelector({
   securities: state => state.securities,
   transactions: state => state.transactions,
-  rowSlice: state => state.app.rowSlice || [0, rowsPerPage]
+  rowSlice: state => state.app.rowSlice || [0, rowsPerPage + 1]
 })
 
 export const getVisibleSecurities = createSelector(
