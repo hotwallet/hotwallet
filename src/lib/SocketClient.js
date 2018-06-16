@@ -5,6 +5,8 @@ import { updateSecurity } from '../actions/securities'
 import * as schema from '../actions/schema'
 import { normalize } from 'normalizr'
 
+const disableStreamingPrices = true
+
 export default class SocketClient {
   start() {
     this.socket = io(config.serverUrl)
@@ -23,6 +25,7 @@ export default class SocketClient {
   }
 
   subscribeToPriceUpdates() {
+    if (disableStreamingPrices) return
     const state = store.getState()
     const baseCurrency = state.user.baseCurrency
     // wait until we have securities to subscribe to
