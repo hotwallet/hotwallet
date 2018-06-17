@@ -5,7 +5,7 @@ import { updateSecurity } from '../actions/securities'
 import * as schema from '../actions/schema'
 import { normalize } from 'normalizr'
 
-const disableStreamingPrices = true
+const enableStreamingPrices = false
 
 export default class SocketClient {
   start() {
@@ -16,7 +16,6 @@ export default class SocketClient {
     this.socket.on('security', security => {
       const state = store.getState()
       const baseCurrency = state.user.baseCurrency
-      // console.log(security.symbol, security.baseCurrency, security.price)
       if (security.baseCurrency === baseCurrency) {
         const normalizedSecurity = normalize(security, schema.security)
         store.dispatch(updateSecurity(normalizedSecurity))
@@ -25,7 +24,7 @@ export default class SocketClient {
   }
 
   subscribeToPriceUpdates() {
-    if (disableStreamingPrices) return
+    if (!enableStreamingPrices) return
     const state = store.getState()
     const baseCurrency = state.user.baseCurrency
     // wait until we have securities to subscribe to
