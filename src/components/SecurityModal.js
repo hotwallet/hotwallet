@@ -150,11 +150,13 @@ class SecurityModal extends React.Component {
             this.save()
             onClose()
           }}>Save</Button>
-          <Button color="red" fluid style={buttonStyle} onClick={() => {
-            this.props.removeManualTransactions(this.props.security.symbol)
-            this.setState({manualBalance: undefined})
-            onClose()
-          }}>Delete All Manual Transactions</Button>
+          {isNumber(balances.manual) &&
+            <Button color="red" fluid style={buttonStyle} onClick={() => {
+              this.props.removeManualTransactions(this.props.security.symbol)
+              this.setState({manualBalance: undefined})
+              onClose()
+            }}>Delete All Manual Transactions</Button>
+          }
 
           {importButtons.length ? (
             <div>
