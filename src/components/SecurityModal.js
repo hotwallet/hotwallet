@@ -23,6 +23,12 @@ class SecurityModal extends React.Component {
     this.state = {
       manualTxTime: ''
     }
+    this.setManualBalance = this.setManualBalance.bind(this)
+    this.onClickImportBinanceButton = this.onClickImportBinanceButton.bind(this)
+  }
+
+  setManualBalance(manualBalance) {
+    this.setState({ manualBalance })
   }
 
   getImportButtons() {
@@ -32,8 +38,14 @@ class SecurityModal extends React.Component {
     ].filter(Boolean)
   }
 
+  onClickImportBinanceButton() {
+    const { onClose, openBinanceSetupModal } = this.props
+    onClose()
+    openBinanceSetupModal(true)
+  }
+
   getImportBinanceButton() {
-    const { security, onClose, openBinanceSetupModal } = this.props
+    const { security } = this.props
     if (this.props.binanceApiKey) return
     if (!binanceSymbols.includes(security.symbol)) return
     return (
@@ -42,10 +54,7 @@ class SecurityModal extends React.Component {
         color="black"
         fluid
         style={buttonStyle}
-        onClick={() => {
-          onClose()
-          openBinanceSetupModal(true)
-        }}
+        onClick={this.onClickImportBinanceButton}
       >
         Import from Binance
       </Button>
@@ -109,7 +118,7 @@ class SecurityModal extends React.Component {
                 </Table.Cell>
                 <Table.Cell width="ten">
                   <PricesInputQty
-                    setBalance={manualBalance => this.setState({ manualBalance })}
+                    setBalance={this.setManualBalance}
                     isMobile={this.props.isMobile}
                     symbol={symbol}
                     balance={balances.manual}

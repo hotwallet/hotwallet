@@ -11,9 +11,11 @@ class PricesFilters extends React.Component {
     this.state = { value: '' }
     this.onChange = this.onChange.bind(this)
     this.filterChange = this.filterChange.bind(this)
+    this.onSearchFocus = this.onSearchFocus.bind(this)
+    this.onToggle = this.onToggle.bind(this)
   }
 
-  onToggle(toggle) {
+  onToggle(e, toggle) {
     this.input.inputRef.value = ''
     this.props.filterSymbols('')
     this.props.showBalancesOnly(toggle.checked)
@@ -74,7 +76,7 @@ class PricesFilters extends React.Component {
             <Grid.Column width={8}>
               <Input
                 {...inputProps}
-                onFocus={e => this.onSearchFocus(e)}
+                onFocus={this.onSearchFocus}
                 style={{
                   width: isMobile ? 150 : null
                 }}
@@ -100,7 +102,7 @@ class PricesFilters extends React.Component {
                 {this.props.balancesOnly ? 'Hiding' : 'Hide'} empty balances
                 <Checkbox
                   checked={this.props.balancesOnly && !this.props.query}
-                  onChange={(e, toggle) => this.onToggle(toggle)}
+                  onChange={this.onToggle}
                   toggle
                   style={{
                     position: 'relative',

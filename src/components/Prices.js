@@ -11,19 +11,18 @@ class Prices extends React.PureComponent {
     this.state = {
       isBinanceSetupModalOpen: false
     }
-    this.openBinanceSetupModal = this.openBinanceSetupModal.bind(this)
   }
 
   openBinanceSetupModal(val) {
     this.setState({ isBinanceSetupModalOpen: val })
   }
 
-  getRows(symbols) {
-    return symbols.map((symbol, i) => (
-      <PricesRow key={symbol}
+  getRows(securities) {
+    return securities.map((security, i) => (
+      <PricesRow key={security.symbol}
         rowIndex={i + this.props.symbolOffset}
         setRowSlice={this.props.setRowSlice}
-        symbol={symbol}
+        security={security}
         addManualTransaction={this.props.addManualTransaction}
         baseCurrency={this.props.baseCurrency}
         isMobile={this.props.isMobile}
@@ -48,7 +47,7 @@ class Prices extends React.PureComponent {
     const isMobile = this.props.isMobile
     const isDesktop = this.props.isDesktop
     const padding = isMobile ? mobilePadding : desktopPadding
-    const symbols = this.props.symbolsCSV.split(',')
+    // const symbols = this.props.symbolsCSV.split(',')
     return (
       <div style={{
         padding,
@@ -68,13 +67,13 @@ class Prices extends React.PureComponent {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {this.getRows(symbols)}
+            {this.getRows(this.props.securities)}
           </Table.Body>
         </Table>
         {/* Plugins */}
         <BinanceSetupModal
           isModalOpen={this.state.isBinanceSetupModalOpen}
-          openBinanceSetupModal={val => this.openBinanceSetupModal(val)}
+          openBinanceSetupModal={this.openBinanceSetupModal}
         />
       </div>
     )
@@ -84,8 +83,8 @@ class Prices extends React.PureComponent {
 Prices.propTypes = {
   addManualTransaction: PropTypes.func.isRequired,
   baseCurrency: PropTypes.string.isRequired,
-  // securities: PropTypes.array.isRequired,
-  symbolsCSV: PropTypes.string.isRequired,
+  securities: PropTypes.array.isRequired,
+  // symbolsCSV: PropTypes.string.isRequired,
   symbolOffset: PropTypes.number.isRequired,
   isFetching: PropTypes.bool,
   failureMessage: PropTypes.string,

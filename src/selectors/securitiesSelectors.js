@@ -4,7 +4,13 @@ import createCachedSelector from 're-reselect'
 
 export const rowsPerPage = 75
 
-export const getSecurities = state => Object.values(state.securities.bySymbol)
+export const getSecuritiesBySymbol = state => state.securities.bySymbol
+
+export const getSecurities = createSelector(
+  getSecuritiesBySymbol,
+  securitiesBySymbol => Object.values(securitiesBySymbol)
+)
+
 export const getBalancesOnlyFilter = state => state.securities.metadata.balancesOnly
 export const getQuery = state => state.app.filterSymbolsQuery
 
