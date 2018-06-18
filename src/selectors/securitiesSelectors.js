@@ -9,7 +9,7 @@ export const getBalancesOnlyFilter = state => state.securities.metadata.balances
 export const getQuery = state => state.app.filterSymbolsQuery
 
 export const getSecurity = (state, symbol) => {
-  return getSecurities(state).find(s => s.symbol === symbol)
+  return state.securities.bySymbol[symbol]
 }
 
 export const getStateSlices = createStructuredSelector({
