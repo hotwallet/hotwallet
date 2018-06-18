@@ -5,7 +5,7 @@ import { updateSecurity } from '../actions/securities'
 import * as schema from '../actions/schema'
 import { normalize } from 'normalizr'
 
-const enableStreamingPrices = false
+const enableStreamingPrices = true
 
 export default class SocketClient {
   start() {
