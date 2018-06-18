@@ -22,7 +22,7 @@ class Prices extends React.PureComponent {
     return symbols.map((symbol, i) => (
       <PricesRow key={symbol}
         rowIndex={i + this.props.symbolOffset}
-        setRowSlice={this.props.setRowSlice}
+        setLastVisibleRow={this.props.setLastVisibleRow}
         symbol={symbol}
         addManualTransaction={this.props.addManualTransaction}
         baseCurrency={this.props.baseCurrency}
@@ -91,7 +91,7 @@ Prices.propTypes = {
   failureMessage: PropTypes.string,
   isMobile: PropTypes.bool,
   isDesktop: PropTypes.bool,
-  setRowSlice: PropTypes.func.isRequired
+  setLastVisibleRow: PropTypes.func.isRequired
 }
 
 export default Prices
