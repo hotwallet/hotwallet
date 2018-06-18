@@ -18,6 +18,7 @@ class PricesContainer extends React.Component {
   render() {
     return React.createElement(Prices, {
       addManualTransaction: this.props.addManualTransaction,
+      removeManualTransactions: this.props.removeManualTransactions,
       // securities: this.props.securities,
       symbolsCSV: this.props.symbolsCSV,
       symbolOffset: this.props.symbolOffset,

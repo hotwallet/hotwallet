@@ -83,6 +83,7 @@ class Prices extends React.PureComponent {
 
 Prices.propTypes = {
   addManualTransaction: PropTypes.func.isRequired,
+  removeManualTransactions: PropTypes.func.isRequired,
   baseCurrency: PropTypes.string.isRequired,
   // securities: PropTypes.array.isRequired,
   symbolsCSV: PropTypes.string.isRequired,

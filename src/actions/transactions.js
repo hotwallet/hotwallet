@@ -14,6 +14,13 @@ const removeTransactionsAfterNewTx = newTx => (dispatch, getState) => {
   removeTransactions(txIdsToRemove)(dispatch, getState)
 }
 
+export const removeManualTransactions = symbol => (dispatch, getState) => {
+  const state = getState()
+  const txs = getTransactionsForSymbol(state, symbol) || []
+  const txIdsToRemove = txs.filter(tx => tx.walletId === 'manual').map(tx => tx.id)
+  removeTransactions(txIdsToRemove)(dispatch, getState)
+}
+
 export const addManualTransaction = tx => (dispatch, getState) => {
   const walletId = 'manual'
   const newTx = {
@@ -57,4 +64,5 @@ export const removeTransactions = txIds => (dispatch, getState) => {
     type: REMOVE_TRANSACTIONS,
     txIds
   })
+  refreshChart()(dispatch, getState)
 }
