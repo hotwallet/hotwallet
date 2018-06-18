@@ -10,7 +10,7 @@ import {
 } from '../lib/formatNumber'
 import { borderColor } from '../lib/styles'
 import SecurityModal from './SecurityModal'
-import { rowsPerPage, getSecurityWithBalance } from '../selectors/securitiesSelectors'
+import { rowsPerPage } from '../selectors/securitiesSelectors'
 import PropTypes from 'prop-types'
 
 class PricesRow extends React.Component {
