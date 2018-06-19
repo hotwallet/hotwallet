@@ -26,7 +26,7 @@ class PricesContainer extends React.Component {
       isMobile: this.props.isMobile,
       isDesktop: this.props.isDesktop,
       baseCurrency: this.props.baseCurrency,
-      setRowSlice: this.props.setRowSlice
+      setLastVisibleRow: this.props.setLastVisibleRow
     })
   }
 }

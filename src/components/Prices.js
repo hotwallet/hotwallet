@@ -11,6 +11,7 @@ class Prices extends React.PureComponent {
     this.state = {
       isBinanceSetupModalOpen: false
     }
+    this.openBinanceSetupModal = this.openBinanceSetupModal.bind(this)
   }
 
   openBinanceSetupModal(val) {
@@ -21,8 +22,8 @@ class Prices extends React.PureComponent {
     return securities.map((security, i) => (
       <PricesRow key={security.symbol}
         rowIndex={i + this.props.symbolOffset}
-        setRowSlice={this.props.setRowSlice}
         security={security}
+        setLastVisibleRow={this.props.setLastVisibleRow}
         addManualTransaction={this.props.addManualTransaction}
         baseCurrency={this.props.baseCurrency}
         isMobile={this.props.isMobile}
@@ -90,7 +91,7 @@ Prices.propTypes = {
   failureMessage: PropTypes.string,
   isMobile: PropTypes.bool,
   isDesktop: PropTypes.bool,
-  setRowSlice: PropTypes.func.isRequired
+  setLastVisibleRow: PropTypes.func.isRequired
 }
 
 export default Prices

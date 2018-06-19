@@ -33,9 +33,7 @@ class PricesRow extends React.Component {
     if (calculations.offScreen) {
       return
     }
-    let first = (rowIndex <= rowsPerPage) ? 0 : rowIndex - (2 * rowsPerPage)
-    let last = rowIndex + (2 * rowsPerPage)
-    this.props.setRowSlice([first, last])
+    this.props.setLastVisibleRow(rowIndex)
   }
 
   toggleBalanceBorder() {
@@ -169,7 +167,7 @@ PricesRow.propTypes = {
   baseCurrency: PropTypes.string.isRequired,
   security: PropTypes.object.isRequired,
   rowIndex: PropTypes.number.isRequired,
-  setRowSlice: PropTypes.func.isRequired
+  setLastVisibleRow: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state, props) => ({
