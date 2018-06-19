@@ -19,15 +19,14 @@ class PricesContainer extends React.Component {
     return React.createElement(Prices, {
       addManualTransaction: this.props.addManualTransaction,
       removeManualTransactions: this.props.removeManualTransactions,
-      // securities: this.props.securities,
-      symbolsCSV: this.props.symbolsCSV,
+      securities: this.props.securities,
       symbolOffset: this.props.symbolOffset,
       isFetching: this.props.isFetching,
       failureMessage: this.props.failureMessage,
       isMobile: this.props.isMobile,
       isDesktop: this.props.isDesktop,
       baseCurrency: this.props.baseCurrency,
-      setRowSlice: this.props.setRowSlice
+      setLastVisibleRow: this.props.setLastVisibleRow
     })
   }
 }
@@ -50,8 +49,7 @@ const mapStateToProps = (state, props) => {
   return ({
     // updatedAt: state.securities.metadata.updatedAt,
     baseCurrency: state.user.baseCurrency,
-    // securities: getVisibleSecurities(state, props),
-    symbolsCSV: getVisibleSecurities(state, props).map(security => security.symbol).join(','),
+    securities: getVisibleSecurities(state, props),
     symbolOffset: state.app.rowSlice[0] || 0,
     isFetching: state.securities.metadata.isFetching,
     failureMessage: state.securities.metadata.failureMessage,

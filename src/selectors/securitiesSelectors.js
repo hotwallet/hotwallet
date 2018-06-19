@@ -4,7 +4,13 @@ import createCachedSelector from 're-reselect'
 
 export const rowsPerPage = 75
 
-export const getSecurities = state => Object.values(state.securities.bySymbol)
+export const getSecuritiesBySymbol = state => state.securities.bySymbol
+
+export const getSecurities = createSelector(
+  getSecuritiesBySymbol,
+  securitiesBySymbol => Object.values(securitiesBySymbol)
+)
+
 export const getBalancesOnlyFilter = state => state.securities.metadata.balancesOnly
 export const getQuery = state => state.app.filterSymbolsQuery
 
@@ -15,13 +21,15 @@ export const getSecurity = (state, symbol) => {
 export const getStateSlices = createStructuredSelector({
   securities: state => state.securities,
   transactions: state => state.transactions,
-  rowSlice: state => state.app.rowSlice || [0, rowsPerPage + 1]
+  app: createStructuredSelector({
+    rowSlice: state => state.app.rowSlice
+  })
 })
 
 export const getVisibleSecurities = createSelector(
   [getStateSlices, getSecurities, getBalancesOnlyFilter, getQuery],
   (state, securities, isHidingEmptyBalances, query) => {
-    const [first, last] = state.rowSlice
+    const [first, last] = state.app.rowSlice
     const byMktCap = (a, b) => (a.marketCap > b.marketCap) ? -1 : 1
     const sortedSecurities = securities.slice().sort(byMktCap)
     return sortedSecurities

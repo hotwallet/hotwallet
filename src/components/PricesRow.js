@@ -10,7 +10,7 @@ import {
 } from '../lib/formatNumber'
 import { borderColor } from '../lib/styles'
 import SecurityModal from './SecurityModal'
-import { rowsPerPage, getSecurityWithBalance } from '../selectors/securitiesSelectors'
+import { rowsPerPage } from '../selectors/securitiesSelectors'
 import PropTypes from 'prop-types'
 
 class PricesRow extends React.Component {
@@ -20,8 +20,12 @@ class PricesRow extends React.Component {
       inputQtyHover: false,
       isModalOpen: false
     }
-    this.renderCount = 0
+    this.icon = this.getIcon(this.props.security.symbol)
     this.balanceBorderTimer = null
+    this.closeModal = this.closeModal.bind(this)
+    this.toggleBalanceBorder = this.toggleBalanceBorder.bind(this)
+    this.handleVisibilityChange = this.handleVisibilityChange.bind(this)
+    this.getSecurityIcon = this.getSecurityIcon.bind(this)
   }
 
   handleVisibilityChange(e, data) {
@@ -31,9 +35,7 @@ class PricesRow extends React.Component {
     if (calculations.offScreen) {
       return
     }
-    let first = (rowIndex <= rowsPerPage) ? 0 : rowIndex - (2 * rowsPerPage)
-    let last = rowIndex + (2 * rowsPerPage)
-    this.props.setRowSlice([first, last])
+    this.props.setLastVisibleRow(rowIndex)
   }
 
   toggleBalanceBorder() {
@@ -57,50 +59,68 @@ class PricesRow extends React.Component {
     return formatFiat(num, this.props.baseCurrency)
   }
 
-  render() {
-    this.renderCount += 1
-    const isMobile = this.props.isMobile
+  closeModal() {
+    this.setState({ isModalOpen: false })
+  }
+
+  getSecurityIcon({ label, isModal }) {
+    // TODO: use security.rank instead of rowIndex
+    const rank = this.props.rowIndex + 1
+    const isMobileRow = this.props.isMobile && !isModal
     const symbolStyle = {
-      fontSize: isMobile ? null : 18,
+      fontSize: isMobileRow ? null : 18,
       verticalAlign: 'middle',
-      display: isMobile ? 'block' : 'inline'
+      display: isMobileRow ? 'block' : 'inline'
     }
-    const security = this.props.security
-    const baseCurrency = this.props.baseCurrency
-    const delta24h = formatPercentChange(security.percentChange24h)
-    const delta7d = formatPercentChange(security.percentChange7d)
-    const supply = security.marketCap / security.price
-    const marketCap = shortenLargeNumber(security.marketCap, this.props.baseCurrency)
-    // const balance = this.props.balance
-    const balance = security.balance
-    const fiatValue = formatFiat(balance * security.price, baseCurrency)
-    const balanceBorderColor = borderColor
-    const getSecurityIcon = label => (
+    const rankStyle = {
+      color: 'gray',
+      marginRight: 10,
+      fontSize: 10
+    }
+    if (isMobileRow) {
+      rankStyle.position = 'absolute'
+      rankStyle.left = 50
+    }
+    return (
       <div>
-        <span style={{ color: 'gray', marginRight: 10, fontSize: 10 }}>
-          {this.props.rowIndex + 1}
+        <span style={rankStyle}>
+          {rank}
         </span>
-        <Image src={this.getIcon(security.symbol)}
+        <Image
+          src={this.icon}
           inline
           verticalAlign="middle"
-          style={isMobile ? { marginLeft: 6 } : { marginRight: 12 }}
+          style={isMobileRow ? { marginLeft: 6 } : { marginRight: 12 }}
         />
         <span style={symbolStyle}>
           {label}
         </span>
       </div>
     )
+  }
+
+  render() {
+    const isMobile = this.props.isMobile
+    const security = this.props.security
+    const baseCurrency = this.props.baseCurrency
+    const delta24h = formatPercentChange(security.percentChange24h)
+    const delta7d = formatPercentChange(security.percentChange7d)
+    const supply = security.marketCap / security.price
+    const marketCap = shortenLargeNumber(security.marketCap, this.props.baseCurrency)
+    const balance = security.balance
+    const fiatValue = formatFiat(balance * security.price, baseCurrency)
+    const balanceBorderColor = borderColor
 
     return (
       <Table.Row
-        onMouseOver={() => this.toggleBalanceBorder()}
-        onMouseOut={() => this.toggleBalanceBorder()}
+        onMouseOver={this.toggleBalanceBorder}
+        onMouseOut={this.toggleBalanceBorder}
       >
         <SecurityModal
           security={security}
           isModalOpen={this.state.isModalOpen}
-          header={getSecurityIcon(security.name)}
-          onClose={() => this.setState({ isModalOpen: false })}
+          getSecurityIcon={this.getSecurityIcon}
+          onClose={this.closeModal}
           balance={balance}
           addManualTransaction={this.props.addManualTransaction}
           removeManualTransactions={this.props.removeManualTransactions}
@@ -110,13 +130,14 @@ class PricesRow extends React.Component {
         <Table.Cell>
           {(this.props.rowIndex % rowsPerPage === 0) ? (
             <Visibility
+              fireOnMount
               rowindex={this.props.rowIndex}
-              onUpdate={(e, data) => this.handleVisibilityChange(e, data)}
+              onUpdate={this.handleVisibilityChange}
             />
           ) : null}
           <a
             style={{ color: '#fff' }}
-            href={this.getCMCHref()}>{getSecurityIcon(security.symbol)}</a>
+            href={this.getCMCHref()}>{this.getSecurityIcon({ label: security.symbol })}</a>
         </Table.Cell>
         <Table.Cell textAlign="right">
           <div>{this.formatPrice(security.price)}</div>
@@ -164,13 +185,13 @@ PricesRow.propTypes = {
   openBinanceSetupModal: PropTypes.func.isRequired,
   isMobile: PropTypes.bool,
   baseCurrency: PropTypes.string.isRequired,
-  symbol: PropTypes.string.isRequired,
+  security: PropTypes.object.isRequired,
   rowIndex: PropTypes.number.isRequired,
-  setRowSlice: PropTypes.func.isRequired
+  setLastVisibleRow: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state, props) => ({
-  security: getSecurityWithBalance(state, props.symbol)
+  // security: getSecurityWithBalance(state, props.symbol)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PricesRow)

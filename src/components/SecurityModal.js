@@ -25,6 +25,13 @@ class SecurityModal extends React.Component {
     this.state = {
       manualTxTime: ''
     }
+    this.setManualBalance = this.setManualBalance.bind(this)
+    this.onClickImportBinanceButton = this.onClickImportBinanceButton.bind(this)
+    this.onChangeDateInput = this.onChangeDateInput.bind(this)
+  }
+
+  setManualBalance(manualBalance) {
+    this.setState({ manualBalance })
   }
 
   getImportButtons() {
@@ -34,8 +41,14 @@ class SecurityModal extends React.Component {
     ].filter(Boolean)
   }
 
+  onClickImportBinanceButton() {
+    const { onClose, openBinanceSetupModal } = this.props
+    onClose()
+    openBinanceSetupModal(true)
+  }
+
   getImportBinanceButton() {
-    const { security, onClose, openBinanceSetupModal } = this.props
+    const { security } = this.props
     if (this.props.binanceApiKey) return
     if (!binanceSymbols.includes(security.symbol)) return
     return (
@@ -44,10 +57,7 @@ class SecurityModal extends React.Component {
         color="black"
         fluid
         style={buttonStyle}
-        onClick={() => {
-          onClose()
-          openBinanceSetupModal(true)
-        }}
+        onClick={this.onClickImportBinanceButton}
       >
         Import from Binance
       </Button>
@@ -76,15 +86,20 @@ class SecurityModal extends React.Component {
     }
   }
 
+  onChangeDateInput(e) {
+    this.setState({ manualTxTime: new Date(e.target.value).toISOString() })
+  }
+
   render() {
     const {
       isModalOpen,
-      header,
+      getSecurityIcon,
       onClose,
       security,
       transactionsBySymbol
     } = this.props
 
+    const header = getSecurityIcon({ label: security.name, isModal: true })
     const importButtons = this.getImportButtons()
     const { symbol } = security
     const balances = (transactionsBySymbol[symbol] || []).reduce((b, val) => {
@@ -115,7 +130,7 @@ class SecurityModal extends React.Component {
                 </Table.Cell>
                 <Table.Cell width="ten">
                   <PricesInputQty
-                    setBalance={manualBalance => this.setState({ manualBalance })}
+                    setBalance={this.setManualBalance}
                     isMobile={this.props.isMobile}
                     symbol={symbol}
                     balance={balances.manual}
@@ -124,9 +139,7 @@ class SecurityModal extends React.Component {
                   <Input
                     fluid
                     inverted
-                    onChange={e => {
-                      this.setState({ manualTxTime: new Date(e.target.value).toISOString() })
-                    }}
+                    onChange={this.onChangeDateInput}
                     type="date"
                     defaultValue={moment().format('YYYY-MM-DD')}
                   />
