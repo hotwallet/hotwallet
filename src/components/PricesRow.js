@@ -64,16 +64,27 @@ class PricesRow extends React.Component {
   }
 
   getSecurityIcon(label) {
+    // TODO: use security.rank instead of rowIndex
+    const rank = this.props.rowIndex + 1
     const isMobile = this.props.isMobile
     const symbolStyle = {
       fontSize: isMobile ? null : 18,
       verticalAlign: 'middle',
       display: isMobile ? 'block' : 'inline'
     }
+    const rankStyle = {
+      color: 'gray',
+      marginRight: 10,
+      fontSize: 10
+    }
+    if (isMobile) {
+      rankStyle.position = 'absolute'
+      rankStyle.left = 50
+    }
     return (
       <div>
-        <span style={{ color: 'gray', marginRight: 10, fontSize: 10 }}>
-          {this.props.rowIndex + 1}
+        <span style={rankStyle}>
+          {rank}
         </span>
         <Image
           src={this.icon}
