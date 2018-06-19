@@ -20,10 +20,12 @@ class PricesRow extends React.Component {
       inputQtyHover: false,
       isModalOpen: false
     }
+    this.icon = this.getIcon(this.props.security.symbol)
     this.balanceBorderTimer = null
     this.closeModal = this.closeModal.bind(this)
     this.toggleBalanceBorder = this.toggleBalanceBorder.bind(this)
     this.handleVisibilityChange = this.handleVisibilityChange.bind(this)
+    this.getSecurityIcon = this.getSecurityIcon.bind(this)
   }
 
   handleVisibilityChange(e, data) {
@@ -61,28 +63,20 @@ class PricesRow extends React.Component {
     this.setState({ isModalOpen: false })
   }
 
-  render() {
+  getSecurityIcon(label) {
     const isMobile = this.props.isMobile
     const symbolStyle = {
       fontSize: isMobile ? null : 18,
       verticalAlign: 'middle',
       display: isMobile ? 'block' : 'inline'
     }
-    const security = this.props.security
-    const baseCurrency = this.props.baseCurrency
-    const delta24h = formatPercentChange(security.percentChange24h)
-    const delta7d = formatPercentChange(security.percentChange7d)
-    const supply = security.marketCap / security.price
-    const marketCap = shortenLargeNumber(security.marketCap, this.props.baseCurrency)
-    const balance = security.balance
-    const fiatValue = formatFiat(balance * security.price, baseCurrency)
-    const balanceBorderColor = borderColor
-    const getSecurityIcon = label => (
+    return (
       <div>
         <span style={{ color: 'gray', marginRight: 10, fontSize: 10 }}>
           {this.props.rowIndex + 1}
         </span>
-        <Image src={this.getIcon(security.symbol)}
+        <Image
+          src={this.icon}
           inline
           verticalAlign="middle"
           style={isMobile ? { marginLeft: 6 } : { marginRight: 12 }}
@@ -92,6 +86,19 @@ class PricesRow extends React.Component {
         </span>
       </div>
     )
+  }
+
+  render() {
+    const isMobile = this.props.isMobile
+    const security = this.props.security
+    const baseCurrency = this.props.baseCurrency
+    const delta24h = formatPercentChange(security.percentChange24h)
+    const delta7d = formatPercentChange(security.percentChange7d)
+    const supply = security.marketCap / security.price
+    const marketCap = shortenLargeNumber(security.marketCap, this.props.baseCurrency)
+    const balance = security.balance
+    const fiatValue = formatFiat(balance * security.price, baseCurrency)
+    const balanceBorderColor = borderColor
 
     return (
       <Table.Row
@@ -101,7 +108,7 @@ class PricesRow extends React.Component {
         <SecurityModal
           security={security}
           isModalOpen={this.state.isModalOpen}
-          header={getSecurityIcon(security.name)}
+          getSecurityIcon={this.getSecurityIcon}
           onClose={this.closeModal}
           balance={balance}
           addManualTransaction={this.props.addManualTransaction}
@@ -118,7 +125,7 @@ class PricesRow extends React.Component {
           ) : null}
           <a
             style={{ color: '#fff' }}
-            href={this.getCMCHref()}>{getSecurityIcon(security.symbol)}</a>
+            href={this.getCMCHref()}>{this.getSecurityIcon(security.symbol)}</a>
         </Table.Cell>
         <Table.Cell textAlign="right">
           <div>{this.formatPrice(security.price)}</div>
