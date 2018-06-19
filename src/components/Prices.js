@@ -48,7 +48,6 @@ class Prices extends React.PureComponent {
     const isMobile = this.props.isMobile
     const isDesktop = this.props.isDesktop
     const padding = isMobile ? mobilePadding : desktopPadding
-    // const symbols = this.props.symbolsCSV.split(',')
     return (
       <div style={{
         padding,
@@ -85,7 +84,6 @@ Prices.propTypes = {
   addManualTransaction: PropTypes.func.isRequired,
   baseCurrency: PropTypes.string.isRequired,
   securities: PropTypes.array.isRequired,
-  // symbolsCSV: PropTypes.string.isRequired,
   symbolOffset: PropTypes.number.isRequired,
   isFetching: PropTypes.bool,
   failureMessage: PropTypes.string,
