@@ -4,6 +4,7 @@ import { Dimmer, Loader, Table } from 'semantic-ui-react'
 import PricesRow from './PricesRow'
 import PropTypes from 'prop-types'
 import BinanceSetupModal from './BinanceSetupModal'
+import SecurityModal from './SecurityModal'
 
 class Prices extends React.PureComponent {
   constructor(props) {
@@ -12,6 +13,8 @@ class Prices extends React.PureComponent {
       isBinanceSetupModalOpen: false
     }
     this.openBinanceSetupModal = this.openBinanceSetupModal.bind(this)
+    this.closeSecurityModal = this.closeSecurityModal.bind(this)
+    this.openSecurityModal = this.openSecurityModal.bind(this)
   }
 
   openBinanceSetupModal(val) {
@@ -28,8 +31,21 @@ class Prices extends React.PureComponent {
         baseCurrency={this.props.baseCurrency}
         isMobile={this.props.isMobile}
         openBinanceSetupModal={this.openBinanceSetupModal}
+        openSecurityModal={this.openSecurityModal}
       />
     ))
+  }
+
+  closeSecurityModal() {
+    this.setState({isModalOpen: false})
+  }
+
+  openSecurityModal({security, getSecurityIcon}) {
+    this.setState({
+      isModalOpen: true,
+      modalSecurity: security,
+      modalGetSecurityIcon: getSecurityIcon
+    })
   }
 
   render() {
@@ -48,6 +64,13 @@ class Prices extends React.PureComponent {
     const isMobile = this.props.isMobile
     const isDesktop = this.props.isDesktop
     const padding = isMobile ? mobilePadding : desktopPadding
+
+    const {
+      modalSecurity,
+      isModalOpen,
+      modalGetSecurityIcon
+    } = this.state
+
     return (
       <div style={{
         padding,
@@ -71,6 +94,15 @@ class Prices extends React.PureComponent {
           </Table.Body>
         </Table>
         {/* Plugins */}
+        <SecurityModal
+          security={modalSecurity}
+          isModalOpen={isModalOpen}
+          getSecurityIcon={modalGetSecurityIcon}
+          onClose={this.closeSecurityModal}
+          addManualTransaction={this.props.addManualTransaction}
+          removeManualTransactions={this.props.removeManualTransactions}
+          openBinanceSetupModal={this.openBinanceSetupModal}
+        />
         <BinanceSetupModal
           isModalOpen={this.state.isBinanceSetupModalOpen}
           openBinanceSetupModal={this.openBinanceSetupModal}

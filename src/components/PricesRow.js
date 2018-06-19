@@ -9,7 +9,6 @@ import {
   formatPercentChange
 } from '../lib/formatNumber'
 import { borderColor } from '../lib/styles'
-import SecurityModal from './SecurityModal'
 import { rowsPerPage } from '../selectors/securitiesSelectors'
 import PropTypes from 'prop-types'
 
@@ -22,7 +21,6 @@ class PricesRow extends React.Component {
     }
     this.icon = this.getIcon(this.props.security.symbol)
     this.balanceBorderTimer = null
-    this.closeModal = this.closeModal.bind(this)
     this.toggleBalanceBorder = this.toggleBalanceBorder.bind(this)
     this.handleVisibilityChange = this.handleVisibilityChange.bind(this)
     this.getSecurityIcon = this.getSecurityIcon.bind(this)
@@ -57,10 +55,6 @@ class PricesRow extends React.Component {
 
   formatPrice(num) {
     return formatFiat(num, this.props.baseCurrency)
-  }
-
-  closeModal() {
-    this.setState({ isModalOpen: false })
   }
 
   getSecurityIcon({ label, isModal }) {
@@ -116,17 +110,6 @@ class PricesRow extends React.Component {
         onMouseOver={this.toggleBalanceBorder}
         onMouseOut={this.toggleBalanceBorder}
       >
-        <SecurityModal
-          security={security}
-          isModalOpen={this.state.isModalOpen}
-          getSecurityIcon={this.getSecurityIcon}
-          onClose={this.closeModal}
-          balance={balance}
-          addManualTransaction={this.props.addManualTransaction}
-          removeManualTransactions={this.props.removeManualTransactions}
-          openBinanceSetupModal={this.props.openBinanceSetupModal}
-        />
-
         <Table.Cell>
           {(this.props.rowIndex % rowsPerPage === 0) ? (
             <Visibility
@@ -152,7 +135,12 @@ class PricesRow extends React.Component {
         {isMobile ? null : <Table.Cell textAlign="right" style={delta7d.style}>{delta7d.value}</Table.Cell>}
         <Table.Cell textAlign="center">
           <div
-            onClick={() => this.setState({ isModalOpen: true })}
+            onClick={() => {
+              this.props.openSecurityModal({
+                security: this.props.security,
+                getSecurityIcon: this.getSecurityIcon
+              })
+            }}
             style={{
               cursor: 'pointer',
               width: isMobile ? 80 : 100,
@@ -187,7 +175,8 @@ PricesRow.propTypes = {
   baseCurrency: PropTypes.string.isRequired,
   security: PropTypes.object.isRequired,
   rowIndex: PropTypes.number.isRequired,
-  setLastVisibleRow: PropTypes.func.isRequired
+  setLastVisibleRow: PropTypes.func.isRequired,
+  openSecurityModal: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state, props) => ({
