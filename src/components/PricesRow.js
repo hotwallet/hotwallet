@@ -10,7 +10,7 @@ import {
 } from '../lib/formatNumber'
 import { borderColor } from '../lib/styles'
 import SecurityModal from './SecurityModal'
-import { rowsPerPage, getSecurityWithBalance } from '../selectors/securitiesSelectors'
+import { rowsPerPage } from '../selectors/securitiesSelectors'
 import PropTypes from 'prop-types'
 
 class PricesRow extends React.Component {
@@ -20,8 +20,10 @@ class PricesRow extends React.Component {
       inputQtyHover: false,
       isModalOpen: false
     }
-    this.renderCount = 0
     this.balanceBorderTimer = null
+    this.closeModal = this.closeModal.bind(this)
+    this.toggleBalanceBorder = this.toggleBalanceBorder.bind(this)
+    this.handleVisibilityChange = this.handleVisibilityChange.bind(this)
   }
 
   handleVisibilityChange(e, data) {
@@ -55,8 +57,11 @@ class PricesRow extends React.Component {
     return formatFiat(num, this.props.baseCurrency)
   }
 
+  closeModal() {
+    this.setState({ isModalOpen: false })
+  }
+
   render() {
-    this.renderCount += 1
     const isMobile = this.props.isMobile
     const symbolStyle = {
       fontSize: isMobile ? null : 18,
@@ -69,7 +74,6 @@ class PricesRow extends React.Component {
     const delta7d = formatPercentChange(security.percentChange7d)
     const supply = security.marketCap / security.price
     const marketCap = shortenLargeNumber(security.marketCap, this.props.baseCurrency)
-    // const balance = this.props.balance
     const balance = security.balance
     const fiatValue = formatFiat(balance * security.price, baseCurrency)
     const balanceBorderColor = borderColor
@@ -91,14 +95,14 @@ class PricesRow extends React.Component {
 
     return (
       <Table.Row
-        onMouseOver={() => this.toggleBalanceBorder()}
-        onMouseOut={() => this.toggleBalanceBorder()}
+        onMouseOver={this.toggleBalanceBorder}
+        onMouseOut={this.toggleBalanceBorder}
       >
         <SecurityModal
           security={security}
           isModalOpen={this.state.isModalOpen}
           header={getSecurityIcon(security.name)}
-          onClose={() => this.setState({ isModalOpen: false })}
+          onClose={this.closeModal}
           balance={balance}
           addManualTransaction={this.props.addManualTransaction}
           openBinanceSetupModal={this.props.openBinanceSetupModal}
@@ -107,8 +111,9 @@ class PricesRow extends React.Component {
         <Table.Cell>
           {(this.props.rowIndex % rowsPerPage === 0) ? (
             <Visibility
+              fireOnMount
               rowindex={this.props.rowIndex}
-              onUpdate={(e, data) => this.handleVisibilityChange(e, data)}
+              onUpdate={this.handleVisibilityChange}
             />
           ) : null}
           <a
@@ -160,13 +165,13 @@ PricesRow.propTypes = {
   openBinanceSetupModal: PropTypes.func.isRequired,
   isMobile: PropTypes.bool,
   baseCurrency: PropTypes.string.isRequired,
-  symbol: PropTypes.string.isRequired,
+  security: PropTypes.object.isRequired,
   rowIndex: PropTypes.number.isRequired,
   setLastVisibleRow: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state, props) => ({
-  security: getSecurityWithBalance(state, props.symbol)
+  // security: getSecurityWithBalance(state, props.symbol)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PricesRow)
