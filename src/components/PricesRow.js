@@ -63,21 +63,21 @@ class PricesRow extends React.Component {
     this.setState({ isModalOpen: false })
   }
 
-  getSecurityIcon(label) {
+  getSecurityIcon({ label, isModal }) {
     // TODO: use security.rank instead of rowIndex
     const rank = this.props.rowIndex + 1
-    const isMobile = this.props.isMobile
+    const isMobileRow = this.props.isMobile && !isModal
     const symbolStyle = {
-      fontSize: isMobile ? null : 18,
+      fontSize: isMobileRow ? null : 18,
       verticalAlign: 'middle',
-      display: isMobile ? 'block' : 'inline'
+      display: isMobileRow ? 'block' : 'inline'
     }
     const rankStyle = {
       color: 'gray',
       marginRight: 10,
       fontSize: 10
     }
-    if (isMobile) {
+    if (isMobileRow) {
       rankStyle.position = 'absolute'
       rankStyle.left = 50
     }
@@ -90,7 +90,7 @@ class PricesRow extends React.Component {
           src={this.icon}
           inline
           verticalAlign="middle"
-          style={isMobile ? { marginLeft: 6 } : { marginRight: 12 }}
+          style={isMobileRow ? { marginLeft: 6 } : { marginRight: 12 }}
         />
         <span style={symbolStyle}>
           {label}
@@ -136,7 +136,7 @@ class PricesRow extends React.Component {
           ) : null}
           <a
             style={{ color: '#fff' }}
-            href={this.getCMCHref()}>{this.getSecurityIcon(security.symbol)}</a>
+            href={this.getCMCHref()}>{this.getSecurityIcon({ label: security.symbol })}</a>
         </Table.Cell>
         <Table.Cell textAlign="right">
           <div>{this.formatPrice(security.price)}</div>

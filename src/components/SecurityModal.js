@@ -95,7 +95,7 @@ class SecurityModal extends React.Component {
       transactionsBySymbol
     } = this.props
 
-    const header = getSecurityIcon(security.name)
+    const header = getSecurityIcon({ label: security.name, isModal: true })
     const importButtons = this.getImportButtons()
     const { symbol } = security
     const balances = (transactionsBySymbol[symbol] || []).reduce((b, val) => {
