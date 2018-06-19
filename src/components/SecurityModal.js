@@ -174,7 +174,7 @@ class SecurityModal extends React.Component {
               this.props.removeManualTransactions(this.props.security.symbol)
               this.setState({manualBalance: undefined})
               onClose()
-            }}>Clear Manual Transactions</Button>
+            }}>Clear History</Button>
           }
 
           {importButtons.length ? (
