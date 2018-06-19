@@ -123,6 +123,7 @@ class PricesRow extends React.Component {
           onClose={this.closeModal}
           balance={balance}
           addManualTransaction={this.props.addManualTransaction}
+          removeManualTransactions={this.props.removeManualTransactions}
           openBinanceSetupModal={this.props.openBinanceSetupModal}
         />
 
@@ -180,6 +181,7 @@ class PricesRow extends React.Component {
 
 PricesRow.propTypes = {
   addManualTransaction: PropTypes.func.isRequired,
+  removeManualTransactions: PropTypes.func.isRequired,
   openBinanceSetupModal: PropTypes.func.isRequired,
   isMobile: PropTypes.bool,
   baseCurrency: PropTypes.string.isRequired,

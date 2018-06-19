@@ -17,6 +17,8 @@ const dividerStyle = {
   color: '#999'
 }
 
+const isNumber = (n) => !isNaN(parseFloat(n)) && isFinite(n)
+
 class SecurityModal extends React.Component {
   constructor(props) {
     super(props)
@@ -75,11 +77,13 @@ class SecurityModal extends React.Component {
   }
 
   save() {
-    this.props.addManualTransaction({
-      symbol: this.props.security.symbol,
-      balance: this.state.manualBalance,
-      txTime: this.state.manualTxTime
-    })
+    if (isNumber(this.state.manualBalance)) {
+      this.props.addManualTransaction({
+        symbol: this.props.security.symbol,
+        balance: this.state.manualBalance,
+        txTime: this.state.manualTxTime
+      })
+    }
   }
 
   onChangeDateInput(e) {
@@ -103,6 +107,8 @@ class SecurityModal extends React.Component {
       return b
     }, {})
     const importedWalletIds = Object.keys(balances).filter(k => k !== 'manual')
+
+    const clearButton = isNumber(balances.manual) && this.state.manualBalance === ''
 
     return (
       <Modal
@@ -155,10 +161,21 @@ class SecurityModal extends React.Component {
               ))}
             </Table.Body>
           </Table>
-          <Button color="blue" fluid style={buttonStyle} onClick={() => {
-            this.save()
-            onClose()
-          }}>Save</Button>
+
+          {!clearButton &&
+            <Button color="blue" fluid style={buttonStyle} onClick={() => {
+              this.save()
+              onClose()
+            }}>Save</Button>
+          }
+
+          {clearButton &&
+            <Button color="red" fluid style={buttonStyle} onClick={() => {
+              this.props.removeManualTransactions(this.props.security.symbol)
+              this.setState({manualBalance: undefined})
+              onClose()
+            }}>Clear History</Button>
+          }
 
           {importButtons.length ? (
             <div>
