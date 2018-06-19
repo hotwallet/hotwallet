@@ -93,6 +93,8 @@ class SecurityModal extends React.Component {
     }, {})
     const importedWalletIds = Object.keys(balances).filter(k => k !== 'manual')
 
+    const clearButton = isNumber(balances.manual) && this.state.manualBalance === ''
+
     return (
       <Modal
         closeIcon
@@ -146,16 +148,20 @@ class SecurityModal extends React.Component {
               ))}
             </Table.Body>
           </Table>
-          <Button color="blue" fluid style={buttonStyle} onClick={() => {
-            this.save()
-            onClose()
-          }}>Save</Button>
-          {isNumber(balances.manual) &&
+
+          {!clearButton &&
+            <Button color="blue" fluid style={buttonStyle} onClick={() => {
+              this.save()
+              onClose()
+            }}>Save</Button>
+          }
+
+          {clearButton &&
             <Button color="red" fluid style={buttonStyle} onClick={() => {
               this.props.removeManualTransactions(this.props.security.symbol)
               this.setState({manualBalance: undefined})
               onClose()
-            }}>Delete All Manual Transactions</Button>
+            }}>Clear Manual Transactions</Button>
           }
 
           {importButtons.length ? (
