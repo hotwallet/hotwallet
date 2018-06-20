@@ -25,6 +25,7 @@ class App extends React.Component {
     })
     if (this.props.lastBinanceSync + fiveMinutes < Date.now()) {
       this.props.fetchBinanceBalances()
+      this.props.fetchWalletBalances()
     }
   }
 
