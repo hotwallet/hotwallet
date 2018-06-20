@@ -165,7 +165,7 @@ class Prices extends React.PureComponent {
                     autoHeight
                     // className="inverted unstackable selectable"
                     // style={table}
-                    overscanRowCount={75}
+                    overscanRowCount={10}
                     rowClassName="asdr"
                     headerClassName="asdh"
                     rowGetter={this.getRow}
