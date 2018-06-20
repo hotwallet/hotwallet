@@ -4,7 +4,6 @@ import cloudscraper from 'cloudscraper'
 const corsAnywhere = 'cors-anywhere.herokuapp.com'
 
 export default class EthereumClient {
-
   async getHtml(url) {
     return new Promise((resolve, reject) => {
       cloudscraper.get(url, (err, response, body) => {

@@ -1,6 +1,7 @@
 {
   "extends": ["standard", "standard-jsx"],
   "plugins": ["eslint-plugin-jest"],
+  "parser": "babel-eslint",
   "rules": {
     "jsx-quotes": ["error", "prefer-double"],
     "space-before-function-paren": ["error", {"anonymous": "always", "named": "never", "asyncArrow": "always"}]

@@ -52,7 +52,7 @@ class SecurityModal extends React.Component {
   onClickImportWalletButton(wallet) {
     this.props.onClose()
     const modalName = `open${wallet}SetupModal`
-    if (!this.props[modalName]) return alert(`Import ${wallet} coming soon.`)
+    if (!this.props[modalName]) return
     this.props[modalName](true)
   }
 
@@ -125,7 +125,7 @@ class SecurityModal extends React.Component {
       return b
     }, {})
     const importedWalletIds = Object.keys(balances).filter(k => k !== 'manual')
-    
+
     const clearButton = isNumber(balances.manual) && this.state.manualBalance === ''
 
     const getWalletName = walletId => {
