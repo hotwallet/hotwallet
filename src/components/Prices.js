@@ -165,7 +165,7 @@ class Prices extends React.PureComponent {
                     autoHeight
                     // className="inverted unstackable selectable"
                     // style={table}
-                    overscanRowCount={10}
+                    overscanRowCount={75}
                     rowClassName="asdr"
                     headerClassName="asdh"
                     rowGetter={this.getRow}
@@ -229,7 +229,7 @@ class Prices extends React.PureComponent {
                               width: isMobile ? 80 : 100,
                               padding: '0.5em 1em',
                               border: `2px solid lightblue`,
-                              textAlign: 'center',
+                              textAlign: 'center'
                               // margin: '0 auto'
                             }}>{(rowData.balance >= 0) ? roundToSignificantFigures(rowData.balance) : '\u00A0'}</div>
                         )
