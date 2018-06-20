@@ -4,6 +4,7 @@ import moment from 'moment'
 import { Modal, Button, Table, Divider, Input } from 'semantic-ui-react'
 import { lightBg } from '../lib/styles'
 import PricesInputQty from './PricesInputQty'
+import ImportWalletButton from './ImportWalletButton'
 import { binanceSymbols, supportedWallets } from '../config'
 
 const buttonStyle = {
@@ -27,6 +28,7 @@ class SecurityModal extends React.Component {
     }
     this.setManualBalance = this.setManualBalance.bind(this)
     this.onClickImportBinanceButton = this.onClickImportBinanceButton.bind(this)
+    this.onClickImportWalletButton = this.onClickImportWalletButton.bind(this)
     this.onChangeDateInput = this.onChangeDateInput.bind(this)
   }
 
@@ -45,6 +47,13 @@ class SecurityModal extends React.Component {
     const { onClose, openBinanceSetupModal } = this.props
     onClose()
     openBinanceSetupModal(true)
+  }
+
+  onClickImportWalletButton(wallet) {
+    this.props.onClose()
+    const modalName = `open${wallet}SetupModal`
+    if (!this.props[modalName]) return
+    this.props[modalName](true)
   }
 
   getImportBinanceButton() {
@@ -72,7 +81,12 @@ class SecurityModal extends React.Component {
     })
     if (!wallet) return
     return (
-      <Button key="import-wallet" color="black" fluid style={buttonStyle}>Import {wallet} wallet</Button>
+      <ImportWalletButton
+        key="import-wallet"
+        wallet={wallet}
+        style={buttonStyle}
+        onClick={this.onClickImportWalletButton}
+      />
     )
   }
 
@@ -114,6 +128,11 @@ class SecurityModal extends React.Component {
 
     const clearButton = isNumber(balances.manual) && this.state.manualBalance === ''
 
+    const getWalletName = walletId => {
+      if (walletId.includes(':')) return walletId.split(':')[1].substr(0, 10)
+      return walletId
+    }
+
     return (
       <Modal
         closeIcon
@@ -152,7 +171,7 @@ class SecurityModal extends React.Component {
               {importedWalletIds.map(walletId => (
                 <Table.Row style={rowStyle} key={walletId}>
                   <Table.Cell textAlign="left">
-                    {walletId}
+                    {getWalletName(walletId)}
                   </Table.Cell>
                   <Table.Cell>
                     <PricesInputQty

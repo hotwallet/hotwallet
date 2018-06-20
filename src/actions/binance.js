@@ -1,6 +1,5 @@
-// TODO: use a more lightweight library
 import BinanceClient from '../lib/BinanceClient'
-import { addBinanceTransaction } from './transactions'
+import { addImportedTransaction } from './transactions'
 import { getBalanceForSymbol } from '../selectors/transactionSelectors'
 
 export const SET_BINANCE_API_KEYS = 'SET_BINANCE_API_KEYS'
@@ -26,9 +25,10 @@ export const fetchBinanceBalances = () => (dispatch, getState) => {
         const oldBalance = getBalanceForSymbol(state, symbol)
         if (newBalance !== oldBalance) {
           if (newBalance === 0 && oldBalance === undefined) return
-          addBinanceTransaction({
+          addImportedTransaction({
             symbol,
-            balance: newBalance
+            balance: newBalance,
+            walletId: 'Binance'
           })(dispatch, getState)
         }
       })

@@ -4,6 +4,7 @@ import { Dimmer, Loader, Table } from 'semantic-ui-react'
 import PricesRow from './PricesRow'
 import PropTypes from 'prop-types'
 import BinanceSetupModal from './BinanceSetupModal'
+import EthereumSetupModal from './EthereumSetupModal'
 import SecurityModal from './SecurityModal'
 
 class Prices extends React.PureComponent {
@@ -12,13 +13,14 @@ class Prices extends React.PureComponent {
     this.state = {
       isBinanceSetupModalOpen: false
     }
-    this.openBinanceSetupModal = this.openBinanceSetupModal.bind(this)
-    this.closeSecurityModal = this.closeSecurityModal.bind(this)
-    this.openSecurityModal = this.openSecurityModal.bind(this)
   }
 
-  openBinanceSetupModal(val) {
+  openBinanceSetupModal = val => {
     this.setState({ isBinanceSetupModalOpen: val })
+  }
+
+  openEthereumSetupModal = val => {
+    this.setState({ isEthereumSetupModalOpen: val })
   }
 
   getRows(securities) {
@@ -32,15 +34,16 @@ class Prices extends React.PureComponent {
         isMobile={this.props.isMobile}
         openBinanceSetupModal={this.openBinanceSetupModal}
         openSecurityModal={this.openSecurityModal}
+        openEthereumSetupModal={this.openEthereumSetupModal}
       />
     ))
   }
 
-  closeSecurityModal() {
+  closeSecurityModal = () => {
     this.setState({isModalOpen: false})
   }
 
-  openSecurityModal({security, getSecurityIcon}) {
+  openSecurityModal = ({security, getSecurityIcon}) => {
     this.setState({
       isModalOpen: true,
       modalSecurity: security,
@@ -93,7 +96,6 @@ class Prices extends React.PureComponent {
             {this.getRows(this.props.securities)}
           </Table.Body>
         </Table>
-        {/* Plugins */}
         <SecurityModal
           security={modalSecurity}
           isModalOpen={isModalOpen}
@@ -102,10 +104,15 @@ class Prices extends React.PureComponent {
           addManualTransaction={this.props.addManualTransaction}
           removeManualTransactions={this.props.removeManualTransactions}
           openBinanceSetupModal={this.openBinanceSetupModal}
+          openEthereumSetupModal={this.openEthereumSetupModal}
         />
         <BinanceSetupModal
           isModalOpen={this.state.isBinanceSetupModalOpen}
           openBinanceSetupModal={this.openBinanceSetupModal}
+        />
+        <EthereumSetupModal
+          isModalOpen={this.state.isEthereumSetupModalOpen}
+          openEthereumSetupModal={this.openEthereumSetupModal}
         />
       </div>
     )
