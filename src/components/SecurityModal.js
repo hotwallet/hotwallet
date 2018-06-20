@@ -99,6 +99,10 @@ class SecurityModal extends React.Component {
       transactionsBySymbol
     } = this.props
 
+    if (!security) {
+      return null
+    }
+
     const header = getSecurityIcon({ label: security.name, isModal: true })
     const importButtons = this.getImportButtons()
     const { symbol } = security
