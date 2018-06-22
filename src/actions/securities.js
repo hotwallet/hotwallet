@@ -20,7 +20,6 @@ export const fetchSecurities = () => (dispatch, getState) => {
         type: SECURITIES_FETCH_SUCCESS,
         response: normalize(response, schema.arrayOfSecurities)
       })
-      client.socket.subscribeToPriceUpdates()
     })
     .catch(error => {
       dispatch({

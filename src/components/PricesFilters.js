@@ -63,6 +63,10 @@ class PricesFilters extends React.Component {
       inputProps = { icon: 'search' }
     }
 
+    const toggleHide = this.props.balancesOnly ? 'Hiding' : 'Hide'
+    const toggleBlanks = this.props.isMobile ? 'blanks' : 'blank balances'
+    const toggleLabel = `${toggleHide} ${toggleBlanks}`
+
     return (
       <div style={{
         padding: `${padding}px ${padding}px 0`
@@ -99,7 +103,7 @@ class PricesFilters extends React.Component {
                   cursor: 'pointer'
                 }}
               >
-                {this.props.balancesOnly ? 'Hiding' : 'Hide'} empty balances
+                {toggleLabel}
                 <Checkbox
                   checked={this.props.balancesOnly && !this.props.query}
                   onChange={this.onToggle}

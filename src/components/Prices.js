@@ -4,6 +4,7 @@ import { Dimmer, Loader, Image } from 'semantic-ui-react'
 import PricesRow from './PricesRow'
 import PropTypes from 'prop-types'
 import BinanceSetupModal from './BinanceSetupModal'
+import EthereumSetupModal from './EthereumSetupModal'
 import SecurityModal from './SecurityModal'
 import 'react-virtualized/styles.css'
 import { Table as VTable, WindowScroller, AutoSizer, Column } from 'react-virtualized'
@@ -31,7 +32,11 @@ class Prices extends React.PureComponent {
     return formatFiat(num, this.props.baseCurrency)
   }
 
-  openBinanceSetupModal(val) {
+  openEthereumSetupModal = val => {
+    this.setState({ isEthereumSetupModalOpen: val })
+  }
+
+  openBinanceSetupModal = val => {
     this.setState({ isBinanceSetupModalOpen: val })
   }
 
@@ -66,65 +71,21 @@ class Prices extends React.PureComponent {
         isMobile={this.props.isMobile}
         openBinanceSetupModal={this.openBinanceSetupModal}
         openSecurityModal={this.openSecurityModal}
+        openEthereumSetupModal={this.openEthereumSetupModal}
       />
     ))
   }
 
-  closeSecurityModal() {
+  closeSecurityModal = () => {
     this.setState({isModalOpen: false})
   }
 
-  openSecurityModal({security, getSecurityIcon}) {
+  openSecurityModal = ({ security, iconSrc }) => {
     this.setState({
       isModalOpen: true,
       modalSecurity: security,
-      modalGetSecurityIcon: getSecurityIcon
+      modalIconSrc: iconSrc
     })
-  }
-
-  getIcon(symbol) {
-    const size = this.props.isMobile ? '16x16' : '32x32'
-    return `https://chnnl.imgix.net/tarragon/icons/${size}/${symbol}.png`
-  }
-
-  getSecurityIcon({ security, label, isModal }) {
-    // TODO: use security.rank instead of rowIndex
-    const rank = 1 // this.props.rowIndex + 1
-    const isMobileRow = this.props.isMobile && !isModal
-    const symbolStyle = {
-      fontSize: isMobileRow ? null : 18,
-      verticalAlign: 'middle',
-      display: isMobileRow ? 'block' : 'inline'
-    }
-    const rankStyle = {
-      color: 'gray',
-      marginRight: 10,
-      fontSize: 10
-    }
-    if (isMobileRow) {
-      rankStyle.position = 'absolute'
-      rankStyle.left = 50
-    }
-    return (
-      <div>
-        <span style={rankStyle}>
-          {rank}
-        </span>
-        <Image
-          src={this.getIcon(security.symbol)}
-          inline
-          verticalAlign="middle"
-          style={isMobileRow ? { marginLeft: 6 } : { marginRight: 12 }}
-        />
-        <span style={symbolStyle}>
-          {label}
-        </span>
-      </div>
-    )
-  }
-
-  getCMCHref(security) {
-    return `https://coinmarketcap.com/currencies/${security.slug}/`
   }
 
   render() {
@@ -147,7 +108,7 @@ class Prices extends React.PureComponent {
     const {
       modalSecurity,
       isModalOpen,
-      modalGetSecurityIcon
+      modalIconSrc
     } = this.state
 
     return (
@@ -245,15 +206,22 @@ class Prices extends React.PureComponent {
         <SecurityModal
           security={modalSecurity}
           isModalOpen={isModalOpen}
-          getSecurityIcon={modalGetSecurityIcon}
+          iconSrc={modalIconSrc}
           onClose={this.closeSecurityModal}
           addManualTransaction={this.props.addManualTransaction}
           removeManualTransactions={this.props.removeManualTransactions}
           openBinanceSetupModal={this.openBinanceSetupModal}
+          openEthereumSetupModal={this.openEthereumSetupModal}
         />
+
         <BinanceSetupModal
           isModalOpen={this.state.isBinanceSetupModalOpen}
           openBinanceSetupModal={this.openBinanceSetupModal}
+        />
+
+        <EthereumSetupModal
+          isModalOpen={this.state.isEthereumSetupModalOpen}
+          openEthereumSetupModal={this.openEthereumSetupModal}
         />
       </div>
     )

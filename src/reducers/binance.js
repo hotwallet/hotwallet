@@ -1,7 +1,3 @@
-/**
- * state.app is ephemeral data that will not be saved to localStorage
- */
-
 import {
   SET_BINANCE_API_KEYS,
   SET_BINANCE_SYNC_TIME

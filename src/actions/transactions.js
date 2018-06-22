@@ -34,15 +34,13 @@ export const addManualTransaction = tx => (dispatch, getState) => {
   addTransactions([newTx])(dispatch, getState)
 }
 
-export const addBinanceTransaction = tx => (dispatch, getState) => {
-  const walletId = 'Binance'
+export const addImportedTransaction = tx => (dispatch, getState) => {
   const txTime = new Date().toISOString()
   const newTx = {
     id: v4(),
     txTime,
     ...tx,
-    balance: Number(tx.balance),
-    walletId
+    balance: Number(tx.balance)
   }
   addTransactions([newTx])(dispatch, getState)
 }
@@ -52,6 +50,7 @@ export const addTransactions = txs => (dispatch, getState) => {
     type: ADD_TRANSACTIONS,
     txs
   })
+
   refreshChart()(dispatch, getState)
 }
 

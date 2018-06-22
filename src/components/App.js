@@ -15,33 +15,34 @@ const fiveMinutes = 1000 * 60 * 5
 
 class App extends React.Component {
   componentDidMount() {
-    this.onResize()
-    let resizeTimer
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer)
-      resizeTimer = setTimeout(() => {
-        this.onResize()
-      }, 100)
-    })
+    this.throttleWindowChange()
+    this.resizeTimer = null
+    window.addEventListener('resize', this.throttleWindowChange)
+
     if (this.props.lastBinanceSync + fiveMinutes < Date.now()) {
       this.props.fetchBinanceBalances()
+      this.props.fetchWalletBalances()
     }
   }
 
+  throttleWindowChange = () => {
+    clearTimeout(this.resizeTimer)
+    this.resizeTimer = setTimeout(() => this.onResize(), 100)
+  }
+
   onResize() {
-    const width = window.innerWidth ||
-      document.documentElement.clientWidth ||
-      document.body.clientWidth
+    const width = document.body.clientWidth
     const isMobile = (width <= 765)
     const isTablet = (width > 765 && width < 1165)
     const isDesktop = (width >= 1165)
-    this.props.setDevice({
+    const device = {
       isMobile,
       isTablet,
       isDesktop,
       width,
       deviceType: isMobile ? 'mobile' : isTablet ? 'tablet' : 'desktop'
-    })
+    }
+    this.props.setDevice(device)
   }
 
   render() {

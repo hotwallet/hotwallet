@@ -1,6 +1,7 @@
 import { fetchSecurities } from './securities'
 import { clearPrices } from './prices'
 import { refreshChart } from './portfolio'
+import client from '../lib/tarragonClient'
 
 export const SET_BASE_CURRENCY = 'SET_BASE_CURRENCY'
 
@@ -13,6 +14,8 @@ export const setBaseCurrency = currency => (dispatch, getState) => {
     type: SET_BASE_CURRENCY,
     currency
   })
+
+  client.socket.syncSubscriptions()
 
   refreshChart()(dispatch, getState)
 

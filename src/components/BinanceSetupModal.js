@@ -40,7 +40,7 @@ class BinanceSetupModal extends React.Component {
     }
   }
 
-  connectBinance() {
+  connectBinance = () => {
     this.props.setBinanceApiKeys({
       apiKey: this.state.apiKey,
       secretKey: this.state.secretKey
@@ -108,7 +108,7 @@ class BinanceSetupModal extends React.Component {
             color="blue"
             fluid
             style={buttonStyle}
-            onClick={() => this.connectBinance()}
+            onClick={this.connectBinance}
           >Connect</Button>
           <Message color="black">
             <Message.Header>
