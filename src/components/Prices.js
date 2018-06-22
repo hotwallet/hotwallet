@@ -43,11 +43,11 @@ class Prices extends React.PureComponent {
     this.setState({isModalOpen: false})
   }
 
-  openSecurityModal = ({security, getSecurityIcon}) => {
+  openSecurityModal = ({ security, iconSrc }) => {
     this.setState({
       isModalOpen: true,
       modalSecurity: security,
-      modalGetSecurityIcon: getSecurityIcon
+      modalIconSrc: iconSrc
     })
   }
 
@@ -71,7 +71,7 @@ class Prices extends React.PureComponent {
     const {
       modalSecurity,
       isModalOpen,
-      modalGetSecurityIcon
+      modalIconSrc
     } = this.state
 
     return (
@@ -96,20 +96,25 @@ class Prices extends React.PureComponent {
             {this.getRows(this.props.securities)}
           </Table.Body>
         </Table>
+
+        {/* modals */}
+
         <SecurityModal
           security={modalSecurity}
           isModalOpen={isModalOpen}
-          getSecurityIcon={modalGetSecurityIcon}
+          iconSrc={modalIconSrc}
           onClose={this.closeSecurityModal}
           addManualTransaction={this.props.addManualTransaction}
           removeManualTransactions={this.props.removeManualTransactions}
           openBinanceSetupModal={this.openBinanceSetupModal}
           openEthereumSetupModal={this.openEthereumSetupModal}
         />
+
         <BinanceSetupModal
           isModalOpen={this.state.isBinanceSetupModalOpen}
           openBinanceSetupModal={this.openBinanceSetupModal}
         />
+
         <EthereumSetupModal
           isModalOpen={this.state.isEthereumSetupModalOpen}
           openEthereumSetupModal={this.openEthereumSetupModal}

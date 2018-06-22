@@ -28,13 +28,17 @@ class PricesInputQty extends React.PureComponent {
         inverted
         ref={ref => {
           if (ref && !isMobile && !this.state.hasFocused) {
-            ref.focus()
+            // ref.focus()
             this.setState({ hasFocused: true })
           }
         }}
         disabled={this.props.disabled}
         min={0}
-        onFocus={e => e.target.select()}
+        onFocus={e => {
+          e.target.select()
+          this.props.onFocus()
+        }}
+        onBlur={this.props.onBlur}
         onKeyUp={e => this.validateValue(e)}
         onChange={e => {
           this.validateValue(e)
@@ -54,7 +58,9 @@ PricesInputQty.propTypes = {
   balance: PropTypes.number,
   symbol: PropTypes.string.isRequired,
   isMobile: PropTypes.bool,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func
 }
 
 export default PricesInputQty

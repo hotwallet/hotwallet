@@ -19,14 +19,11 @@ class PricesRow extends React.Component {
       inputQtyHover: false,
       isModalOpen: false
     }
-    this.icon = this.getIcon(this.props.security.symbol)
+    this.iconSrc = this.getIcon(this.props.security.symbol)
     this.balanceBorderTimer = null
-    this.toggleBalanceBorder = this.toggleBalanceBorder.bind(this)
-    this.handleVisibilityChange = this.handleVisibilityChange.bind(this)
-    this.getSecurityIcon = this.getSecurityIcon.bind(this)
   }
 
-  handleVisibilityChange(e, data) {
+  handleVisibilityChange = (e, data) => {
     const { calculations } = data
     const rowIndex = data.rowindex
     if (rowIndex % rowsPerPage !== 0) return
@@ -36,7 +33,7 @@ class PricesRow extends React.Component {
     this.props.setLastVisibleRow(rowIndex)
   }
 
-  toggleBalanceBorder() {
+  toggleBalanceBorder = () => {
     clearTimeout(this.balanceBorderTimer)
     this.balanceBorderTimer = setTimeout(() => {
       // TODO: re-render only the input component with lightBlue border color
@@ -57,42 +54,6 @@ class PricesRow extends React.Component {
     return formatFiat(num, this.props.baseCurrency)
   }
 
-  getSecurityIcon({ label, isModal }) {
-    // TODO: use security.rank instead of rowIndex
-    const rank = this.props.rowIndex + 1
-    const isMobileRow = this.props.isMobile && !isModal
-    const symbolStyle = {
-      fontSize: isMobileRow ? null : 18,
-      verticalAlign: 'middle',
-      display: isMobileRow ? 'block' : 'inline'
-    }
-    const rankStyle = {
-      color: 'gray',
-      marginRight: 10,
-      fontSize: 10
-    }
-    if (isMobileRow) {
-      rankStyle.position = 'absolute'
-      rankStyle.left = 50
-    }
-    return (
-      <div>
-        <span style={rankStyle}>
-          {rank}
-        </span>
-        <Image
-          src={this.icon}
-          inline
-          verticalAlign="middle"
-          style={isMobileRow ? { marginLeft: 6 } : { marginRight: 12 }}
-        />
-        <span style={symbolStyle}>
-          {label}
-        </span>
-      </div>
-    )
-  }
-
   render() {
     const isMobile = this.props.isMobile
     const security = this.props.security
@@ -104,6 +65,21 @@ class PricesRow extends React.Component {
     const balance = security.balance
     const fiatValue = formatFiat(balance * security.price, baseCurrency)
     const balanceBorderColor = borderColor
+
+    const rank = this.props.rowIndex + 1
+
+    const symbolStyle = {
+      fontSize: isMobile ? null : 18,
+      verticalAlign: 'middle',
+      display: isMobile ? 'block' : 'inline'
+    }
+    const rankStyle = {
+      color: 'gray',
+      marginRight: 10,
+      fontSize: 10,
+      position: isMobile ? 'absolute' : 'relative',
+      left: isMobile ? 40 : 0
+    }
 
     return (
       <Table.Row
@@ -119,8 +95,19 @@ class PricesRow extends React.Component {
             />
           ) : null}
           <a
-            style={{ color: '#fff' }}
-            href={this.getCMCHref()}>{this.getSecurityIcon({ label: security.symbol })}</a>
+            style={{ color: '#fff', whiteSpace: 'nowrap' }}
+            href={this.getCMCHref()}
+          >
+            <span style={rankStyle}>{rank}</span>
+            <Image
+              src={this.iconSrc}
+              inline
+              verticalAlign="middle"
+              style={{ marginRight: 10 }}
+            />
+            <span style={symbolStyle}>{security.symbol}</span>
+
+          </a>
         </Table.Cell>
         <Table.Cell textAlign="right">
           <div>{this.formatPrice(security.price)}</div>
@@ -138,7 +125,7 @@ class PricesRow extends React.Component {
             onClick={() => {
               this.props.openSecurityModal({
                 security: this.props.security,
-                getSecurityIcon: this.getSecurityIcon
+                iconSrc: this.iconSrc
               })
             }}
             style={{

@@ -1,14 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
-import { Modal, Button, Table, Divider, Input } from 'semantic-ui-react'
+import { Modal, Button, Table, Divider, Input, Image } from 'semantic-ui-react'
 import { lightBg } from '../lib/styles'
 import PricesInputQty from './PricesInputQty'
 import ImportWalletButton from './ImportWalletButton'
 import { binanceSymbols, supportedWallets } from '../config'
 
 const buttonStyle = {
-  marginBottom: 10
+  marginBottom: 5
 }
 const rowStyle = {
   color: '#fff',
@@ -24,15 +24,16 @@ class SecurityModal extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      manualTxTime: ''
+      manualTxTime: '',
+      inputHasFocus: false
     }
-    this.setManualBalance = this.setManualBalance.bind(this)
-    this.onClickImportBinanceButton = this.onClickImportBinanceButton.bind(this)
-    this.onClickImportWalletButton = this.onClickImportWalletButton.bind(this)
-    this.onChangeDateInput = this.onChangeDateInput.bind(this)
   }
 
-  setManualBalance(manualBalance) {
+  onOpen = () => {
+
+  }
+
+  setManualBalance = (manualBalance) => {
     this.setState({ manualBalance })
   }
 
@@ -43,14 +44,14 @@ class SecurityModal extends React.Component {
     ].filter(Boolean)
   }
 
-  onClickImportBinanceButton() {
-    const { onClose, openBinanceSetupModal } = this.props
-    onClose()
+  onClickImportBinanceButton = () => {
+    const { openBinanceSetupModal } = this.props
+    this.close()
     openBinanceSetupModal(true)
   }
 
-  onClickImportWalletButton(wallet) {
-    this.props.onClose()
+  onClickImportWalletButton = (wallet) => {
+    this.close()
     const modalName = `open${wallet}SetupModal`
     if (!this.props[modalName]) return
     this.props[modalName](true)
@@ -100,15 +101,26 @@ class SecurityModal extends React.Component {
     }
   }
 
-  onChangeDateInput(e) {
+  onInputFocus = () => {
+    this.setState({ inputHasFocus: true })
+  }
+
+  onInputBlur = () => {
+    // this.setState({ inputHasFocus: false })
+  }
+
+  onChangeDateInput = (e) => {
     this.setState({ manualTxTime: new Date(e.target.value).toISOString() })
+  }
+
+  close = () => {
+    this.props.onClose()
+    this.setState({ inputHasFocus: false })
   }
 
   render() {
     const {
       isModalOpen,
-      getSecurityIcon,
-      onClose,
       security,
       transactionsBySymbol
     } = this.props
@@ -117,7 +129,6 @@ class SecurityModal extends React.Component {
       return null
     }
 
-    const header = getSecurityIcon({ label: security.name, isModal: true })
     const importButtons = this.getImportButtons()
     const { symbol } = security
     const balances = (transactionsBySymbol[symbol] || []).reduce((b, val) => {
@@ -125,7 +136,6 @@ class SecurityModal extends React.Component {
       return b
     }, {})
     const importedWalletIds = Object.keys(balances).filter(k => k !== 'manual')
-
     const clearButton = isNumber(balances.manual) && this.state.manualBalance === ''
 
     const getWalletName = walletId => {
@@ -138,17 +148,39 @@ class SecurityModal extends React.Component {
         closeIcon
         size="mini"
         open={isModalOpen}
-        onClose={onClose}
+        onClose={this.close}
+        onOpen={this.onOpen}
         style={{
           backgroundColor: lightBg
         }}
       >
-        <Modal.Header style={{ color: '#fff' }}>{header}</Modal.Header>
+        <Modal.Header style={{ color: '#fff' }}>
+          <div>
+            <Image
+              src={this.props.iconSrc}
+              inline
+              verticalAlign="middle"
+              style={{ marginRight: 12 }}
+            />
+            <span style={{
+              fontSize: 18,
+              verticalAlign: 'middle',
+              display: 'inline'
+            }}>{this.props.security.name}</span>
+          </div>
+
+        </Modal.Header>
         <Modal.Content style={{ paddingTop: 0 }}>
-          <Table basic="very" celled>
+          <Table basic="very" celled compact="very">
             <Table.Body>
               <Table.Row style={rowStyle} key="manual">
-                <Table.Cell textAlign="left" verticalAlign="top" style={{ paddingTop: 20 }}>
+                <Table.Cell
+                  textAlign="left"
+                  verticalAlign={this.state.inputHasFocus ? 'top' : 'middle'}
+                  style={{
+                    marginTop: this.state.inputHasFocus ? 10 : 0
+                  }}
+                >
                   Manual Entry
                 </Table.Cell>
                 <Table.Cell width="ten">
@@ -157,17 +189,50 @@ class SecurityModal extends React.Component {
                     isMobile={this.props.isMobile}
                     symbol={symbol}
                     balance={balances.manual}
+                    onFocus={this.onInputFocus}
+                    onBlur={this.onInputBlur}
                   />
-                  <Divider fitted horizontal style={{ margin: '5px 0', ...dividerStyle }}>as of</Divider>
-                  <Input
-                    fluid
-                    inverted
-                    onChange={this.onChangeDateInput}
-                    type="date"
-                    defaultValue={moment().format('YYYY-MM-DD')}
-                  />
+                  <div style={{
+                    display: this.state.inputHasFocus ? 'block' : 'none'
+                  }}>
+                    <Divider fitted horizontal style={{ margin: '5px 0', ...dividerStyle }}>as of</Divider>
+                    <Input
+                      fluid
+                      inverted
+                      onFocus={this.onInputFocus}
+                      onBlur={this.onInputBlur}
+                      onChange={this.onChangeDateInput}
+                      type="date"
+                      defaultValue={moment().format('YYYY-MM-DD')}
+                      style={{ marginBottom: 10 }}
+                    />
+                    {!clearButton &&
+                      <Button
+                        color="blue"
+                        fluid
+                        style={buttonStyle}
+                        onClick={() => {
+                          this.save()
+                          this.close()
+                        }}
+                      >Save</Button>
+                    }
+                    {clearButton &&
+                      <Button
+                        color="red"
+                        fluid
+                        style={buttonStyle}
+                        onClick={() => {
+                          this.props.removeManualTransactions(this.props.security.symbol)
+                          this.setState({ manualBalance: undefined })
+                          this.close()
+                        }}
+                      >Clear History</Button>
+                    }
+                  </div>
                 </Table.Cell>
               </Table.Row>
+
               {importedWalletIds.map(walletId => (
                 <Table.Row style={rowStyle} key={walletId}>
                   <Table.Cell textAlign="left">
@@ -184,21 +249,6 @@ class SecurityModal extends React.Component {
               ))}
             </Table.Body>
           </Table>
-
-          {!clearButton &&
-            <Button color="blue" fluid style={buttonStyle} onClick={() => {
-              this.save()
-              onClose()
-            }}>Save</Button>
-          }
-
-          {clearButton &&
-            <Button color="red" fluid style={buttonStyle} onClick={() => {
-              this.props.removeManualTransactions(this.props.security.symbol)
-              this.setState({manualBalance: undefined})
-              onClose()
-            }}>Clear History</Button>
-          }
 
           {importButtons.length ? (
             <div>
