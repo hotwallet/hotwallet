@@ -139,7 +139,7 @@ class PricesRow extends React.Component {
             }}
             style={{
               cursor: 'pointer',
-              width: isMobile ? 80 : 100,
+              width: isMobile ? 75 : 100,
               padding: '0.5em 1em',
               border: `2px solid ${balanceBorderColor}`,
               textAlign: 'center',
