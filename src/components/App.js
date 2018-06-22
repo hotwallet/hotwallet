@@ -42,7 +42,6 @@ class App extends React.Component {
       width,
       deviceType: isMobile ? 'mobile' : isTablet ? 'tablet' : 'desktop'
     }
-    console.log('device:', device)
     this.props.setDevice(device)
   }
 
