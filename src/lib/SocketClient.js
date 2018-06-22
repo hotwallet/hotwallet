@@ -8,11 +8,12 @@ import _ from 'lodash'
 
 export default class SocketClient {
   constructor() {
+    this.subscriptionCounts = {}
     this.subscriptionQueue = []
     this.unsubscriptionQueue = []
     this.subscribed = []
 
-    this.syncSubscriptions = _.throttle(this.syncSubscriptions, 1000)
+    this.syncSubscriptions = _.throttle(this.syncSubscriptions, 1000, {leading: false})
     this.socketReady = false
     this.join = this.join.bind(this)
     this.leave = this.leave.bind(this)
@@ -42,22 +43,22 @@ export default class SocketClient {
     this.unsubscriptionQueue = _.without(this.unsubscriptionQueue, symbol)
     this.subscriptionQueue.push(symbol)
     this.syncSubscriptions()
+    this.subscriptionCounts[symbol] = this.subscriptionCounts[symbol] ? this.subscriptionCounts[symbol] + 1 : 1
+    return () => {
+      this.subscriptionCounts[symbol]--
+      if (this.subscriptionCounts[symbol] === 0) {
+        this.subscriptionQueue = _.without(this.subscriptionQueue, symbol)
+        this.unsubscriptionQueue.push(symbol)
+        this.syncSubscriptions()
+      }
+    }
   }
 
   subscribeAll(symbols) {
-    symbols.forEach(this.subscribe, this)
-  }
-
-  unsubscribe(symbol) {
-    this.subscriptionQueue = _.without(this.subscriptionQueue, symbol)
-    this.unsubscriptionQueue.push(symbol)
-    this.syncSubscriptions()
-  }
-
-  unsubscribeAll() {
-    this.subscriptionQueue = []
-    this.unsubscriptionQueue = this.subscribed.slice()
-    this.syncSubscriptions()
+    const unsubs = symbols.map(this.subscribe, this)
+    return () => {
+      unsubs.forEach(unsub => unsub())
+    }
   }
 
   syncSubscriptions() {
@@ -68,10 +69,13 @@ export default class SocketClient {
     const currentBaseCurrency = store.getState().user.baseCurrency
 
     if (currentBaseCurrency !== this.subscribedBaseCurrency) {
+      let previouslySubscribed = this.subscribed.slice()
       if (this.subscribed.length !== 0) {
         this.leaveAll()
       }
 
+      const toResubscribe = _.without(previouslySubscribed, ...this.unsubscriptionQueue)
+      toResubscribe.forEach(_.partial(this.join, currentBaseCurrency))
       this.subscriptionQueue.forEach(_.partial(this.join, currentBaseCurrency))
       this.subscribedBaseCurrency = currentBaseCurrency
     } else {

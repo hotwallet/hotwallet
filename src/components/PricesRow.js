@@ -35,13 +35,11 @@ class PricesRow extends React.Component {
   }
 
   componentDidMount() {
-    client.socket.subscribe(this.props.security.symbol)
+    this.unsubscribe = client.socket.subscribe(this.props.security.symbol)
   }
 
   componentWillUnmount() {
-    if (this.props.security.balance === undefined) {
-      client.socket.unsubscribe(this.props.security.symbol)
-    }
+    this.unsubscribe()
   }
 
   toggleBalanceBorder = () => {
