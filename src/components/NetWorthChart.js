@@ -26,6 +26,13 @@ class NetWorthChart extends React.Component {
     this.unsubscribe = client.socket.subscribeAll(this.props.symbols)
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.symbols !== this.props.symbols) {
+      this.unsubscribe()
+      this.unsubscribe = client.socket.subscribeAll(this.props.symbols)
+    }
+  }
+
   componentWillUnmount() {
     this.unsubscribe()
   }

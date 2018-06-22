@@ -1,7 +1,6 @@
 import { refreshChart } from './portfolio'
 import { v4 } from 'uuid'
 import { getTransactionsForSymbol } from '../selectors/transactionSelectors'
-import client from '../lib/tarragonClient'
 
 export const ADD_TRANSACTIONS = 'ADD_TRANSACTIONS'
 export const REMOVE_TRANSACTIONS = 'REMOVE_TRANSACTIONS'
@@ -51,10 +50,6 @@ export const addTransactions = txs => (dispatch, getState) => {
     type: ADD_TRANSACTIONS,
     txs
   })
-
-  // any symbol with a transction should be subscribed to
-  const symbols = txs.map((tx) => tx.symbol)
-  client.socket.subscribeAll(symbols)
 
   refreshChart()(dispatch, getState)
 }

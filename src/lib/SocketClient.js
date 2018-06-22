@@ -41,14 +41,15 @@ export default class SocketClient {
 
   subscribe(symbol) {
     this.unsubscriptionQueue = _.without(this.unsubscriptionQueue, symbol)
-    this.subscriptionQueue.push(symbol)
+    this.subscriptionQueue = _.union(this.subscriptionQueue, [symbol])
     this.syncSubscriptions()
     this.subscriptionCounts[symbol] = this.subscriptionCounts[symbol] ? this.subscriptionCounts[symbol] + 1 : 1
+
     return () => {
       this.subscriptionCounts[symbol]--
       if (this.subscriptionCounts[symbol] === 0) {
         this.subscriptionQueue = _.without(this.subscriptionQueue, symbol)
-        this.unsubscriptionQueue.push(symbol)
+        this.unsubscriptionQueue = _.union(this.unsubscriptionQueue, [symbol])
         this.syncSubscriptions()
       }
     }
