@@ -57,3 +57,5 @@ input::selection {
 .ui.modal {
   margin-top: 0 !important;
 }
+
+html { -webkit-tap-highlight-color: rgba(0,0,0,0); }
