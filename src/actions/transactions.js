@@ -50,6 +50,7 @@ export const addTransactions = txs => (dispatch, getState) => {
     type: ADD_TRANSACTIONS,
     txs
   })
+
   refreshChart()(dispatch, getState)
 }
 

@@ -17,6 +17,11 @@ export const getAllTransactions = createSelector([getTransactionsById], (byId) =
 
 export const getTransactionsForSymbolUncached = (state, symbol) => state.transactions.bySymbol[symbol]
 
+export const getSymbolsWithTransactions = createSelector(
+  [getTransactionsBySymbol],
+  (transactionsBySymbol) => Object.keys(transactionsBySymbol)
+)
+
 export const getTransactionsForSymbol = createCachedSelector(
   [getTransactionsForSymbolUncached],
   transactions => transactions

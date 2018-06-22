@@ -11,6 +11,7 @@ import {
 import { borderColor } from '../lib/styles'
 import { rowsPerPage } from '../selectors/securitiesSelectors'
 import PropTypes from 'prop-types'
+import client from '../lib/tarragonClient'
 
 class PricesRow extends React.Component {
   constructor(props) {
@@ -31,6 +32,14 @@ class PricesRow extends React.Component {
       return
     }
     this.props.setLastVisibleRow(rowIndex)
+  }
+
+  componentDidMount() {
+    this.unsubscribe = client.socket.subscribe(this.props.security.symbol)
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe()
   }
 
   toggleBalanceBorder = () => {
