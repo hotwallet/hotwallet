@@ -1,7 +1,6 @@
 import React from 'react'
 import { desktopPadding, mobilePadding } from '../lib/styles'
 import { Dimmer, Loader, Image } from 'semantic-ui-react'
-import PricesRow from './PricesRow'
 import PropTypes from 'prop-types'
 import BinanceSetupModal from './BinanceSetupModal'
 import EthereumSetupModal from './EthereumSetupModal'
@@ -10,8 +9,48 @@ import 'react-virtualized/styles.css'
 import { Table as VTable, WindowScroller, AutoSizer, Column } from 'react-virtualized'
 import {
   formatFiat,
-  roundToSignificantFigures
+  roundToSignificantFigures,
+  formatPercentChange,
+  shortenLargeNumber
 } from '../lib/formatNumber'
+import './Prices.css'
+import {subscribeSymbol} from '../lib/subscribe'
+
+const PriceComponent = subscribeSymbol(({security, delta24h, isMobile}) => (
+  <React.Fragment>
+    <div>{formatFiat(security.price, security.baseCurrency)}</div>
+    {isMobile && (
+      <div style={{
+        ...delta24h.style,
+        fontSize: 10,
+        textAlign: 'right'
+      }}>{delta24h.value}</div>
+    )}
+  </React.Fragment>
+))
+
+const ValueComponent = subscribeSymbol(({balance, security, isMobile}) => (
+  <React.Fragment>
+    <div>{balance ? formatFiat(balance * security.price, security.baseCurrency) : '-'}</div>
+    {isMobile && (
+      <div style={{
+        color: 'gray',
+        fontSize: 10,
+        textAlign: 'center',
+        whiteSpace: 'nowrap'
+      }}>{shortenLargeNumber(security.marketCap / security.price)} / {shortenLargeNumber(security.marketCap, security.baseCurrency)}
+      </div>
+    )}
+  </React.Fragment>
+))
+
+const SupplyCell = subscribeSymbol(({security, price}) => (
+  <div>{shortenLargeNumber(security.marketCap / security.price)}</div>
+))
+
+const MarketCapCell = subscribeSymbol(({security}) => (
+  <div>{shortenLargeNumber(security.marketCap, security.baseCurrency)}</div>
+))
 
 class Prices extends React.PureComponent {
   constructor(props) {
@@ -22,14 +61,7 @@ class Prices extends React.PureComponent {
     this.openBinanceSetupModal = this.openBinanceSetupModal.bind(this)
     this.closeSecurityModal = this.closeSecurityModal.bind(this)
     this.openSecurityModal = this.openSecurityModal.bind(this)
-    this.rowRenderer = this.rowRenderer.bind(this)
     this.getRow = this.getRow.bind(this)
-    this.getSecurityIcon = this.getSecurityIcon.bind(this)
-    this.getIcon = this.getIcon.bind(this)
-  }
-
-  formatPrice(num) {
-    return formatFiat(num, this.props.baseCurrency)
   }
 
   openEthereumSetupModal = val => {
@@ -40,40 +72,8 @@ class Prices extends React.PureComponent {
     this.setState({ isBinanceSetupModalOpen: val })
   }
 
-  rowRenderer({index, isScrolling, isVisible, key, style}) {
-    const security = this.props.securities[index]
-    return (
-      <PricesRow key={security.symbol}
-        rowIndex={index + this.props.symbolOffset}
-        security={security}
-        setLastVisibleRow={this.props.setLastVisibleRow}
-        addManualTransaction={this.props.addManualTransaction}
-        baseCurrency={this.props.baseCurrency}
-        isMobile={this.props.isMobile}
-        openBinanceSetupModal={this.openBinanceSetupModal}
-        openSecurityModal={this.openSecurityModal}
-      />
-    )
-  }
-
   getRow(data) {
     return this.props.securities[data.index]
-  }
-
-  getRows(securities) {
-    return securities.map((security, i) => (
-      <PricesRow key={security.symbol}
-        rowIndex={i + this.props.symbolOffset}
-        security={security}
-        setLastVisibleRow={this.props.setLastVisibleRow}
-        addManualTransaction={this.props.addManualTransaction}
-        baseCurrency={this.props.baseCurrency}
-        isMobile={this.props.isMobile}
-        openBinanceSetupModal={this.openBinanceSetupModal}
-        openSecurityModal={this.openSecurityModal}
-        openEthereumSetupModal={this.openEthereumSetupModal}
-      />
-    ))
   }
 
   closeSecurityModal = () => {
@@ -86,6 +86,11 @@ class Prices extends React.PureComponent {
       modalSecurity: security,
       modalIconSrc: iconSrc
     })
+  }
+
+  getIcon(symbol) {
+    const size = this.props.isMobile ? '16x16' : '32x32'
+    return `https://chnnl.imgix.net/tarragon/icons/${size}/${symbol}.png`
   }
 
   render() {
@@ -111,6 +116,45 @@ class Prices extends React.PureComponent {
       modalIconSrc
     } = this.state
 
+    const symbolStyle = {
+      fontSize: isMobile ? null : 18,
+      verticalAlign: 'middle',
+      display: isMobile ? 'block' : 'inline'
+    }
+    const rankStyle = {
+      color: 'gray',
+      marginRight: 10,
+      fontSize: 10,
+      position: isMobile ? 'absolute' : 'relative',
+      left: isMobile ? 40 : 0
+    }
+
+    const headerStyle = {
+      textTransform: 'none'
+    }
+
+    const balanceStyle = {
+      cursor: 'pointer',
+      width: '100px',
+      padding: '0.5em 1em',
+      border: '2px solid rgb(73, 82, 90)',
+      textAlign: 'center',
+      margin: '0px auto'
+    }
+
+    function headerRenderer(style) {
+      return ({
+        columnData,
+        dataKey,
+        disableSort,
+        label,
+        sortBy,
+        sortDirection
+      }) => {
+        return <div style={{...headerStyle, ...style}}> {label} </div>
+      }
+    }
+
     return (
       <div style={{
         padding,
@@ -124,8 +168,6 @@ class Prices extends React.PureComponent {
                 <div ref={registerChild}>
                   <VTable
                     autoHeight
-                    // className="inverted unstackable selectable"
-                    // style={table}
                     overscanRowCount={10}
                     rowClassName="asdr"
                     headerClassName="asdh"
@@ -133,25 +175,33 @@ class Prices extends React.PureComponent {
                     rowCount={this.props.securities.length}
                     width={width}
                     height={height}
-                    rowHeight={50}
                     onScroll={onChildScroll}
                     isScrolling={isScrolling}
-                    headerHeight={32}
-                    scrollTop={scrollTop}>
+                    headerHeight={50}
+                    rowHeight={60}
+                    scrollTop={scrollTop}
 
+                    tabIndex={null}>
                     <Column
-                      flexGrow={1}
-
+                      flexGrow={isMobile ? 1 : 3}
                       label="Symbol"
-                      dataKey="name"
                       width={60}
+                      headerRenderer={headerRenderer()}
+                      dataKey="slug"
                       cellRenderer={
-                        ({rowData}) => (
+                        ({rowData: security, rowIndex}) => (
                           <a
                             style={{ color: '#fff' }}
-                            href={this.getCMCHref(rowData)}
+                            href={`https://coinmarketcap.com/currencies/${security.slug}/`}
                           >
-                            {this.getSecurityIcon({ security: rowData, label: rowData.symbol })}
+                            <span style={rankStyle}>{rowIndex + 1}</span>
+                            <Image
+                              src={this.getIcon(security.symbol)}
+                              inline
+                              verticalAlign="middle"
+                              style={{ marginRight: 10 }}
+                            />
+                            <span style={symbolStyle}>{security.symbol}</span>
                           </a>
                         )
                       }
@@ -159,43 +209,125 @@ class Prices extends React.PureComponent {
 
                     <Column
                       flexGrow={1}
-
                       label="Price"
                       dataKey="price"
                       width={60}
+                      headerRenderer={headerRenderer({textAlign: 'right'})}
+                      style={{textAlign: 'right'}}
+                      cellDataGetter={
+                        ({rowData: security}) => {
+                          return formatPercentChange(security.percentChange24h)
+                        }
+                      }
                       cellRenderer={
-                        ({rowData}) => (
-                          this.formatPrice(rowData.price)
+                        ({rowData: security, cellData: delta24h}) => (
+                          <PriceComponent symbol={security.symbol} security={security} delta24h={delta24h} isMobile={isMobile} />
+                        )
+                      }
+                    />
+
+                    {!isMobile && <Column
+                      flexGrow={1}
+                      label="24h"
+                      dataKey="percentChange24h"
+                      width={60}
+                      headerRenderer={headerRenderer({textAlign: 'right'})}
+                      style={{textAlign: 'right'}}
+                      cellDataGetter={
+                        ({dataKey, rowData: security}) => {
+                          return formatPercentChange(security[dataKey])
+                        }
+                      }
+                      cellRenderer={
+                        ({cellData: delta24h}) => (
+                          <div style={delta24h.style}> {delta24h.value} </div>
+                        )
+                      }
+                    />}
+
+                    {!isMobile && <Column
+                      flexGrow={1}
+                      label="7d"
+                      dataKey="percentChange7d"
+                      width={60}
+                      headerRenderer={headerRenderer({textAlign: 'right'})}
+                      style={{textAlign: 'right'}}
+                      cellDataGetter={
+                        ({dataKey, rowData: security}) => {
+                          return formatPercentChange(security[dataKey])
+                        }
+                      }
+                      cellRenderer={
+                        ({cellData: delta7d}) => (
+                          <div style={delta7d.style}> {delta7d.value} </div>
+                        )
+                      }
+                    />}
+
+                    <Column
+                      flexGrow={1.5}
+                      label="Balance"
+                      dataKey="balance"
+                      headerRenderer={headerRenderer({textAlign: 'center'})}
+                      style={{textAlign: 'center'}}
+                      width={60}
+                      cellRenderer={
+                        ({rowData: security}) => (
+                          <div
+                            onClick={() => {
+                              this.openSecurityModal({
+                                security: security
+
+                              })
+                            }}
+                            style={balanceStyle}>
+                            {(security.balance >= 0) ? roundToSignificantFigures(security.balance) : '\u00A0'}
+                          </div>
                         )
                       }
                     />
 
                     <Column
                       flexGrow={1}
-
-                      label="Amount"
-                      dataKey="amount"
+                      label="Value"
+                      dataKey="balance"
+                      headerRenderer={headerRenderer({textAlign: 'center'})}
+                      style={{textAlign: 'center'}}
                       width={60}
                       cellRenderer={
-                        ({rowData}) => (
-                          <div
-                            onClick={() => {
-                              this.openSecurityModal({
-                                security: rowData,
-                                getSecurityIcon: this.getSecurityIcon
-                              })
-                            }}
-                            style={{
-                              cursor: 'pointer',
-                              width: isMobile ? 80 : 100,
-                              padding: '0.5em 1em',
-                              border: `2px solid lightblue`,
-                              textAlign: 'center'
-                              // margin: '0 auto'
-                            }}>{(rowData.balance >= 0) ? roundToSignificantFigures(rowData.balance) : '\u00A0'}</div>
+                        ({rowData: security, cellData: balance}) => (
+                          <ValueComponent security={security} balance={balance} symbol={security.symbol} isMobile={isMobile} />
                         )
                       }
                     />
+
+                    {!isMobile && <Column
+                      flexGrow={1}
+                      label="Supply"
+                      dataKey="supply"
+                      headerRenderer={headerRenderer({textAlign: 'right'})}
+                      style={{textAlign: 'right'}}
+                      width={60}
+                      cellRenderer={
+                        ({rowData: security}) => (
+                          <SupplyCell security={security} symbol={security.symbol} />
+                        )
+                      }
+                    />}
+
+                    {!isMobile && <Column
+                      flexGrow={1}
+                      label="Mkt Cap"
+                      dataKey="marketCap"
+                      headerRenderer={headerRenderer({textAlign: 'right'})}
+                      style={{textAlign: 'right'}}
+                      width={60}
+                      cellRenderer={
+                        ({rowData: security}) => (
+                          <MarketCapCell security={security} symbol={security.symbol} />
+                        )
+                      }
+                    />}
                   </VTable>
                 </div>
               )}
