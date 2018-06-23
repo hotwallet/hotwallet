@@ -16,7 +16,7 @@ import {
 import './Prices.css'
 import {subscribeSymbol} from '../lib/subscribe'
 
-const PriceComponent = subscribeSymbol(({security, delta24h, isMobile}) => (
+const PriceCell = subscribeSymbol(({security, delta24h, isMobile}) => (
   <React.Fragment>
     <div>{formatFiat(security.price, security.baseCurrency)}</div>
     {isMobile && (
@@ -29,7 +29,7 @@ const PriceComponent = subscribeSymbol(({security, delta24h, isMobile}) => (
   </React.Fragment>
 ))
 
-const ValueComponent = subscribeSymbol(({balance, security, isMobile}) => (
+const ValueCell = subscribeSymbol(({balance, security, isMobile}) => (
   <React.Fragment>
     <div>{balance ? formatFiat(balance * security.price, security.baseCurrency) : '-'}</div>
     {isMobile && (
@@ -169,8 +169,8 @@ class Prices extends React.PureComponent {
                   <VTable
                     autoHeight
                     overscanRowCount={10}
-                    rowClassName="asdr"
-                    headerClassName="asdh"
+                    rowClassName="prices-row"
+                    headerClassName="prices-header"
                     rowGetter={this.getRow}
                     rowCount={this.props.securities.length}
                     width={width}
@@ -180,8 +180,8 @@ class Prices extends React.PureComponent {
                     headerHeight={50}
                     rowHeight={60}
                     scrollTop={scrollTop}
-
                     tabIndex={null}>
+
                     <Column
                       flexGrow={isMobile ? 1 : 3}
                       label="Symbol"
@@ -221,7 +221,7 @@ class Prices extends React.PureComponent {
                       }
                       cellRenderer={
                         ({rowData: security, cellData: delta24h}) => (
-                          <PriceComponent symbol={security.symbol} security={security} delta24h={delta24h} isMobile={isMobile} />
+                          <PriceCell symbol={security.symbol} security={security} delta24h={delta24h} isMobile={isMobile} />
                         )
                       }
                     />
@@ -296,7 +296,7 @@ class Prices extends React.PureComponent {
                       width={60}
                       cellRenderer={
                         ({rowData: security, cellData: balance}) => (
-                          <ValueComponent security={security} balance={balance} symbol={security.symbol} isMobile={isMobile} />
+                          <ValueCell security={security} balance={balance} symbol={security.symbol} isMobile={isMobile} />
                         )
                       }
                     />
