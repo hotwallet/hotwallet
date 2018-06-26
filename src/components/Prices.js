@@ -200,6 +200,8 @@ class Prices extends React.PureComponent {
                               inline
                               verticalAlign="middle"
                               style={{ marginRight: 10 }}
+                              width={32}
+                              height={32}
                             />
                             <span style={symbolStyle}>{security.symbol}</span>
                           </a>
@@ -271,6 +273,7 @@ class Prices extends React.PureComponent {
                       headerRenderer={headerRenderer({textAlign: 'center'})}
                       style={{textAlign: 'center'}}
                       width={60}
+                      minWidth={120}
                       cellRenderer={
                         ({rowData: security}) => (
                           <div

@@ -10,7 +10,16 @@
 }
 
 .ReactVirtualized__Table__rowColumn, .ReactVirtualized__Table__headerColumn {
+	text-overflow: clip;
 	padding: .78571429em;
+}
+
+.ReactVirtualized__Table__rowColumn:first-child, .ReactVirtualized__Table__headerColumn:first-child {
+	padding-left: 0;
+}
+
+.ReactVirtualized__Table__rowColumn:last-child, .ReactVirtualized__Table__headerColumn:last-child {
+	padding-right: 0;
 }
 
 .ReactVirtualized__Table__headerRow {
