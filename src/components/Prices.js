@@ -185,7 +185,7 @@ class Prices extends React.PureComponent {
                     <Column
                       flexGrow={isMobile ? 1 : 3}
                       label="Symbol"
-                      width={60}
+                      width={100}
                       headerRenderer={headerRenderer()}
                       dataKey="slug"
                       cellRenderer={
@@ -210,12 +210,13 @@ class Prices extends React.PureComponent {
                     />
 
                     <Column
-                      flexGrow={1}
+                      flexGrow={2}
                       label="Price"
                       dataKey="price"
                       width={60}
                       headerRenderer={headerRenderer({textAlign: 'right'})}
                       style={{textAlign: 'right'}}
+                      className="allow-overflow"
                       cellDataGetter={
                         ({rowData: security}) => {
                           return formatPercentChange(security.percentChange24h)
@@ -235,6 +236,7 @@ class Prices extends React.PureComponent {
                       width={60}
                       headerRenderer={headerRenderer({textAlign: 'right'})}
                       style={{textAlign: 'right'}}
+                      className="allow-overflow"
                       cellDataGetter={
                         ({dataKey, rowData: security}) => {
                           return formatPercentChange(security[dataKey])
@@ -254,6 +256,7 @@ class Prices extends React.PureComponent {
                       width={60}
                       headerRenderer={headerRenderer({textAlign: 'right'})}
                       style={{textAlign: 'right'}}
+                      className="allow-overflow"
                       cellDataGetter={
                         ({dataKey, rowData: security}) => {
                           return formatPercentChange(security[dataKey])
@@ -267,11 +270,12 @@ class Prices extends React.PureComponent {
                     />}
 
                     <Column
-                      flexGrow={1.5}
+                      flexGrow={2}
                       label="Balance"
                       dataKey="balance"
                       headerRenderer={headerRenderer({textAlign: 'center'})}
                       style={{textAlign: 'center'}}
+                      className="allow-overflow"
                       width={60}
                       minWidth={120}
                       cellRenderer={
@@ -291,12 +295,13 @@ class Prices extends React.PureComponent {
                     />
 
                     <Column
-                      flexGrow={1}
+                      flexGrow={2}
                       label="Value"
                       dataKey="balance"
                       headerRenderer={headerRenderer({textAlign: 'center'})}
                       style={{textAlign: 'center'}}
                       width={60}
+                      className="allow-overflow"
                       cellRenderer={
                         ({rowData: security, cellData: balance}) => (
                           <ValueCell security={security} balance={balance} symbol={security.symbol} isMobile={isMobile} />
@@ -305,12 +310,12 @@ class Prices extends React.PureComponent {
                     />
 
                     {!isMobile && <Column
-                      flexGrow={1}
                       label="Supply"
                       dataKey="supply"
                       headerRenderer={headerRenderer({textAlign: 'right'})}
-                      style={{textAlign: 'right'}}
+                      style={{textAlign: 'right', overflow: 'visible'}}
                       width={60}
+                      className="allow-overflow"
                       cellRenderer={
                         ({rowData: security}) => (
                           <SupplyCell security={security} symbol={security.symbol} />
@@ -319,11 +324,11 @@ class Prices extends React.PureComponent {
                     />}
 
                     {!isMobile && <Column
-                      flexGrow={1}
                       label="Mkt Cap"
                       dataKey="marketCap"
                       headerRenderer={headerRenderer({textAlign: 'right'})}
                       style={{textAlign: 'right'}}
+                      className="allow-overflow"
                       width={60}
                       cellRenderer={
                         ({rowData: security}) => (
