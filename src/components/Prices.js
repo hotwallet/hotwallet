@@ -38,7 +38,7 @@ const ValueCell = subscribeSymbol(({balance, security, isMobile}) => (
         fontSize: 10,
         textAlign: 'center',
         whiteSpace: 'nowrap'
-      }}>{shortenLargeNumber(security.marketCap / security.price)} / {shortenLargeNumber(security.marketCap, security.baseCurrency)}
+      }}>{shortenLargeNumber(security.marketCap, security.baseCurrency)}
       </div>
     )}
   </React.Fragment>
@@ -135,7 +135,7 @@ class Prices extends React.PureComponent {
 
     const balanceStyle = {
       cursor: 'pointer',
-      width: '100px',
+      width: isMobile ? '75px' : '100px',
       padding: '0.5em 1em',
       border: '2px solid rgb(73, 82, 90)',
       textAlign: 'center',
@@ -185,9 +185,10 @@ class Prices extends React.PureComponent {
                     <Column
                       flexGrow={isMobile ? 1 : 3}
                       label="Symbol"
-                      width={100}
+                      width={isMobile ? 50 : 100}
                       headerRenderer={headerRenderer()}
                       dataKey="slug"
+                      className="allow-overflow"
                       cellRenderer={
                         ({rowData: security, rowIndex}) => (
                           <a
@@ -200,8 +201,8 @@ class Prices extends React.PureComponent {
                               inline
                               verticalAlign="middle"
                               style={{ marginRight: 10 }}
-                              width={32}
-                              height={32}
+                              width={isMobile ? 16 : 32}
+                              height={isMobile ? 16 : 32}
                             />
                             <span style={symbolStyle}>{security.symbol}</span>
                           </a>
@@ -210,7 +211,7 @@ class Prices extends React.PureComponent {
                     />
 
                     <Column
-                      flexGrow={2}
+                      flexGrow={isMobile ? 1 : 2}
                       label="Price"
                       dataKey="price"
                       width={60}
@@ -270,21 +271,21 @@ class Prices extends React.PureComponent {
                     />}
 
                     <Column
-                      flexGrow={2}
+                      flexGrow={1}
                       label="Balance"
                       dataKey="balance"
                       headerRenderer={headerRenderer({textAlign: 'center'})}
                       style={{textAlign: 'center'}}
                       className="allow-overflow"
-                      width={60}
-                      minWidth={120}
+                      width={isMobile ? 95 : 120}
+                      minWidth={isMobile ? 95 : 120}
                       cellRenderer={
                         ({rowData: security}) => (
                           <div
                             onClick={() => {
                               this.openSecurityModal({
-                                security: security
-
+                                security: security,
+                                iconSrc: this.getIcon(security.symbol)
                               })
                             }}
                             style={balanceStyle}>
@@ -309,7 +310,7 @@ class Prices extends React.PureComponent {
                       }
                     />
 
-                    {!isMobile && <Column
+                    {isDesktop && <Column
                       label="Supply"
                       dataKey="supply"
                       headerRenderer={headerRenderer({textAlign: 'right'})}
