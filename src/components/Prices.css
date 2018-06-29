@@ -1,0 +1,37 @@
+.ReactVirtualized__Table__row:hover {
+	background: hsla(0,0%,100%,.08)!important;
+    color: #fff!important;
+}
+
+
+.ReactVirtualized__Table__row {
+	border-color: hsla(0,0%,100%,.1)!important;
+    border-top: 1px solid rgba(34,36,38,.1);
+}
+
+.ReactVirtualized__Table__rowColumn, .ReactVirtualized__Table__headerColumn {
+	text-overflow: clip;
+	padding: .78571429em;
+}
+
+.ReactVirtualized__Table__rowColumn.allow-overflow {
+	overflow: visible !important;
+}
+
+.ReactVirtualized__Table__rowColumn:first-child, .ReactVirtualized__Table__headerColumn:first-child {
+	padding-left: 0;
+}
+
+.ReactVirtualized__Table__rowColumn:last-child, .ReactVirtualized__Table__headerColumn:last-child {
+	padding-right: 0;
+}
+
+.ReactVirtualized__Table__headerRow {
+	background-color: rgba(0,0,0,.15);
+	height: 4em;
+}
+
+.ReactVirtualized__Table__headerColumn {
+	padding-top: 2em;
+	padding-bottom: 2em;
+}

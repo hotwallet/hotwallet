@@ -5,8 +5,8 @@ import Highcharts from 'highcharts'
 import DateRangeSelector from './DateRangeSelector'
 import { lightBlue, darkBlue, darkBg, desktopPadding, mobilePadding } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
-import client from '../lib/tarragonClient'
 import { getSymbolsWithTransactions } from '../selectors/transactionSelectors'
+import { subscribeSymbols } from '../lib/subscribe'
 
 Highcharts.setOptions({
   global: { useUTC: false }
@@ -22,19 +22,6 @@ class NetWorthChart extends React.Component {
     if (!this.props.chartData || !this.props.chartData.length) {
       this.props.refreshChart()
     }
-
-    this.unsubscribe = client.socket.subscribeAll(this.props.symbols)
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.symbols !== this.props.symbols) {
-      this.unsubscribe()
-      this.unsubscribe = client.socket.subscribeAll(this.props.symbols)
-    }
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe()
   }
 
   render() {
@@ -146,4 +133,4 @@ const mapStateToProps = state => ({
   symbols: getSymbolsWithTransactions(state)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(NetWorthChart)
+export default connect(mapStateToProps, mapDispatchToProps)(subscribeSymbols(NetWorthChart))

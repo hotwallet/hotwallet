@@ -2,8 +2,6 @@
  * state.app is ephemeral data that will not be saved to localStorage
  */
 
-import { rowsPerPage } from '../selectors/securitiesSelectors'
-
 import {
   SET_DEVICE,
   FILTER_SYMBOLS,
@@ -12,7 +10,7 @@ import {
 
 const initialState = {
   device: {},
-  rowSlice: [0, rowsPerPage]
+  rowSlice: [0, 1000]
 }
 
 export default (state = initialState, action) => {
