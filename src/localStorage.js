@@ -22,3 +22,9 @@ export const saveState = (state) => {
     // ignore write errors
   }
 }
+
+export default {
+  loadState,
+  saveState,
+  isSupported: isSupported => true
+}

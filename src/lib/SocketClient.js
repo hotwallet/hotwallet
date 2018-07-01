@@ -1,10 +1,12 @@
 import io from 'socket.io-client'
 import * as config from '../config'
-import store from '../store'
+import { getStoreSync } from '../store'
 import { updateSecurity } from '../actions/securities'
 import * as schema from '../actions/schema'
 import { normalize } from 'normalizr'
 import _ from 'lodash'
+
+let store
 
 export default class SocketClient {
   constructor() {
@@ -31,6 +33,13 @@ export default class SocketClient {
   }
 
   dispatchSecurity(security) {
+    store = store || getStoreSync()
+
+    if (!store) {
+      console.error('Security dispatched to uninitialized store')
+      return
+    }
+
     const state = store.getState()
     const baseCurrency = state.user.baseCurrency
     if (security.baseCurrency === baseCurrency) {
@@ -63,7 +72,9 @@ export default class SocketClient {
   }
 
   syncSubscriptions() {
-    if (!this.socketReady) {
+    store = store || getStoreSync()
+
+    if (!this.socketReady || !store) {
       return setTimeout(() => this.syncSubscriptions(), 1000)
     }
 
