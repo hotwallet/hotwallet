@@ -15,8 +15,6 @@ export default (state = initialState, action) => {
       const wallet = state[action.walletId]
       return { ...state, [action.walletId]: { ...wallet, lastSync: Date.now() } }
     default:
-      return {
-        ...state
-      }
+      return state
   }
 }

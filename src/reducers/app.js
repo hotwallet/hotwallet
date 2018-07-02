@@ -27,9 +27,6 @@ export default (state = initialState, action) => {
       }
       return { ...state, rowSlice: action.rowSlice }
     default:
-      return {
-        device: {},
-        ...state
-      }
+      return state
   }
 }
