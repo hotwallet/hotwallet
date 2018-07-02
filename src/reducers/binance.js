@@ -15,8 +15,6 @@ export default (state = initialState, action) => {
     case SET_BINANCE_SYNC_TIME:
       return { ...state, lastSync: Date.now() }
     default:
-      return {
-        ...state
-      }
+      return state
   }
 }
