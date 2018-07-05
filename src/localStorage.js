@@ -11,7 +11,7 @@ window.localStorage.setItem('primary', id)
 
 window.onfocus = () => {
   if (window.localStorage.getItem('primary') !== id) {
-    window.location.reload(true)
+    window.location.reload()
   }
 }
 
