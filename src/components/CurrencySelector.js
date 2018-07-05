@@ -27,7 +27,6 @@ class CurrencySelector extends React.PureComponent {
           currency={baseCurrency}
           caret
           onClick={() => this.setState({ active: !this.state.active })}
-          setBaseCurrency={this.props.setBaseCurrency}
         />
       </div>
     )
