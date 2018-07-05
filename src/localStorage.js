@@ -1,5 +1,18 @@
+import { v4 } from 'uuid'
+
+const id = v4()
+
 const ephemeralState = {
   app: undefined
+}
+
+// always become primary on load
+window.localStorage.setItem('primary', id)
+
+window.onfocus = () => {
+  if (window.localStorage.getItem('primary') !== id) {
+    window.location.reload(true)
+  }
 }
 
 export const loadState = () => {
@@ -16,8 +29,10 @@ export const loadState = () => {
 
 export const saveState = (state) => {
   try {
-    const serializedState = JSON.stringify({ ...state, ...ephemeralState })
-    window.localStorage.setItem('state', serializedState)
+    if (window.localStorage.primary === id) {
+      const serializedState = JSON.stringify({ ...state, ...ephemeralState })
+      window.localStorage.setItem('state', serializedState)
+    }
   } catch (err) {
     // ignore write errors
   }
