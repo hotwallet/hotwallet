@@ -1,4 +1,4 @@
-import { rowsPerPage } from '../selectors/securitiesSelectors'
+import { rowsPerPage } from '../selectors/securities'
 
 export const SET_DEVICE = 'SET_DEVICE'
 export const FILTER_SYMBOLS = 'FILTER_SYMBOLS'

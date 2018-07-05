@@ -1,5 +1,5 @@
 import { createSelector, createStructuredSelector } from 'reselect'
-import { getBalanceForSymbol } from './transactionSelectors'
+import { getBalanceForSymbol } from './transactions'
 import createCachedSelector from 're-reselect'
 
 export const rowsPerPage = 75

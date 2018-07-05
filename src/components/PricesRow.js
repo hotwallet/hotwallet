@@ -9,7 +9,7 @@ import {
   formatPercentChange
 } from '../lib/formatNumber'
 import { borderColor } from '../lib/styles'
-import { rowsPerPage } from '../selectors/securitiesSelectors'
+import { rowsPerPage } from '../selectors/securities'
 import PropTypes from 'prop-types'
 import client from '../lib/tarragonClient'
 

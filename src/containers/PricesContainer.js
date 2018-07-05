@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { mapDispatchToProps } from '../actions'
-import { getVisibleSecurities } from '../selectors/securitiesSelectors'
+import { getVisibleSecurities } from '../selectors/securities'
 import moment from 'moment'
 import Prices from '../components/Prices'
 

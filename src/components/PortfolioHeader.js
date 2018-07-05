@@ -2,8 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mobilePadding, desktopPadding, border, smallFontSize } from '../lib/styles'
 import { formatFiat, formatPercentChange } from '../lib/formatNumber'
-import { getSecurities } from '../selectors/securitiesSelectors'
-import { getBalancesBySymbol } from '../selectors/transactionSelectors'
+import { getSecurities } from '../selectors/securities'
+import { getBalancesBySymbol } from '../selectors/transactions'
 
 class PortfolioHeader extends React.Component {
   getTotalValue() {
