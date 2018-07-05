@@ -5,7 +5,7 @@ import Highcharts from 'highcharts'
 import DateRangeSelector from './DateRangeSelector'
 import { lightBlue, darkBlue, darkBg, desktopPadding, mobilePadding } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
-import { getSymbolsWithTransactions } from '../selectors/transactionSelectors'
+import { getSymbolsWithTransactions } from '../selectors/transaction'
 import { subscribeSymbols } from '../lib/subscribe'
 
 Highcharts.setOptions({
