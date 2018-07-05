@@ -1,6 +1,6 @@
 import BinanceClient from '../lib/BinanceClient'
 import { addImportedTransaction } from './transactions'
-import { getBalanceForSymbol } from '../selectors/transaction'
+import { getBalanceForSymbol } from '../selectors/transactions'
 
 export const SET_BINANCE_API_KEYS = 'SET_BINANCE_API_KEYS'
 export const SET_BINANCE_SYNC_TIME = 'SET_BINANCE_SYNC_TIME'

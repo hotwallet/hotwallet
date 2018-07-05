@@ -1,6 +1,6 @@
 import moment from 'moment'
 import _get from 'lodash/get'
-import { getDailyBalances } from '../selectors/transaction'
+import { getDailyBalances } from '../selectors/transactions'
 import client from '../lib/tarragonClient'
 import { setPrices } from './prices'
 
