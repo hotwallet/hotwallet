@@ -35,8 +35,8 @@ export const getVisibleSecurities = createSelector(
     return sortedSecurities
       .map((security, i) => {
         // getSecurityWithBalance is cached for each symbol
-        const swb = getSecurityWithBalance(state, security.symbol)
-        return { ...swb, rank: i + 1 }
+        const securityWithBalance = getSecurityWithBalance(state, security.symbol)
+        return { ...securityWithBalance, rank: i + 1 }
       })
       // toggle hiding empty balances
       .filter(security => {
