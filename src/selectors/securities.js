@@ -33,9 +33,10 @@ export const getVisibleSecurities = createSelector(
     const byMktCap = (a, b) => (a.marketCap > b.marketCap) ? -1 : 1
     const sortedSecurities = securities.slice().sort(byMktCap)
     return sortedSecurities
-      .map(security => {
+      .map((security, i) => {
         // getSecurityWithBalance is cached for each symbol
-        return getSecurityWithBalance(state, security.symbol)
+        const swb = getSecurityWithBalance(state, security.symbol)
+        return { ...swb, rank: i + 1 }
       })
       // toggle hiding empty balances
       .filter(security => {

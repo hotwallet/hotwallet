@@ -195,7 +195,7 @@ class Prices extends React.PureComponent {
                             style={{ color: '#fff' }}
                             href={`https://coinmarketcap.com/currencies/${security.slug}/`}
                           >
-                            <span style={rankStyle}>{rowIndex + 1}</span>
+                            <span style={rankStyle}>{security.rank}</span>
                             <Image
                               src={this.getIcon(security.symbol)}
                               inline
