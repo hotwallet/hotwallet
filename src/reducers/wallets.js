@@ -10,10 +10,9 @@ export default (state = initialState, action) => {
   const walletId = `${wallet.symbol}:${wallet.address}`
   switch (action.type) {
     case ADD_WALLET:
-      return { ...state, [walletId]: action.wallet }
+      return { ...state, [walletId]: wallet }
     case SET_WALLET_SYNC_TIME:
-      const wallet = state[action.walletId]
-      return { ...state, [action.walletId]: { ...wallet, lastSync: Date.now() } }
+      return { ...state, [walletId]: { ...wallet, lastSync: Date.now() } }
     default:
       return state
   }

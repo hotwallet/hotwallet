@@ -1,6 +1,9 @@
 import Promise from 'bluebird'
 import EthereumClient from '../lib/EthereumClient'
 import { addImportedTransaction } from './transactions'
+import { getBalancesByWalletIdForSymbol } from '../selectors/transactions'
+
+const fiveMinutes = 1000 * 60 * 5
 
 export const ADD_WALLET = 'ADD_WALLET'
 export const SET_WALLET_SYNC_TIME = 'SET_WALLET_SYNC_TIME'
@@ -13,6 +16,8 @@ export const fetchWalletBalances = () => (dispatch, getState) => {
   const client = new EthereumClient()
   Promise.map(Object.keys(wallets), walletId => {
     const wallet = wallets[walletId]
+    // don't check balance more than once every five minutes
+    if (wallet.lastSync + fiveMinutes > Date.now()) return
     return client.getBalances(wallet.address)
       .then(tokenBalances => {
         dispatch({
@@ -20,11 +25,11 @@ export const fetchWalletBalances = () => (dispatch, getState) => {
           wallet
         })
         tokenBalances.forEach(tx => {
-          addImportedTransaction({
-            symbol: tx.symbol,
-            balance: tx.balance,
-            walletId
-          })(dispatch, getState)
+          const { symbol, balance } = tx
+          // don't add a new transaction if the balance hasn't changed
+          const balances = getBalancesByWalletIdForSymbol(state, symbol)
+          if (balances[walletId] === balance) return
+          addImportedTransaction({ symbol, balance, walletId })(dispatch, getState)
         })
       })
   })

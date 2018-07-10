@@ -23,7 +23,7 @@ export const setDateRange = range => (dispatch, getState) => {
   refreshChart()(dispatch, getState)
 }
 
-export const refreshChart = () => (dispatch, getState) => {
+const refreshChartThrottled = (dispatch, getState) => {
   const state = getState()
   const baseCurrency = state.user.baseCurrency
 
@@ -78,4 +78,11 @@ export const refreshChart = () => (dispatch, getState) => {
       })
       dispatch(setChartData(chartData))
     })
+}
+
+// don't refresh the chart more than once per second
+let refreshChartTimeout
+export const refreshChart = () => (dispatch, getState) => {
+  clearTimeout(refreshChartTimeout)
+  refreshChartTimeout = setTimeout(() => refreshChartThrottled(dispatch, getState), 1000)
 }
