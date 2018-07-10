@@ -1,6 +1,6 @@
 import moment from 'moment'
 import _get from 'lodash/get'
-import _throttle from 'lodash/throttle'
+import _debounce from 'lodash/debounce'
 import { getDailyBalances } from '../selectors/transactions'
 import client from '../lib/tarragonClient'
 import { setPrices } from './prices'
@@ -24,7 +24,7 @@ export const setDateRange = range => (dispatch, getState) => {
   refreshChart()(dispatch, getState)
 }
 
-const refreshChartThrottled = () => (dispatch, getState) => {
+const refreshChartDebounced = (dispatch, getState) => {
   const state = getState()
   const baseCurrency = state.user.baseCurrency
 
@@ -81,4 +81,6 @@ const refreshChartThrottled = () => (dispatch, getState) => {
     })
 }
 
-export const refreshChart = _throttle(refreshChartThrottled, 2000)
+export const refreshChart = () => (dispatch, getState) => {
+  _debounce(() => refreshChartDebounced(dispatch, getState), 1000)
+}
