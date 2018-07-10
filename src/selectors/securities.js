@@ -26,6 +26,17 @@ export const getStateSlices = createStructuredSelector({
   })
 })
 
+const getRank = (state, symbol, rank) => rank
+
+export const getDecoratedSecurity = createCachedSelector(
+  getSecurity,
+  getBalanceForSymbol,
+  getRank,
+  (security, balance, rank) => ({ ...security, balance, rank })
+)(
+  (state, symbol, rank) => `${symbol}:${rank}`
+)
+
 export const getVisibleSecurities = createSelector(
   [getStateSlices, getSecurities, getBalancesOnlyFilter, getQuery],
   (state, securities, isHidingEmptyBalances, query) => {
@@ -34,9 +45,10 @@ export const getVisibleSecurities = createSelector(
     const sortedSecurities = securities.slice().sort(byMktCap)
     return sortedSecurities
       .map((security, i) => {
-        // getSecurityWithBalance is cached for each symbol
-        const securityWithBalance = getSecurityWithBalance(state, security.symbol)
-        return { ...securityWithBalance, rank: i + 1 }
+        // decorated security is cached for each symbol
+        const symbol = security.symbol
+        const rank = i + 1
+        return getDecoratedSecurity(state, symbol, rank)
       })
       // toggle hiding empty balances
       .filter(security => {
@@ -81,10 +93,3 @@ export const getVisibleSecurities = createSelector(
 // )(
 //   (state, someArg) => someArg
 // )
-
-export const getSecurityWithBalance = createCachedSelector(
-  [getSecurity, getBalanceForSymbol],
-  (security, balance) => ({...security, balance})
-)(
-  (state, symbol) => symbol
-)
