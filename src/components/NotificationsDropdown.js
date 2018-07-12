@@ -3,6 +3,7 @@ import { Dropdown, Message, Icon, Button } from 'semantic-ui-react'
 import { darkBg, lightBg } from '../lib/styles'
 import { VelocityComponent, VelocityTransitionGroup } from 'velocity-react'
 import { PropTypes } from 'prop-types'
+import './NotificationsDropdown.css'
 
 const iconStyle = {
   width: 42,
@@ -31,15 +32,11 @@ class NotificationsDropdown extends React.PureComponent {
   }
 
   getNotificationItem(notification, index) {
-    let padding = {
-      padding: 0,
-      paddingTop: index === 0 ? '1em' : 0
-    }
     const onDismiss = notification.pending ? undefined : () => {
       this.clearNotification.bind(this, notification.id)()
     }
     return (
-      <Dropdown.Item onClick={e => e.stopPropagation()} key={notification.id} style={padding}>
+      <Dropdown.Item onClick={e => e.stopPropagation()} key={notification.id}>
         <Message icon style={{backgroundColor: lightBg, color: '#eee'}} onDismiss={onDismiss}>
           {this.getNotificationIcon(notification)}
           <Message.Header> {notification.text} </Message.Header>
