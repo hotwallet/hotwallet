@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
 import { darkBg, sidebarWidth, border } from '../lib/styles'
 import CurrencyContainer from '../containers/CurrencyContainer'
+import NotificationsContainer from '../containers/NotificationsContainer'
 
 class Header extends React.Component {
   render() {
@@ -19,14 +20,25 @@ class Header extends React.Component {
         <div style={currencySelectorStyle}>
           <CurrencyContainer />
         </div>
+        <div style={notificationsStyle}>
+          <NotificationsContainer />
+        </div>
       </header>
     )
   }
 }
 
+const notificationsStyle = {
+  display: 'inline-block'
+}
+
 const currencySelectorStyle = {
   marginLeft: 5,
-  display: 'inline-block'
+  display: 'inline-block',
+  borderRight: border,
+  paddingRight: 25,
+  marginRight: 25
+
 }
 
 const headerStyle = {
