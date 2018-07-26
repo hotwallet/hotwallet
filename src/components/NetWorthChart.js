@@ -112,7 +112,6 @@ class NetWorthChart extends React.Component {
             padding: '0 100px'
           }}>Enter balances below to track your portfolio</div>) : null}
         <DateRangeSelector
-          range={this.props.range}
           baseCurrency={this.props.baseCurrency}
           deviceType={this.props.deviceType}
           setDateRange={this.props.setDateRange} />
@@ -128,7 +127,6 @@ const mapStateToProps = state => ({
   isTablet: state.app.isTablet,
   chartData: state.portfolio.chartData,
   hasNoTransactions: !Object.keys(state.transactions.byId).length,
-  range: state.portfolio.range,
   baseCurrency: state.user.baseCurrency,
   symbols: getSymbolsWithTransactions(state)
 })
