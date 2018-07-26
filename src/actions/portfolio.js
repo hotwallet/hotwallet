@@ -82,5 +82,5 @@ const refreshChartDebounced = (dispatch, getState) => {
 }
 
 export const refreshChart = () => (dispatch, getState) => {
-  _debounce(() => refreshChartDebounced(dispatch, getState), 1000)
+  _debounce(() => refreshChartDebounced(dispatch, getState), 500)()
 }

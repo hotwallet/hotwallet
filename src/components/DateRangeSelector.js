@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { lightBg, lightBlue, padding } from '../lib/styles'
 import { PropTypes } from 'prop-types'
 
@@ -91,4 +92,8 @@ DateRangeSelector.propTypes = {
   setDateRange: PropTypes.func.isRequired
 }
 
-export default DateRangeSelector
+const mapStateToProps = state => ({
+  range: state.portfolio.range
+})
+
+export default connect(mapStateToProps)(DateRangeSelector)
