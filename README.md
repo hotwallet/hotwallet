@@ -1,10 +1,10 @@
-# tarragon-react
+# hotwallet
 
 ## Install
 
 ```bash
-git clone git@github.com:will123195/tarragon-react.git
-cd tarragon-react
+git clone git@github.com:hotwallet/hotwallet.git
+cd hotwallet
 yarn
 ```
 
