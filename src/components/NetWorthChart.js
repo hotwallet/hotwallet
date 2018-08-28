@@ -110,7 +110,7 @@ class NetWorthChart extends React.Component {
             fontSize: 20,
             zIndex: 200,
             padding: '0 100px'
-          }}>Enter balances below to track your portfolio</div>) : null}
+          }}>Add balances below to track your portfolio</div>) : null}
         <DateRangeSelector
           baseCurrency={this.props.baseCurrency}
           deviceType={this.props.deviceType}
