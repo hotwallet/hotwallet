@@ -1,6 +1,6 @@
-export const appName = 'Tarragon'
+export const appName = 'HotWallet'
 
-export const serverUrl = 'https://tarragon-server.herokuapp.com'
+export const serverUrl = 'https://api.hotwallet.com'
 // export const serverUrl = 'http://localhost:3000'
 
 export const ga = {

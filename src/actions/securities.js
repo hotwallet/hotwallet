@@ -1,4 +1,4 @@
-import client from '../lib/tarragonClient'
+import client from '../lib/hotwalletClient'
 import { normalize } from 'normalizr'
 import * as schema from './schema'
 

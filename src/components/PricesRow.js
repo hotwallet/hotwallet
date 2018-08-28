@@ -11,7 +11,7 @@ import {
 import { borderColor } from '../lib/styles'
 import { rowsPerPage } from '../selectors/securities'
 import PropTypes from 'prop-types'
-import client from '../lib/tarragonClient'
+import client from '../lib/hotwalletClient'
 
 class PricesRow extends React.Component {
   constructor(props) {

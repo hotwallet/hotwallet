@@ -1,4 +1,4 @@
-import client from '../lib/tarragonClient'
+import client from './hotwalletClient'
 import React from 'react'
 import isEqual from 'lodash/isEqual'
 

@@ -2,7 +2,7 @@ import moment from 'moment'
 import _get from 'lodash/get'
 import _debounce from 'lodash/debounce'
 import { getDailyBalances } from '../selectors/transactions'
-import client from '../lib/tarragonClient'
+import client from '../lib/hotwalletClient'
 import { setPrices } from './prices'
 
 export const PORTFOLIO_SET_DATE_RANGE = 'PORTFOLIO_SET_DATE_RANGE'
