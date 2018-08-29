@@ -3,6 +3,14 @@ if ('serviceWorker' in navigator) {
 }
 
 window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault()
-  e.prompt()
+  // console.log('beforeinstallprompt', e)
+  // e.preventDefault()
+  // e.prompt()
+  e.userChoice.then(result => {
+    if (result.outcome === 'dismissed') {
+      console.log('dismissed', result)
+      return
+    }
+    console.log('installed', result)
+  })
 })
