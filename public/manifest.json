@@ -1,0 +1,30 @@
+{
+  "short_name": "HotWallet",
+  "name": "HotWallet",
+  "icons": [
+    {
+      "src": "/hotwallet-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/hotwallet-144x144.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "/hotwallet-96x96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "/hotwallet-48x48.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    }
+  ],
+  "start_url": "/?utm_source=launcher",
+  "background_color": "#2b333a",
+  "display": "standalone",
+  "theme_color": "#000000"
+}
