@@ -44,6 +44,12 @@ describe('addToOneToOneMapping', () => {
     ).toBe(oneToOneMapping)
   })
 
+  test('Updates object with same id if if exists', () => {
+    expect(
+      helpers.addToOneToOneMapping(oneToOneMapping, [{id: '1', foo: 'bar'}], 'id')
+    ).toEqual({'1': {id: '1', foo: 'bar'}, '2': {id: '2'}})
+  })
+
   test('Adds non-existing entities to list', () => {
     expect(
       helpers.addToOneToOneMapping(oneToOneMapping, [{id: '5'}, {id: '6'}], 'id')

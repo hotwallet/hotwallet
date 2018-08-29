@@ -8,6 +8,7 @@ import securities from './securities'
 import transactions from './transactions'
 import user from './user'
 import wallets from './wallets'
+import notifications from './notifications'
 
 export default combineReducers({
   app,
@@ -18,5 +19,6 @@ export default combineReducers({
   securities,
   transactions,
   user,
-  wallets
+  wallets,
+  notifications
 })
