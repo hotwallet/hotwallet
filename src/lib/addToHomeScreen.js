@@ -3,6 +3,7 @@ if ('serviceWorker' in navigator) {
 }
 
 window.addEventListener('beforeinstallprompt', e => {
+  window.temp = e
   // console.log('beforeinstallprompt', e)
   // e.preventDefault()
   // e.prompt()
