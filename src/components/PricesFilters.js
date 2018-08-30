@@ -75,6 +75,7 @@ class PricesFilters extends React.Component {
           columns={2}
           inverted
           divided
+          style={{ width: '100%' }}
         >
           <Grid.Row>
             <Grid.Column width={8}>
