@@ -14,7 +14,12 @@ class NavLink extends React.Component {
 
   render() {
     const props = this.props
+    const isMobile = props.isMobile
     let linkStyle = {}
+    const activeStyle = {
+      backgroundColor: isMobile ? null : highlightColor,
+      color: '#fff'
+    }
     if (this.state.hover) linkStyle = hoverStyle
     if (props.uri === props.to) linkStyle = activeStyle
     const style = { ...props.style, ...normalStyle, ...linkStyle }
@@ -27,7 +32,10 @@ class NavLink extends React.Component {
         trigger={
           <Link style={style}
             to={props.to}
-            onClick={() => this.setState({ showTooltip: false })}
+            onClick={() => {
+              props.onClick()
+              this.setState({ showTooltip: false })
+            }}
             onMouseOver={() => this.setState({ hover: true, showTooltip: true })}
             onMouseOut={() => this.setState({ hover: false, showTooltip: false })}
           >{props.value}</Link>
@@ -50,7 +58,7 @@ class NavLink extends React.Component {
 const highlightColor = '#282f36'
 
 const normalStyle = {
-  padding: '15px 20px',
+  padding: '15px 15px',
   display: 'block',
   color: 'gray'
 }
@@ -59,12 +67,8 @@ const hoverStyle = {
   backgroundColor: highlightColor
 }
 
-const activeStyle = {
-  backgroundColor: highlightColor,
-  color: '#fff'
-}
-
 const mapStateToProps = state => ({
+  isMobile: state.app.isMobile,
   uri: state.router.location.pathname
 })
 
