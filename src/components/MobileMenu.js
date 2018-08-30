@@ -44,7 +44,7 @@ class MobileMenu extends React.Component {
         onClick={this.onClickOverlay}
       >
         <div
-          id='menu'
+          id="menu"
           style={{ ...menuStyle, maxHeight }}
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
