@@ -72,7 +72,7 @@ class App extends React.Component {
 }
 
 const routeStyle = {
-  minHeight: 400
+  minHeight: 600
 }
 
 const mapStateToProps = state => ({

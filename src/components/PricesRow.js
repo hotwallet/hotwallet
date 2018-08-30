@@ -141,7 +141,7 @@ class PricesRow extends React.Component {
               cursor: 'pointer',
               width: isMobile ? 75 : 100,
               padding: '0.5em 1em',
-              border: `2px solid ${balanceBorderColor}`,
+              border: `1px solid ${balanceBorderColor}`,
               textAlign: 'center',
               margin: '0 auto'
             }}>{(balance >= 0) ? roundToSignificantFigures(balance) : '\u00A0'}</div>
