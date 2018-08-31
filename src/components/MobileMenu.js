@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import SideNav from './SideNav'
+import { darkBg } from '../lib/styles'
 
 const overlayStyle = {
   position: 'absolute',
@@ -10,12 +11,15 @@ const overlayStyle = {
 }
 
 const menuStyle = {
-  backgroundColor: '#000',
+  backgroundColor: darkBg,
   position: 'relative',
   width: '65%',
   height: '100%',
   transition: 'max-height .25s',
-  overflow: 'hidden'
+  overflow: 'hidden',
+  top: 8,
+  left: 8,
+  boxShadow: '8px 8px 8px rgba(0, 0, 0, .2)'
 }
 
 class MobileMenu extends React.Component {
@@ -23,11 +27,15 @@ class MobileMenu extends React.Component {
 
   onClickOverlay = () => {
     if (this.state.isHover) return
-    this.props.toggleMenu()
+    this.props.closeMenu()
   }
 
   onMouseEnter = () => {
     this.setState({ isHover: true })
+  }
+
+  onTouchMove = () => {
+    this.props.closeMenu()
   }
 
   onMouseLeave = () => {
@@ -42,6 +50,7 @@ class MobileMenu extends React.Component {
       <div
         style={{ ...overlayStyle, left }}
         onClick={this.onClickOverlay}
+        onTouchMove={this.onTouchMove}
       >
         <div
           id="menu"
@@ -50,7 +59,7 @@ class MobileMenu extends React.Component {
           onMouseLeave={this.onMouseLeave}
         >
           <SideNav
-            onClick={this.props.toggleMenu}
+            onClick={this.props.closeMenu}
             width="100%"
           />
         </div>
