@@ -20,6 +20,11 @@ class NavLink extends React.Component {
       backgroundColor: isMobile ? null : highlightColor,
       color: '#fff'
     }
+    const normalStyle = {
+      padding: isMobile ? 10 : 15,
+      display: 'block',
+      color: 'gray'
+    }
     if (this.state.hover) linkStyle = hoverStyle
     if (props.uri === props.to) linkStyle = activeStyle
     const style = { ...props.style, ...normalStyle, ...linkStyle }
@@ -56,12 +61,6 @@ class NavLink extends React.Component {
 }
 
 const highlightColor = '#282f36'
-
-const normalStyle = {
-  padding: '15px 15px',
-  display: 'block',
-  color: 'gray'
-}
 
 const hoverStyle = {
   backgroundColor: highlightColor

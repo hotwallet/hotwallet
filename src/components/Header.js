@@ -8,8 +8,12 @@ import MobileMenu from './MobileMenu'
 class Header extends React.Component {
   state = { visible: false }
 
-  toggleMenu = () => {
-    this.setState({ visible: !this.state.visible })
+  openMenu = () => {
+    this.setState({ visible: true })
+  }
+
+  closeMenu = () => {
+    this.setState({ visible: false })
   }
 
   render() {
@@ -25,7 +29,7 @@ class Header extends React.Component {
         {isMobile ? (
           <MobileMenu
             visible={this.state.visible}
-            toggleMenu={this.toggleMenu}
+            closeMenu={this.closeMenu}
           />
         ) : ''}
         <header style={headerStyle}>
@@ -35,7 +39,7 @@ class Header extends React.Component {
               size="large"
               inverted
               style={logoStyle}
-              onClick={this.toggleMenu}
+              onClick={this.openMenu}
             />
           ) : (
             <Image
