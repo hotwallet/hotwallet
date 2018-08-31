@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import SideNav from './SideNav'
-import { lightBg, darkBg } from '../lib/styles'
+import { darkBg } from '../lib/styles'
 
 const overlayStyle = {
   position: 'absolute',
