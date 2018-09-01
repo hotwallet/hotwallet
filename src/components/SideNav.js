@@ -64,7 +64,7 @@ class SideNav extends React.Component {
         <Image src={navItem.image} />
       )
       const value = isMobile ? mobileItem : item
-      const delay = i * .075 + .1
+      const delay = i * 0.075 + 0.1
       const style = {
         opacity: this.props.opacity || 1,
         padding: '5px 0',
