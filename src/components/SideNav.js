@@ -11,6 +11,14 @@ const navItems = [
   { icon: 'setting', uri: '/settings', name: 'Settings' }
 ]
 
+const ulStyle = {
+  position: 'absolute',
+  height: '100%',
+  margin: 0,
+  padding: 0,
+  listStyleType: 'none'
+}
+
 class SideNav extends React.Component {
   render() {
     const width = this.props.width || sidebarWidth
@@ -56,8 +64,15 @@ class SideNav extends React.Component {
         <Image src={navItem.image} />
       )
       const value = isMobile ? mobileItem : item
+      const delay = i * .075 + .1
+      const style = {
+        opacity: this.props.opacity || 1,
+        padding: '5px 0',
+        transition: 'opacity .5s',
+        transitionDelay: `${delay}s`
+      }
       return (
-        <li key={i} style={{ padding: 5 }}>
+        <li key={i} style={style}>
           <NavLink
             to={navItem.uri}
             name={navItem.name}
@@ -68,14 +83,6 @@ class SideNav extends React.Component {
       )
     })
   }
-}
-
-const ulStyle = {
-  position: 'absolute',
-  height: '100%',
-  margin: 0,
-  padding: 0,
-  listStyleType: 'none'
 }
 
 const mapStateToProps = state => ({

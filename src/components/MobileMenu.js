@@ -7,7 +7,8 @@ const overlayStyle = {
   position: 'absolute',
   height: '100%',
   width: '100%',
-  zIndex: 1200
+  zIndex: 1200,
+  transition: 'top .2s, left .2s'
 }
 
 const menuStyle = {
@@ -15,10 +16,10 @@ const menuStyle = {
   position: 'relative',
   width: '65%',
   height: '100%',
-  transition: 'max-height .25s',
+  transition: 'height .2s, width .2s',
   overflow: 'hidden',
-  top: 8,
-  left: 8,
+  top: 5,
+  left: 5,
   boxShadow: '8px 8px 8px rgba(0, 0, 0, .2)'
 }
 
@@ -44,23 +45,27 @@ class MobileMenu extends React.Component {
 
   render() {
     const isVisible = this.props.visible
-    const maxHeight = isVisible ? '100%' : 0
-    const left = isVisible ? 0 : -1000
+    const height = isVisible ? '100%' : 0
+    const width = isVisible ? '65%' : 0
+    const top = isVisible ? 0 : -2000
+    const left = isVisible ? 0 : -2000
+    const opacity = isVisible ? 1 : 0.05
     return (
       <div
-        style={{ ...overlayStyle, left }}
+        style={{ ...overlayStyle, top, left }}
         onClick={this.onClickOverlay}
         onTouchMove={this.onTouchMove}
       >
         <div
-          id="menu"
-          style={{ ...menuStyle, maxHeight }}
+          id="mobile-menu"
+          style={{ ...menuStyle, width, height }}
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
         >
           <SideNav
             onClick={this.props.closeMenu}
             width="100%"
+            opacity={opacity}
           />
         </div>
       </div>
