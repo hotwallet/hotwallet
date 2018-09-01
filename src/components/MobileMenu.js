@@ -35,7 +35,16 @@ class MobileMenu extends React.Component {
     this.setState({ isHover: true })
   }
 
-  onTouchMove = () => {
+  onTouchStart = e => {
+    this.startX = e.touches[0].pageX
+    this.startY = e.touches[0].pageY
+  }
+
+  onTouchMove = e => {
+    const x = this.startX - e.touches[0].pageX
+    const y = this.startY - e.touches[0].pageY
+    const isLeftSwipe = x > 0 && x > Math.abs(y)
+    if (!isLeftSwipe) return
     this.props.closeMenu()
   }
 
@@ -54,6 +63,7 @@ class MobileMenu extends React.Component {
       <div
         style={{ ...overlayStyle, top, left }}
         onClick={this.onClickOverlay}
+        onTouchStart={this.onTouchStart}
         onTouchMove={this.onTouchMove}
       >
         <div
