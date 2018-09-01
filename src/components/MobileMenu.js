@@ -8,15 +8,15 @@ const overlayStyle = {
   height: '100%',
   width: '100%',
   zIndex: 1200,
-  transition: 'top .2s, left .2s'
+  transition: 'top .1s, left .1s'
 }
 
 const menuStyle = {
   backgroundColor: darkBg,
   position: 'relative',
-  width: '65%',
-  height: '100%',
-  transition: 'height .2s, width .2s',
+  width: 250,
+  height: 500,
+  transition: 'height .1s, width .1s',
   overflow: 'hidden',
   top: 5,
   left: 5,
@@ -45,11 +45,11 @@ class MobileMenu extends React.Component {
 
   render() {
     const isVisible = this.props.visible
-    const height = isVisible ? '100%' : 0
-    const width = isVisible ? '65%' : 0
+    const height = isVisible ? menuStyle.height : 0
+    const width = isVisible ? menuStyle.width : 0
     const top = isVisible ? 0 : -2000
     const left = isVisible ? 0 : -2000
-    const opacity = isVisible ? 1 : 0.05
+    const opacity = isVisible ? 1 : 0.01
     return (
       <div
         style={{ ...overlayStyle, top, left }}
