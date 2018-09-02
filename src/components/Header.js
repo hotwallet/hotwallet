@@ -44,7 +44,7 @@ class Header extends React.Component {
           ) : (
             <Image
               src="/hotwallet-144x144.png"
-              style={{ ...logoStyle, width: 65, padding: '0 20px' }}
+              style={{ ...logoStyle, width: 55, padding: '0 15px' }}
             />
           )}
           <div style={currencySelectorStyle}>

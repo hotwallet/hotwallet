@@ -6,8 +6,9 @@ import { sidebarWidth } from '../lib/styles'
 
 const navItems = [
   { icon: 'home', uri: '/', name: 'Portfolio' },
-  { image: 'https://chnnl.imgix.net/tarragon/hardware/64x64/ledger.png', uri: '/ledger', name: 'Ledger Connect' },
-  { image: 'https://chnnl.imgix.net/tarragon/exchanges/64x64/binance.png', uri: '/binance', name: 'Binance Connect' },
+  { image: 'https://chnnl.s3.amazonaws.com/tarragon/hardware/128x128/ledger.png', uri: '/ledger', name: 'Ledger Connect' },
+  { image: 'https://chnnl.s3.amazonaws.com/tarragon/hardware/64x64/trezor.png', uri: '/trezor', name: 'Trezor Connect' },
+  { image: 'https://chnnl.s3.amazonaws.com/tarragon/exchanges/64x64/binance.png', uri: '/binance', name: 'Binance Connect' },
   { icon: 'setting', uri: '/settings', name: 'Settings' }
 ]
 
@@ -59,9 +60,19 @@ class SideNav extends React.Component {
         </div>
       )
       const item = navItem.icon ? (
-        <Icon size="large" name={navItem.icon} />
+        <Icon
+          size="large"
+          name={navItem.icon}
+          style={{ margin: '0 auto' }}
+        />
       ) : (
-        <Image src={navItem.image} />
+        <Image
+          src={navItem.image}
+          style={{
+            width: 24,
+            margin: '0 auto'
+          }}
+        />
       )
       const value = isMobile ? mobileItem : item
       const delay = i * 0.05 + 0.075
