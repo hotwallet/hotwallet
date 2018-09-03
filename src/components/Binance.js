@@ -6,6 +6,7 @@ import { Button, Message, Input, Icon } from 'semantic-ui-react'
 import { borderColor, mobilePadding, desktopPadding } from '../lib/styles'
 import { appName } from '../config'
 import { createApiKeyUrl } from '../actions/binance'
+import moment from 'moment'
 
 const buttonStyle = {
   marginBottom: 20
@@ -82,9 +83,19 @@ class Binance extends React.Component {
     return (
       <div class="ui inverted icon message">
         <i aria-hidden="true" class="warning circle icon" />
-        <div class="content red">
+        <div class="content">
           <div class="header">Error connecting to Binance</div>
           <p>{this.props.errorMessage}</p>
+        </div>
+      </div>
+    )
+  }
+
+  renderLastUpdated() {
+    return (
+      <div class="ui inverted message">
+        <div class="content">
+          Last updated {moment(this.props.lastUpdated).fromNow()}
         </div>
       </div>
     )
@@ -94,6 +105,7 @@ class Binance extends React.Component {
     return (
       <div>
         {this.renderErrorMessage()}
+        {this.renderLastUpdated()}
         <fieldset style={fieldsetStyle}>
           <label style={labelStyle}>
             API Key
@@ -216,7 +228,8 @@ class Binance extends React.Component {
 const mapStateToProps = state => ({
   isMobile: state.app.isMobile,
   apiKey: state.binance.apiKey,
-  errorMessage: state.binance.errorMessage
+  errorMessage: state.binance.errorMessage,
+  lastUpdated: state.binance.lastSync
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Binance)
