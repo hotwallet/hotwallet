@@ -15,17 +15,18 @@ import { sidebarWidth, border } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
 import withTracker from './withTracker'
 
+const fiveMinutes = 1000 * 60 * 5
+
 class App extends React.Component {
   componentDidMount() {
     this.throttleWindowChange()
     this.resizeTimer = null
     window.addEventListener('resize', this.throttleWindowChange)
 
-    const fiveMinutes = 1000 * 60 * 5
     if (this.props.lastBinanceSync + fiveMinutes < Date.now()) {
       this.props.fetchBinanceBalances()
+      this.props.fetchWalletBalances()
     }
-    this.props.fetchWalletBalances()
   }
 
   throttleWindowChange = () => {
