@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { Icon, Image } from 'semantic-ui-react'
 import { darkBg, sidebarWidth, border } from '../lib/styles'
 import CurrencyContainer from '../containers/CurrencyContainer'
@@ -21,7 +22,7 @@ class Header extends React.Component {
     const logoStyle = {
       width: isMobile ? 50 : sidebarWidth,
       display: 'inline-block',
-      color: 'gray',
+      color: '#fff',
       borderRight: border
     }
     return (
@@ -42,10 +43,12 @@ class Header extends React.Component {
               onClick={this.openMenu}
             />
           ) : (
-            <Image
-              src="/hotwallet-144x144.png"
-              style={{ ...logoStyle, width: 55, padding: '0 15px' }}
-            />
+            <Link to="/">
+              <Image
+                src="/hotwallet-144x144.png"
+                style={{ ...logoStyle, width: 55, padding: '0 15px' }}
+              />
+            </Link>
           )}
           <div style={currencySelectorStyle}>
             <CurrencyContainer />

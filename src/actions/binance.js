@@ -1,9 +1,10 @@
 import BinanceClient from '../lib/BinanceClient'
 import { addImportedTransaction } from './transactions'
-import { getBalanceForSymbol } from '../selectors/transactions'
+import { getBalanceForSymbol, getBalancesForWallet } from '../selectors/transactions'
 
 export const SET_BINANCE_API_KEYS = 'SET_BINANCE_API_KEYS'
 export const SET_BINANCE_SYNC_TIME = 'SET_BINANCE_SYNC_TIME'
+export const SET_BINANCE_ERROR_MESSAGE = 'SET_BINANCE_ERROR_MESSAGE'
 
 export const createApiKeyUrl = 'https://www.binance.com/userCenter/createApi.html'
 
@@ -19,6 +20,10 @@ export const fetchBinanceBalances = () => (dispatch, getState) => {
       dispatch({
         type: SET_BINANCE_SYNC_TIME
       })
+      dispatch({
+        type: SET_BINANCE_ERROR_MESSAGE,
+        errorMessage: ''
+      })
       data.balances.forEach(row => {
         const symbol = row.asset
         const newBalance = Number(row.free) + Number(row.locked)
@@ -33,4 +38,25 @@ export const fetchBinanceBalances = () => (dispatch, getState) => {
         }
       })
     })
+    .catch(err => {
+      dispatch({
+        type: SET_BINANCE_ERROR_MESSAGE,
+        errorMessage: err
+      })
+    })
+}
+
+export const zeroBinanceBalances = () => (dispatch, getState) => {
+  const state = getState()
+  const walletId = 'Binance'
+  const balances = getBalancesForWallet(state, walletId)
+  Object.keys(balances).forEach(symbol => {
+    const balance = balances[symbol]
+    if (!balance) return
+    addImportedTransaction({
+      symbol,
+      balance: 0,
+      walletId
+    })(dispatch, getState)
+  })
 }

@@ -1,6 +1,7 @@
 import {
   SET_BINANCE_API_KEYS,
-  SET_BINANCE_SYNC_TIME
+  SET_BINANCE_SYNC_TIME,
+  SET_BINANCE_ERROR_MESSAGE
 } from '../actions/binance'
 
 const initialState = {
@@ -14,6 +15,8 @@ export default (state = initialState, action) => {
       return { ...state, ...action.keys }
     case SET_BINANCE_SYNC_TIME:
       return { ...state, lastSync: Date.now() }
+    case SET_BINANCE_ERROR_MESSAGE:
+      return { ...state, errorMessage: action.errorMessage }
     default:
       return state
   }

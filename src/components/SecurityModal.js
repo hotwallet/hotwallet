@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { Modal, Button, Table, Divider, Input, Image } from 'semantic-ui-react'
 import { lightBg } from '../lib/styles'
@@ -62,15 +63,16 @@ class SecurityModal extends React.Component {
     if (this.props.binanceApiKey) return
     if (!binanceSymbols.includes(security.symbol)) return
     return (
-      <Button
-        key="import-binance"
-        color="black"
-        fluid
-        style={buttonStyle}
-        onClick={this.onClickImportBinanceButton}
-      >
-        Import from Binance
-      </Button>
+      <Link to="/binance">
+        <Button
+          key="import-binance"
+          color="black"
+          fluid
+          style={buttonStyle}
+        >
+          Binance Connect
+        </Button>
+      </Link>
     )
   }
 

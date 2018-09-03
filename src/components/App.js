@@ -2,6 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Route } from 'react-router-dom'
 import Portfolio from './Portfolio'
+import Ledger from './Ledger'
+import Trezor from './Trezor'
+import Binance from './Binance'
 import Settings from './Settings'
 import Header from './Header'
 import Footer from './Footer'
@@ -61,6 +64,9 @@ class App extends React.Component {
           <main style={mainStyle}>
             <div style={routeStyle}>
               <Route exact path="/" component={withTracker(Portfolio)} />
+              <Route exact path="/ledger" component={withTracker(Ledger)} />
+              <Route exact path="/trezor" component={withTracker(Trezor)} />
+              <Route exact path="/binance" component={withTracker(Binance)} />
               <Route exact path="/settings" component={withTracker(Settings)} />
             </div>
             <Footer />

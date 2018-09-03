@@ -2,7 +2,6 @@ import React from 'react'
 import { desktopPadding, mobilePadding } from '../lib/styles'
 import { Dimmer, Loader, Image } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
-import BinanceSetupModal from './BinanceSetupModal'
 import EthereumSetupModal from './EthereumSetupModal'
 import SecurityModal from './SecurityModal'
 import 'react-virtualized/styles.css'
@@ -55,10 +54,7 @@ const MarketCapCell = subscribeSymbol(({security}) => (
 class Prices extends React.PureComponent {
   constructor(props) {
     super(props)
-    this.state = {
-      isBinanceSetupModalOpen: false
-    }
-    this.openBinanceSetupModal = this.openBinanceSetupModal.bind(this)
+    this.state = {}
     this.closeSecurityModal = this.closeSecurityModal.bind(this)
     this.openSecurityModal = this.openSecurityModal.bind(this)
     this.getRow = this.getRow.bind(this)
@@ -66,10 +62,6 @@ class Prices extends React.PureComponent {
 
   openEthereumSetupModal = val => {
     this.setState({ isEthereumSetupModalOpen: val })
-  }
-
-  openBinanceSetupModal = val => {
-    this.setState({ isBinanceSetupModalOpen: val })
   }
 
   getRow(data) {
@@ -351,13 +343,7 @@ class Prices extends React.PureComponent {
           onClose={this.closeSecurityModal}
           addManualTransaction={this.props.addManualTransaction}
           removeManualTransactions={this.props.removeManualTransactions}
-          openBinanceSetupModal={this.openBinanceSetupModal}
           openEthereumSetupModal={this.openEthereumSetupModal}
-        />
-
-        <BinanceSetupModal
-          isModalOpen={this.state.isBinanceSetupModalOpen}
-          openBinanceSetupModal={this.openBinanceSetupModal}
         />
 
         <EthereumSetupModal

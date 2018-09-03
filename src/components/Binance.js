@@ -1,8 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import H1 from './H1'
 import { mapDispatchToProps } from '../actions'
-import { Modal, Button, Message, Input, Icon, Image } from 'semantic-ui-react'
-import { lightBg, borderColor } from '../lib/styles'
+import { Button, Message, Input, Icon } from 'semantic-ui-react'
+import { borderColor, mobilePadding, desktopPadding } from '../lib/styles'
 import { appName } from '../config'
 import { createApiKeyUrl } from '../actions/binance'
 
@@ -31,7 +32,7 @@ const fieldsetStyle = {
   marginBottom: 20
 }
 
-class BinanceSetupModal extends React.Component {
+class Binance extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -48,35 +49,98 @@ class BinanceSetupModal extends React.Component {
     this.props.fetchBinanceBalances()
   }
 
-  render() {
-    const {
-      isModalOpen,
-      openBinanceSetupModal
-    } = this.props
+  disconnectBinance = () => {
+    const confirmed = window.confirm('Disconnect and set Binance balances to zero?')
+    if (confirmed) {
+      this.props.setBinanceApiKeys({
+        apiKey: '',
+        secretKey: ''
+      })
+      this.props.zeroBinanceBalances()
+    }
+  }
 
+  render() {
+    const isMobile = this.props.isMobile
+    const content = this.props.apiKey ? this.renderConnected() : this.renderNotConnected()
     return (
-      <Modal
-        closeIcon
-        size="mini"
-        open={isModalOpen}
-        onClose={() => openBinanceSetupModal(false)}
-        style={{
-          backgroundColor: lightBg
-        }}
-      >
-        <Modal.Header style={{ color: '#fff' }}>
-          <Image
-            src="https://chnnl.imgix.net/tarragon/exchanges/32x32/binance.png"
-            inline
-            verticalAlign="middle"
-            style={{marginRight: 12}}
+      <div>
+        <H1 text="Binance Connect" />
+        <div
+          style={{
+            padding: isMobile ? mobilePadding : desktopPadding
+          }}
+        >
+          {content}
+        </div>
+      </div>
+    )
+  }
+
+  renderErrorMessage() {
+    if (!this.props.errorMessage) return
+    return (
+      <div class="ui inverted icon message">
+        <i aria-hidden="true" class="warning circle icon" />
+        <div class="content red">
+          <div class="header">Error connecting to Binance</div>
+          <p>{this.props.errorMessage}</p>
+        </div>
+      </div>
+    )
+  }
+
+  renderConnected() {
+    return (
+      <div>
+        {this.renderErrorMessage()}
+        <fieldset style={fieldsetStyle}>
+          <label style={labelStyle}>
+            API Key
+          </label>
+          <Input
+            transparent
+            focus
+            fluid
+            inverted
+            color="#fff"
+            style={inputStyle}
+            disabled
+            className="monospace"
+            value={this.props.apiKey}
           />
-          <span style={{
-            fontSize: 18,
-            verticalAlign: 'middle'
-          }}>Import from Binance</span>
-        </Modal.Header>
-        <Modal.Content>
+        </fieldset>
+        <fieldset style={fieldsetStyle}>
+          <label style={labelStyle}>
+            Secret Key
+          </label>
+          <Input
+            transparent
+            focus
+            fluid
+            inverted
+            color="#fff"
+            style={inputStyle}
+            disabled
+            className="monospace"
+            value={'*'.repeat(64)}
+          />
+        </fieldset>
+        <div>
+          <Button
+            color="red"
+            style={buttonStyle}
+            onClick={this.disconnectBinance}
+          >Disconnect</Button>
+        </div>
+      </div>
+    )
+  }
+
+  renderNotConnected() {
+    return (
+      <div class="ui divided stackable two column grid">
+        <div class="column">
           <fieldset style={fieldsetStyle}>
             <label style={labelStyle}>
               API Key
@@ -88,6 +152,7 @@ class BinanceSetupModal extends React.Component {
               inverted
               color="#fff"
               style={inputStyle}
+              className="monospace"
               onChange={e => this.setState({ apiKey: e.target.value })}
             />
           </fieldset>
@@ -101,6 +166,7 @@ class BinanceSetupModal extends React.Component {
               inverted
               color="#fff"
               style={inputStyle}
+              className="monospace"
               onChange={e => this.setState({ secretKey: e.target.value })}
             />
           </fieldset>
@@ -110,6 +176,8 @@ class BinanceSetupModal extends React.Component {
             style={buttonStyle}
             onClick={this.connectBinance}
           >Connect</Button>
+        </div>
+        <div class="column">
           <Message color="black">
             <Message.Header>
               <Icon name="help circle" style={{ marginRight: 5 }} />
@@ -117,13 +185,12 @@ class BinanceSetupModal extends React.Component {
             </Message.Header>
             <ol style={{ margin: 15, padding: 0 }}>
               <li style={liStyle}>
-                Go to your <a
+                Go to your
+                <a
                   href={createApiKeyUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                >
-                  Binance API Settings
-                </a>.
+                >Binance API Settings</a>.
               </li>
               <li style={liStyle}>
                 Enter API key label '{appName}' then tap 'Create New Key'.
@@ -140,14 +207,16 @@ class BinanceSetupModal extends React.Component {
               </li>
             </ol>
           </Message>
-        </Modal.Content>
-      </Modal>
+        </div>
+      </div>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.app.isMobile
+  isMobile: state.app.isMobile,
+  apiKey: state.binance.apiKey,
+  errorMessage: state.binance.errorMessage
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(BinanceSetupModal)
+export default connect(mapStateToProps, mapDispatchToProps)(Binance)
