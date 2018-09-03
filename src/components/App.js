@@ -21,6 +21,10 @@ class App extends React.Component {
     this.resizeTimer = null
     window.addEventListener('resize', this.throttleWindowChange)
 
+    const fiveMinutes = 1000 //* 60 * 5
+    if (this.props.lastBinanceSync + fiveMinutes < Date.now()) {
+      this.props.fetchBinanceBalances()
+    }
     this.props.fetchWalletBalances()
   }
 
@@ -78,7 +82,8 @@ const routeStyle = {
 
 const mapStateToProps = state => ({
   uri: state.router.location.pathname,
-  isMobile: state.app.isMobile
+  isMobile: state.app.isMobile,
+  lastBinanceSync: state.binance.lastSync
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

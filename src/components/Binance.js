@@ -32,18 +32,12 @@ const fieldsetStyle = {
   marginBottom: 20
 }
 
-const fiveMinutes = 1000 //* 60 * 5
-
 class Binance extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       apiKey: '',
       secretKey: ''
-    }
-    // TODO: update balances without visiting /binance page
-    if (this.props.lastBinanceSync + fiveMinutes < Date.now()) {
-      this.props.fetchBinanceBalances()
     }
   }
 
@@ -222,8 +216,7 @@ class Binance extends React.Component {
 const mapStateToProps = state => ({
   isMobile: state.app.isMobile,
   apiKey: state.binance.apiKey,
-  errorMessage: state.binance.errorMessage,
-  lastBinanceSync: state.binance.lastSync
+  errorMessage: state.binance.errorMessage
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Binance)
