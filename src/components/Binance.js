@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import H1 from './H1'
 import { mapDispatchToProps } from '../actions'
-import { Button, Message, Input, Icon } from 'semantic-ui-react'
+import { Button, Message, Input } from 'semantic-ui-react'
 import { borderColor, mobilePadding, desktopPadding } from '../lib/styles'
 import { appName } from '../config'
 import { createApiKeyUrl } from '../actions/binance'
@@ -93,8 +93,10 @@ class Binance extends React.Component {
 
   renderLastUpdated() {
     return (
-      <div class="ui inverted message">
+      <div class="ui inverted icon message">
+        <i aria-hidden="true" class="check circle icon" />
         <div class="content">
+          <div class="header">Connected</div>
           Last updated {moment(this.props.lastUpdated).fromNow()}
         </div>
       </div>
@@ -192,13 +194,11 @@ class Binance extends React.Component {
         <div class="column">
           <Message color="black">
             <Message.Header>
-              <Icon name="help circle" style={{ marginRight: 5 }} />
               Instructions
             </Message.Header>
             <ol style={{ margin: 15, padding: 0 }}>
               <li style={liStyle}>
-                Go to your
-                <a
+                Go to your <a
                   href={createApiKeyUrl}
                   target="_blank"
                   rel="noopener noreferrer"
