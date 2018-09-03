@@ -2,6 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Route } from 'react-router-dom'
 import Portfolio from './Portfolio'
+import Ledger from './Ledger'
+import Trezor from './Trezor'
+import Binance from './Binance'
 import Settings from './Settings'
 import Header from './Header'
 import Footer from './Footer'
@@ -12,18 +15,13 @@ import { sidebarWidth, border } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
 import withTracker from './withTracker'
 
-const fiveMinutes = 1000 * 60 * 5
-
 class App extends React.Component {
   componentDidMount() {
     this.throttleWindowChange()
     this.resizeTimer = null
     window.addEventListener('resize', this.throttleWindowChange)
 
-    if (this.props.lastBinanceSync + fiveMinutes < Date.now()) {
-      this.props.fetchBinanceBalances()
-      this.props.fetchWalletBalances()
-    }
+    this.props.fetchWalletBalances()
   }
 
   throttleWindowChange = () => {
@@ -61,6 +59,9 @@ class App extends React.Component {
           <main style={mainStyle}>
             <div style={routeStyle}>
               <Route exact path="/" component={withTracker(Portfolio)} />
+              <Route exact path="/ledger" component={withTracker(Ledger)} />
+              <Route exact path="/trezor" component={withTracker(Trezor)} />
+              <Route exact path="/binance" component={withTracker(Binance)} />
               <Route exact path="/settings" component={withTracker(Settings)} />
             </div>
             <Footer />
@@ -77,8 +78,7 @@ const routeStyle = {
 
 const mapStateToProps = state => ({
   uri: state.router.location.pathname,
-  isMobile: state.app.isMobile,
-  lastBinanceSync: state.binance.lastSync
+  isMobile: state.app.isMobile
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

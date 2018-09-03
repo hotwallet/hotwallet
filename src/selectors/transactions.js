@@ -17,6 +17,8 @@ export const getAllTransactions = createSelector([getTransactionsById], (byId) =
 
 export const getTransactionsForSymbolUncached = (state, symbol) => state.transactions.bySymbol[symbol]
 
+export const getTransactionsForWalletUncached = (state, walletId) => state.transactions.byWalletId[walletId]
+
 export const getSymbolsWithTransactions = createSelector(
   [getTransactionsBySymbol],
   (transactionsBySymbol) => Object.keys(transactionsBySymbol)
@@ -26,6 +28,27 @@ export const getTransactionsForSymbol = createCachedSelector(
   [getTransactionsForSymbolUncached],
   transactions => transactions
 )((state, symbol) => symbol)
+
+export const getTransactionsForWallet = createCachedSelector(
+  [getTransactionsForWalletUncached],
+  transactions => transactions
+)((state, walletId) => walletId)
+
+export const getBalancesForWallet = createCachedSelector(
+  [getTransactionsForWallet],
+  (transactions) => {
+    if (!transactions) {
+      return undefined
+    }
+    const balances = {}
+    transactions.forEach(tx => {
+      balances[tx.symbol] = tx.balance
+    })
+    return balances
+  }
+)(
+  (state, walletId) => walletId
+)
 
 export const getBalancesByWalletIdForSymbol = createCachedSelector(
   [getTransactionsForSymbol],

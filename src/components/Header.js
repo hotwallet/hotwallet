@@ -21,7 +21,7 @@ class Header extends React.Component {
     const logoStyle = {
       width: isMobile ? 50 : sidebarWidth,
       display: 'inline-block',
-      color: 'gray',
+      color: '#fff',
       borderRight: border
     }
     return (
@@ -43,7 +43,7 @@ class Header extends React.Component {
             />
           ) : (
             <Image
-              src="/hotwallet-144x144.png"
+              src="/hotwallet-144x14"
               style={{ ...logoStyle, width: 55, padding: '0 15px' }}
             />
           )}
