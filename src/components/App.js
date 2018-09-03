@@ -21,7 +21,7 @@ class App extends React.Component {
     this.resizeTimer = null
     window.addEventListener('resize', this.throttleWindowChange)
 
-    const fiveMinutes = 1000 //* 60 * 5
+    const fiveMinutes = 1000 * 60 * 5
     if (this.props.lastBinanceSync + fiveMinutes < Date.now()) {
       this.props.fetchBinanceBalances()
     }
