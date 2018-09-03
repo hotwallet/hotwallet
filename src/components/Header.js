@@ -17,7 +17,7 @@ class Header extends React.Component {
     this.setState({ visible: false })
   }
 
-  render() {
+  renderHamburger() {
     const isMobile = this.props.isMobile
     const logoStyle = {
       width: isMobile ? 50 : sidebarWidth,
@@ -25,6 +25,35 @@ class Header extends React.Component {
       color: '#fff',
       borderRight: border
     }
+    if (!isMobile) {
+      return <Link to="/">
+        <Image
+          src="/hotwallet-144x144.png"
+          style={{ ...logoStyle, width: 55, padding: '0 15px' }}
+        />
+      </Link>
+    }
+    if (this.props.location.pathname === '/') {
+      return <Icon
+        name="bars"
+        size="large"
+        inverted
+        style={logoStyle}
+        onClick={this.openMenu}
+      />
+    }
+    return <Link to="/">
+      <Icon
+        name="left arrow"
+        size="large"
+        inverted
+        style={logoStyle}
+      />
+    </Link>
+  }
+
+  render() {
+    const isMobile = this.props.isMobile
     return (
       <div>
         {isMobile ? (
@@ -34,22 +63,7 @@ class Header extends React.Component {
           />
         ) : ''}
         <header style={headerStyle}>
-          {isMobile ? (
-            <Icon
-              name="bars"
-              size="large"
-              inverted
-              style={logoStyle}
-              onClick={this.openMenu}
-            />
-          ) : (
-            <Link to="/">
-              <Image
-                src="/hotwallet-144x144.png"
-                style={{ ...logoStyle, width: 55, padding: '0 15px' }}
-              />
-            </Link>
-          )}
+          {this.renderHamburger()}
           <div style={currencySelectorStyle}>
             <CurrencyContainer />
           </div>
@@ -71,7 +85,8 @@ const headerStyle = {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.app.isMobile
+  isMobile: state.app.isMobile,
+  location: state.router.location
 })
 
 export default connect(mapStateToProps)(Header)
