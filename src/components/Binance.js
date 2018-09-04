@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import H1 from './H1'
 import { mapDispatchToProps } from '../actions'
-import { Button, Message, Input } from 'semantic-ui-react'
+import { Button, Message, Input, Icon } from 'semantic-ui-react'
 import { borderColor, mobilePadding, desktopPadding } from '../lib/styles'
 import { appName } from '../config'
 import { createApiKeyUrl } from '../actions/binance'
@@ -82,7 +82,7 @@ class Binance extends React.Component {
     if (!this.props.errorMessage) return
     return (
       <div class="ui inverted icon message">
-        <i aria-hidden="true" class="warning circle icon" />
+        <Icon name="warning circle" />
         <div class="content">
           <div class="header">Error connecting to Binance</div>
           <p>{this.props.errorMessage}</p>

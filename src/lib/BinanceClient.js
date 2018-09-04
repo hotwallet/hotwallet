@@ -56,8 +56,10 @@ export default class BinanceClient {
   _sendRequest(method, apiVersion, endpoint, queries = {}, signed) {
     return new Promise((resolve, reject) => {
       const options = {
-        hostname: 'cors-anywhere.herokuapp.com',
         port: 443,
+        // hostname: 'api.hotwallet.com',
+        // path: `/proxy/https://api.binance.com/api/v${apiVersion}/${endpoint}`,
+        hostname: 'cors-anywhere.herokuapp.com',
         path: `/https://api.binance.com/api/v${apiVersion}/${endpoint}`,
         method: method,
         timeout: this.timeout,
