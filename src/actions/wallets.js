@@ -3,7 +3,7 @@ import EthereumClient from '../lib/EthereumClient'
 import { addImportedTransaction } from './transactions'
 import { getBalancesByWalletIdForSymbol } from '../selectors/transactions'
 
-const fiveMinutes = 1000 * 60 * 5
+const fifteenMinutes = 1000 * 60 * 15
 
 export const ADD_WALLET = 'ADD_WALLET'
 export const SET_WALLET_SYNC_TIME = 'SET_WALLET_SYNC_TIME'
@@ -16,8 +16,9 @@ export const fetchWalletBalances = () => (dispatch, getState) => {
   const client = new EthereumClient()
   Promise.map(Object.keys(wallets), walletId => {
     const wallet = wallets[walletId]
+    if (!wallet.address) return
     // don't check balance more than once every five minutes
-    if (wallet.lastSync + fiveMinutes > Date.now()) return
+    if (wallet.lastSync + fifteenMinutes > Date.now()) return
     return client.getBalances(wallet.address)
       .then(tokenBalances => {
         dispatch({
@@ -27,7 +28,7 @@ export const fetchWalletBalances = () => (dispatch, getState) => {
         tokenBalances.forEach(tx => {
           const { symbol, balance } = tx
           // don't add a new transaction if the balance hasn't changed
-          const balances = getBalancesByWalletIdForSymbol(state, symbol)
+          const balances = getBalancesByWalletIdForSymbol(state, symbol) || {}
           if (balances[walletId] === balance) return
           addImportedTransaction({ symbol, balance, walletId })(dispatch, getState)
         })

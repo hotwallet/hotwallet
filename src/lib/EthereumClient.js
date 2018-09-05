@@ -1,7 +1,12 @@
 import cheerio from 'cheerio'
 import cloudscraper from 'cloudscraper'
+import Idiot from 'idiot'
 
-const corsAnywhere = 'cors-anywhere.herokuapp.com'
+const corsAnywhere = 'https://cors-anywhere.herokuapp.com'
+
+const client = new Idiot({
+  baseUrl: 'https://api.hotwallet.com/proxy/http://api.ethplorer.io'
+})
 
 export default class EthereumClient {
   async getHtml(url) {
@@ -16,7 +21,19 @@ export default class EthereumClient {
   }
 
   async getBalances(address) {
-    const url = `https://${corsAnywhere}/https://etherscan.io/tokenholdings?a=${address}`
+    const tokenBalances = []
+    const data = await client.get(`/getAddressInfo/${address}?apiKey=freekey`)
+    tokenBalances.push({ symbol: 'ETH', balance: data.ETH.balance })
+    data.tokens.forEach(token => {
+      const symbol = token.tokenInfo.symbol
+      const balance = token.balance / Math.pow(10, Number(token.tokenInfo.decimals))
+      tokenBalances.push({ symbol, balance })
+    })
+    return tokenBalances
+  }
+
+  async getEtherscanBalances(address) {
+    const url = `${corsAnywhere}/https://etherscan.io/tokenholdings?a=${address}`
     const body = await this.getHtml(url)
     const $ = cheerio.load(body)
     const $tr = $('table.table tbody tr')

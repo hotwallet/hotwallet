@@ -36,6 +36,7 @@ class EthereumSetupModal extends React.Component {
       symbol: 'ETH',
       address: this.state.address
     })
+    this.props.openEthereumSetupModal(false)
     this.props.fetchWalletBalances()
   }
 
