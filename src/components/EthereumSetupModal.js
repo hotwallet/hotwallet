@@ -89,6 +89,9 @@ class EthereumSetupModal extends React.Component {
             style={buttonStyle}
             onClick={this.connectWallet}
           >Connect</Button>
+          <div className="small faded text">
+            Powered by <a className="faded text" href="https://ethplorer.io">Ethplorer.io</a>
+          </div>
         </Modal.Content>
       </Modal>
     )

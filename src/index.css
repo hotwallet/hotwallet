@@ -64,3 +64,11 @@ input::selection {
 }
 
 html { -webkit-tap-highlight-color: rgba(0,0,0,0); }
+
+.small.text {
+  font-size: .8em;
+}
+
+.faded.text {
+  color: #999;
+}
