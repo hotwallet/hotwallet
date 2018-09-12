@@ -21,7 +21,7 @@ class Ledger extends React.Component {
   renderLedgerStatus() {
     const symbol = this.props.status.symbol
     if (!symbol) {
-      //return this.renderInstructions()
+      // return this.renderInstructions()
       return (
         <div>
           <div>Coming soon</div>
@@ -49,9 +49,7 @@ class Ledger extends React.Component {
             <div className="column">
               {this.renderLedgerStatus()}
             </div>
-            <div className="column">
-
-            </div>
+            <div className="column" />
           </div>
         </div>
       </div>
