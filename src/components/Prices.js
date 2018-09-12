@@ -2,7 +2,7 @@ import React from 'react'
 import { desktopPadding, mobilePadding } from '../lib/styles'
 import { Dimmer, Loader, Image } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
-import EthereumSetupModal from './EthereumSetupModal'
+import AddressModal from './AddressModal'
 import SecurityModal from './SecurityModal'
 import 'react-virtualized/styles.css'
 import { Table as VTable, WindowScroller, AutoSizer, Column } from 'react-virtualized'
@@ -60,8 +60,11 @@ class Prices extends React.PureComponent {
     this.getRow = this.getRow.bind(this)
   }
 
-  openEthereumSetupModal = val => {
-    this.setState({ isEthereumSetupModalOpen: val })
+  openAddressModal = ({ security, isOpen }) => {
+    this.setState({
+      addressModalSecurity: security,
+      isAddressModalOpen: isOpen
+    })
   }
 
   getRow = data => {
@@ -335,7 +338,7 @@ class Prices extends React.PureComponent {
             </AutoSizer>
           )}
         </WindowScroller>
-        {/* Plugins */}
+
         <SecurityModal
           security={modalSecurity}
           isModalOpen={isModalOpen}
@@ -343,12 +346,13 @@ class Prices extends React.PureComponent {
           onClose={this.closeSecurityModal}
           addManualTransaction={this.props.addManualTransaction}
           removeManualTransactions={this.props.removeManualTransactions}
-          openEthereumSetupModal={this.openEthereumSetupModal}
+          openAddressModal={this.openAddressModal}
         />
 
-        <EthereumSetupModal
-          isModalOpen={this.state.isEthereumSetupModalOpen}
-          openEthereumSetupModal={this.openEthereumSetupModal}
+        <AddressModal
+          security={this.state.addressModalSecurity}
+          isModalOpen={this.state.isAddressModalOpen}
+          openAddressModal={this.openAddressModal}
         />
       </div>
     )

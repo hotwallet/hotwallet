@@ -6,7 +6,7 @@ import { Modal, Button, Table, Divider, Input, Image } from 'semantic-ui-react'
 import { lightBg } from '../lib/styles'
 import PricesInputQty from './PricesInputQty'
 import ImportWalletButton from './ImportWalletButton'
-import { binanceSymbols, supportedWallets, ledgerWallets } from '../config'
+import { binanceSymbols, ledgerWallets } from '../config'
 
 const buttonStyle = {
   marginBottom: 5
@@ -46,11 +46,12 @@ class SecurityModal extends React.Component {
     ].filter(Boolean)
   }
 
-  onClickImportWalletButton = (wallet) => {
+  onClickImportWalletButton = () => {
     this.close()
-    const modalName = `open${wallet}SetupModal`
-    if (!this.props[modalName]) return
-    this.props[modalName](true)
+    this.props.openAddressModal({
+      security: this.props.security,
+      isOpen: true
+    })
   }
 
   getImportBinanceButton() {
@@ -89,15 +90,11 @@ class SecurityModal extends React.Component {
 
   getImportWalletButton() {
     const { security } = this.props
-    const wallet = Object.keys(supportedWallets).find(w => {
-      const symbols = supportedWallets[w]
-      return symbols.find(s => s === security.symbol)
-    })
-    if (!wallet) return
+    if (!security.addressType) return
     return (
       <ImportWalletButton
         key="import-wallet"
-        wallet={wallet}
+        security={security}
         style={buttonStyle}
         onClick={this.onClickImportWalletButton}
       />
