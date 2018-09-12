@@ -4,8 +4,6 @@
   "private": true,
   "dependencies": {
     "babel-eslint": "^8.2.3",
-    "cheerio": "^1.0.0-rc.2",
-    "cloudscraper": "^1.5.0",
     "highcharts": "^6.0.7",
     "idiot": "^2.0.1",
     "ledger-sdk": "^1.2.0",
