@@ -185,3 +185,8 @@ export const binanceSymbols = [
   'THETA',
   'IOTX'
 ]
+
+export const ledgerWallets = [
+  'BTC',
+  'ETH'
+]
