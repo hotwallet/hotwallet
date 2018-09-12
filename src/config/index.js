@@ -180,7 +180,15 @@ export const binanceSymbols = [
   'IOTX'
 ]
 
-export const ledgerWallets = [
+export const ledgerSymbols = [
   'BTC',
-  'ETH'
+  'ETH',
+  'LTC',
+  'ZEC',
+  'XRP',
+  'BCH',
+  'XLM',
+  'DASH',
+  'NEO',
+  'DOGE'
 ]

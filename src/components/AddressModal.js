@@ -66,7 +66,7 @@ class AddressModal extends React.Component {
           <span style={{
             fontSize: 18,
             verticalAlign: 'middle'
-          }}>Import {security.name} Wallet</span>
+          }}>Track {security.name} Balance</span>
         </Modal.Header>
         <Modal.Content>
           <fieldset style={fieldsetStyle}>
@@ -88,7 +88,7 @@ class AddressModal extends React.Component {
             fluid
             style={buttonStyle}
             onClick={this.connectWallet}
-          >Connect</Button>
+          >Continue</Button>
         </Modal.Content>
       </Modal>
     )

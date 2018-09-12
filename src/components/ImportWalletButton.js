@@ -7,6 +7,8 @@ class ImportWalletButton extends React.Component {
   }
 
   render() {
+    const symbol = this.props.security.symbol
+    const hasHDWalletSupport = (symbol === 'BTC')
     return (
       <Button
         key="import-wallet"
@@ -14,7 +16,10 @@ class ImportWalletButton extends React.Component {
         fluid
         style={this.props.style}
         onClick={this.onClick}
-      >Watch {this.props.security.name} Wallet</Button>
+      >
+        {symbol} Address
+        {hasHDWalletSupport ? ' or HD Wallet' : ''}
+      </Button>
     )
   }
 }

@@ -6,7 +6,7 @@ import { Modal, Button, Table, Divider, Input, Image } from 'semantic-ui-react'
 import { lightBg } from '../lib/styles'
 import PricesInputQty from './PricesInputQty'
 import ImportWalletButton from './ImportWalletButton'
-import { binanceSymbols, ledgerWallets } from '../config'
+import { binanceSymbols, ledgerSymbols } from '../config'
 
 const buttonStyle = {
   marginBottom: 5
@@ -74,7 +74,7 @@ class SecurityModal extends React.Component {
 
   getImportLedgerButton() {
     const { security } = this.props
-    if (!ledgerWallets.includes(security.symbol)) return
+    if (!ledgerSymbols.includes(security.symbol)) return
     return (
       <Link to="/ledger">
         <Button
@@ -262,7 +262,7 @@ class SecurityModal extends React.Component {
 
           {importButtons.length ? (
             <div>
-              <Divider horizontal section style={dividerStyle}>Import balances</Divider>
+              <Divider horizontal section style={dividerStyle}>Track Balances</Divider>
               {importButtons}
             </div>
           ) : ''}
