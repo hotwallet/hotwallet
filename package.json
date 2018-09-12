@@ -6,7 +6,7 @@
     "babel-eslint": "^8.2.3",
     "highcharts": "^6.0.7",
     "idiot": "^2.0.1",
-    "ledger-sdk": "^1.2.0",
+    "ledger-sdk": "^1.2.2",
     "moment": "^2.21.0",
     "normalizr": "^3.2.4",
     "prop-types": "^15.6.1",
