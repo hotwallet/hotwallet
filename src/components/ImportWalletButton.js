@@ -14,7 +14,7 @@ class ImportWalletButton extends React.Component {
         fluid
         style={this.props.style}
         onClick={this.onClick}
-      >Import {this.props.security.name} Wallet</Button>
+      >Watch {this.props.security.name} Wallet</Button>
     )
   }
 }
