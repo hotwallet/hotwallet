@@ -64,7 +64,7 @@ class Prices extends React.PureComponent {
     this.setState({ isEthereumSetupModalOpen: val })
   }
 
-  getRow(data) {
+  getRow = data => {
     return this.props.securities[data.index]
   }
 

@@ -153,8 +153,8 @@ class Binance extends React.Component {
 
   renderNotConnected() {
     return (
-      <div class="ui divided stackable two column grid">
-        <div class="column">
+      <div className="ui divided stackable two column grid">
+        <div className="column">
           <fieldset style={fieldsetStyle}>
             <label style={labelStyle}>
               API Key
@@ -191,7 +191,7 @@ class Binance extends React.Component {
             onClick={this.connectBinance}
           >Connect</Button>
         </div>
-        <div class="column">
+        <div className="column">
           <Message color="black">
             <Message.Header>
               Instructions
