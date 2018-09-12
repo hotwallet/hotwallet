@@ -8,12 +8,6 @@ export const ga = {
 }
 
 // TODO: maintain this on the server
-export const supportedWallets = {
-  Bitcoin: ['BTC'],
-  Ethereum: ['ETH', 'TRX', 'BNB', 'ZRX', 'BAT', 'REP', 'GNT', 'ENG']
-}
-
-// TODO: maintain this on the server
 export const binanceSymbols = [
   'BTC',
   'LTC',

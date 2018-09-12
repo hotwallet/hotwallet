@@ -18,13 +18,15 @@ export const fetchWalletBalances = () => (dispatch, getState) => {
     if (!wallet.address) return
     // don't check balance more than once every five minutes
     if (wallet.lastSync + fifteenMinutes > Date.now()) return
-    return client.get(`/addresses/${wallet.symbol}/${wallet.address}`)
-      .then(tokenBalances => {
+    const url = `/addresses/${wallet.symbol}/${wallet.address}`
+    return client.get(url)
+      .then(response => {
+        if (!Array.isArray(response.balances)) return
         dispatch({
           type: SET_WALLET_SYNC_TIME,
           wallet
         })
-        tokenBalances.forEach(tx => {
+        response.balances.forEach(tx => {
           const { symbol, balance } = tx
           // don't add a new transaction if the balance hasn't changed
           const balances = getBalancesByWalletIdForSymbol(state, symbol) || {}

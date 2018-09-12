@@ -25,7 +25,7 @@ const fieldsetStyle = {
   marginBottom: 20
 }
 
-class EthereumSetupModal extends React.Component {
+class AddressModal extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
@@ -33,32 +33,32 @@ class EthereumSetupModal extends React.Component {
 
   connectWallet = () => {
     this.props.addWallet({
-      symbol: 'ETH',
+      symbol: this.props.security.addressType,
       address: this.state.address
     })
-    this.props.openEthereumSetupModal(false)
+    this.props.openAddressModal({ isOpen: false })
     this.props.fetchWalletBalances()
   }
 
   render() {
     const {
       isModalOpen,
-      openEthereumSetupModal
+      openAddressModal,
+      security = {}
     } = this.props
-
     return (
       <Modal
         closeIcon
         size="mini"
         open={isModalOpen}
-        onClose={() => openEthereumSetupModal(false)}
+        onClose={() => openAddressModal({ isOpen: false })}
         style={{
           backgroundColor: lightBg
         }}
       >
         <Modal.Header style={{ color: '#fff' }}>
           <Image
-            src="https://chnnl.imgix.net/tarragon/icons/32x32/ETH.png"
+            src={`https://chnnl.imgix.net/tarragon/icons/32x32/${security.symbol}.png`}
             inline
             verticalAlign="middle"
             style={{marginRight: 12}}
@@ -66,12 +66,12 @@ class EthereumSetupModal extends React.Component {
           <span style={{
             fontSize: 18,
             verticalAlign: 'middle'
-          }}>Import Ethereum Wallet</span>
+          }}>Import {security.name} Wallet</span>
         </Modal.Header>
         <Modal.Content>
           <fieldset style={fieldsetStyle}>
             <label style={labelStyle}>
-              ETH Address
+              {security.addressType} Address
             </label>
             <Input
               transparent
@@ -89,9 +89,6 @@ class EthereumSetupModal extends React.Component {
             style={buttonStyle}
             onClick={this.connectWallet}
           >Connect</Button>
-          <div className="small faded text">
-            Powered by <a className="faded text" href="https://ethplorer.io">Ethplorer.io</a>
-          </div>
         </Modal.Content>
       </Modal>
     )
@@ -102,4 +99,4 @@ const mapStateToProps = state => ({
   isMobile: state.app.isMobile
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(EthereumSetupModal)
+export default connect(mapStateToProps, mapDispatchToProps)(AddressModal)
