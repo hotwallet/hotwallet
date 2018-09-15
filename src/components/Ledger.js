@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import H1 from './H1'
 import { mobilePadding, desktopPadding } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
-import { Table, Image, Icon } from 'semantic-ui-react'
+import { Table, Image, Icon, Message } from 'semantic-ui-react'
+import { getLedgerWallets } from '../selectors/transactions'
 
 const rowStyle = {}
 
@@ -15,7 +16,7 @@ const headerStyle = {
 const cellStyle = {
   color: '#fff',
   borderBottom: '1px solid #444',
-  padding: '15px 0 15px 10px'
+  padding: '15px 10px'
 }
 
 class Ledger extends React.Component {
@@ -25,13 +26,13 @@ class Ledger extends React.Component {
 
   renderInstructions() {
     return (
-      <div class="ui inverted icon message">
-        <Icon name="usb circle" />
-        <div class="content">
-          <div class="header">No Ledger Device Present</div>
-          <div>Plug in and choose a currency on your Ledger device</div>
-        </div>
-      </div>
+      <Message icon color="black">
+        <Icon name="usb" />
+        <Message.Content>
+          <Message.Header>Ledger Disconnected</Message.Header>
+          Plug in and choose a currency on your Ledger device
+        </Message.Content>
+      </Message>
     )
   }
 
@@ -41,27 +42,19 @@ class Ledger extends React.Component {
       return this.renderInstructions()
     }
     return (
-      <div class="ui inverted icon message">
-        <Icon name="check circle" />
-        <div class="content">
-          <div class="header">{symbol} Connected</div>
-        </div>
-      </div>
+      <Message color="black">
+        <Message.Content>
+          <Message.Header>
+            <Icon name="check circle" size="large" />
+            {symbol} Connected
+          </Message.Header>
+        </Message.Content>
+      </Message>
     )
   }
 
   render() {
-    const security = {
-      symbol: 'BTC',
-      name: 'Bitcoin'
-    }
-    const wallet = {
-      name: 'My Bitcoin Wallet',
-      isSegwit: false,
-      balance: '0.12345',
-      id: 'BTC:1234567'
-    }
-    const iconSrc = `https://chnnl.imgix.net/tarragon/icons/32x32/${security.symbol}.png`
+    const wallets = this.props.wallets
     return (
       <div>
         <H1 text="Ledger Connect" />
@@ -79,29 +72,39 @@ class Ledger extends React.Component {
           >
             <Table.Header>
               <Table.Row style={headerStyle}>
-                <Table.HeaderCell style={cellStyle}>Wallet</Table.HeaderCell>
-                <Table.HeaderCell style={cellStyle} textAlign="right">Balance</Table.HeaderCell>
+                <Table.HeaderCell style={cellStyle}>Ledger Wallets</Table.HeaderCell>
+                <Table.HeaderCell style={cellStyle} textAlign="right"></Table.HeaderCell>
                 <Table.HeaderCell style={cellStyle} />
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              <Table.Row style={rowStyle} key={wallet.id}>
-                <Table.Cell style={cellStyle}>
-                  <Image
-                    src={iconSrc}
-                    inline
-                    verticalAlign="middle"
-                    style={{ marginRight: 12 }}
-                  />
-                  {wallet.name} {wallet.isSegwit ? '' : '(legacy)'}
-                </Table.Cell>
-                <Table.Cell style={cellStyle} textAlign="right">
-                  {wallet.balance} {security.symbol}
-                </Table.Cell>
-                <Table.Cell style={cellStyle} textAlign="right">
-                  <Icon name="remove circle" size="large" />
-                </Table.Cell>
-              </Table.Row>
+              {wallets.map(wallet => {
+                const iconSrc = `https://chnnl.imgix.net/tarragon/icons/32x32/${wallet.symbol}.png`
+                return (
+                  <Table.Row style={rowStyle} key={wallet.id}>
+                    <Table.Cell style={cellStyle}>
+                      <Image
+                        src={iconSrc}
+                        inline
+                        verticalAlign="middle"
+                        style={{ marginRight: 12 }}
+                      />
+                      {wallet.name} {wallet.isSegwit ? '' : '(legacy)'}
+                    </Table.Cell>
+                    <Table.Cell style={cellStyle} textAlign="right">
+                      {Object.keys(wallet.balances).map(symbol => (
+                        <div key={`${wallet.id}:${symbol}`}>
+                          {wallet.balances[symbol]}
+                          <span style={{ marginLeft: 8 }}>{symbol}</span>
+                        </div>
+                      ))}
+                    </Table.Cell>
+                    <Table.Cell style={cellStyle} textAlign="right">
+                      <Icon name="remove circle" size="large" />
+                    </Table.Cell>
+                  </Table.Row>
+                )
+              })}
             </Table.Body>
           </Table>
         </div>
@@ -112,7 +115,8 @@ class Ledger extends React.Component {
 
 const mapStateToProps = state => ({
   isMobile: state.app.isMobile,
-  status: state.ledger.status || {}
+  status: state.ledger.data || {},
+  wallets: getLedgerWallets(state)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Ledger)

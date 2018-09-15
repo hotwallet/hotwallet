@@ -15,7 +15,9 @@ export const fetchWalletBalances = () => (dispatch, getState) => {
   const wallets = state.wallets
   Promise.map(Object.keys(wallets), walletId => {
     const wallet = wallets[walletId]
-    if (!wallet.address) return
+    if (!wallet.address && !wallet.xpub) return
+    // TODO: iterate addresses and get total balance
+    if (wallet.xpub) return
     // don't check balance more than once every five minutes
     if (wallet.lastSync + fifteenMinutes > Date.now()) return
     const url = `/addresses/${wallet.symbol}/${wallet.address}`
