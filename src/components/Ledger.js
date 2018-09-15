@@ -73,7 +73,7 @@ class Ledger extends React.Component {
             <Table.Header>
               <Table.Row style={headerStyle}>
                 <Table.HeaderCell style={cellStyle}>Ledger Wallets</Table.HeaderCell>
-                <Table.HeaderCell style={cellStyle} textAlign="right"></Table.HeaderCell>
+                <Table.HeaderCell style={cellStyle} textAlign="right" />
                 <Table.HeaderCell style={cellStyle} />
               </Table.Row>
             </Table.Header>

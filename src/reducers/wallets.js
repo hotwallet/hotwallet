@@ -8,9 +8,9 @@ const initialState = {}
 export default (state = initialState, action) => {
   const wallet = (action && action.wallet) || {}
   if (!wallet.address && !wallet.xpub) return state
-  const walletId = wallet.address ?
-    `${wallet.symbol}:${wallet.address}` :
-    `${wallet.symbol}:${wallet.xpub}`
+  const walletId = wallet.address
+    ? `${wallet.symbol}:${wallet.address}`
+    : `${wallet.symbol}:${wallet.xpub}`
   switch (action.type) {
     case ADD_WALLET:
       return { ...state, [walletId]: wallet }
