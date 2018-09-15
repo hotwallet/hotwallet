@@ -5,7 +5,7 @@ import { Icon, Image } from 'semantic-ui-react'
 import { sidebarWidth } from '../lib/styles'
 
 const navItems = [
-  { icon: 'home', uri: '/', name: 'Portfolio' },
+  { icon: 'pie chart', uri: '/', name: 'Portfolio' },
   { image: 'https://chnnl.s3.amazonaws.com/tarragon/hardware/128x128/ledger.png', uri: '/ledger', name: 'Ledger Connect' },
   { image: 'https://chnnl.s3.amazonaws.com/tarragon/hardware/64x64/trezor.png', uri: '/trezor', name: 'Trezor Connect' },
   { image: 'https://chnnl.s3.amazonaws.com/tarragon/exchanges/64x64/binance.png', uri: '/binance', name: 'Binance Connect' },

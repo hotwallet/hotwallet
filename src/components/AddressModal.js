@@ -66,7 +66,7 @@ class AddressModal extends React.Component {
           <span style={{
             fontSize: 18,
             verticalAlign: 'middle'
-          }}>Track {security.name} Balance</span>
+          }}>Track {security.symbol} Balance</span>
         </Modal.Header>
         <Modal.Content>
           <fieldset style={fieldsetStyle}>
@@ -81,6 +81,20 @@ class AddressModal extends React.Component {
               color="#fff"
               style={inputStyle}
               onChange={e => this.setState({ address: e.target.value })}
+            />
+          </fieldset>
+          <fieldset style={fieldsetStyle}>
+            <label style={labelStyle}>
+              Description (optional)
+            </label>
+            <Input
+              transparent
+              focus
+              fluid
+              inverted
+              color="#fff"
+              style={inputStyle}
+              onChange={e => this.setState({ description: e.target.value })}
             />
           </fieldset>
           <Button
