@@ -74,7 +74,6 @@ export const fetchWalletBalances = () => (dispatch, getState) => {
     })
     return Promise.resolve()
       .then(() => {
-        // TODO: iterate addresses and get total balance
         if (xpub) return getHDBalances(symbol, xpub)
         return getBalances(symbol, address)
       })
