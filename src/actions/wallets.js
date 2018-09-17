@@ -19,9 +19,6 @@ const getBalances = (symbol, address) => {
       if (!Array.isArray(response.balances)) return []
       return response.balances
     })
-    .catch(err => {
-      return []
-    })
 }
 
 const getChainBalances = (symbol, xpub, change, index = 0, totals = {}, unused = 0) => {
@@ -54,6 +51,10 @@ const getHDBalances = (symbol, xpub) => {
     .then(results => {
       console.log('results:', results)
       // TODO: add together the receive and change balances
+      return []
+    })
+    .catch(() => {
+      console.log('There was a problem getting wallet balance, try again later.')
       return []
     })
 }
