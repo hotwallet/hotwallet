@@ -1,5 +1,5 @@
 import LedgerSDK from 'ledger-sdk'
-import { addWallet } from './wallets'
+import { addWallet, fetchWalletBalances } from './wallets'
 import { getSecurity } from '../selectors/securities'
 
 export const SET_LEDGER_DATA = 'SET_LEDGER_DATA'
@@ -26,6 +26,7 @@ export const startLedger = () => (dispatch, getState) => {
       isSegwit: false,
       isLedgerWallet: true
     }))
+    fetchWalletBalances()(dispatch, getState)
   })
 
   ledger.on('close', () => dispatch(setLedgerData(null)))
