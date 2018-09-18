@@ -75,16 +75,16 @@ export const fetchWalletBalances = () => (dispatch, getState) => {
     if (!address && !xpub) return
     // don't check wallet balance too often
     if (lastSync + fifteenMinutes > Date.now()) return
-    dispatch({
-      type: SET_WALLET_SYNC_TIME,
-      wallet
-    })
     return Promise.resolve()
       .then(() => {
         if (xpub) return getHDBalances(symbol, xpub)
         return getBalances(symbol, address)
       })
       .then(balances => {
+        dispatch({
+          type: SET_WALLET_SYNC_TIME,
+          wallet
+        })
         // save balances
         balances.forEach(row => {
           // don't add a new transaction if the balance hasn't changed

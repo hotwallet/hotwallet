@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import moment from 'moment'
 import H1 from './H1'
 import { mobilePadding, desktopPadding } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
@@ -94,8 +95,11 @@ class Ledger extends React.Component {
                     <Table.Cell style={cellStyle} textAlign="right">
                       {Object.keys(wallet.balances).map(symbol => (
                         <div key={`${wallet.id}:${symbol}`}>
-                          {wallet.balances[symbol]}
-                          <span style={{ marginLeft: 8 }}>{symbol}</span>
+                          <div>
+                            {wallet.balances[symbol]}
+                            <span style={{ marginLeft: 8 }}>{symbol}</span>
+                          </div>
+                          <div>Updated {moment(wallet.lastSync).fromNow()}</div>
                         </div>
                       ))}
                     </Table.Cell>
