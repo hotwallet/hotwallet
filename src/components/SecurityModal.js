@@ -59,7 +59,7 @@ class SecurityModal extends React.Component {
     if (this.props.binanceApiKey) return
     if (!binanceSymbols.includes(security.symbol)) return
     return (
-      <Link to="/binance">
+      <Link to="/binance" key="binance">
         <Button
           key="import-binance"
           color="black"
@@ -76,7 +76,7 @@ class SecurityModal extends React.Component {
     const { security } = this.props
     if (!ledgerSymbols.includes(security.symbol)) return
     return (
-      <Link to="/ledger">
+      <Link to="/ledger" key="ledger">
         <Button
           color="black"
           fluid

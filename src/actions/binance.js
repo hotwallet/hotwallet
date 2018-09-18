@@ -6,7 +6,7 @@ export const SET_BINANCE_API_KEYS = 'SET_BINANCE_API_KEYS'
 export const SET_BINANCE_SYNC_TIME = 'SET_BINANCE_SYNC_TIME'
 export const SET_BINANCE_ERROR_MESSAGE = 'SET_BINANCE_ERROR_MESSAGE'
 
-const fifteenMinutes = 1000 * 60 * 15
+const fiveMinutes = 1000 * 60 * 5
 
 export const createApiKeyUrl = 'https://www.binance.com/userCenter/createApi.html'
 
@@ -17,7 +17,7 @@ export const fetchBinanceBalances = () => (dispatch, getState) => {
   const { apiKey, secretKey } = state.binance
   if (!apiKey || !secretKey) return
   // don't check binance balance too often
-  if (state.lastBinanceSync + fifteenMinutes < Date.now()) return
+  if (state.lastBinanceSync + fiveMinutes < Date.now()) return
   const binance = new BinanceClient(apiKey, secretKey)
   binance.getAccount()
     .then(data => {

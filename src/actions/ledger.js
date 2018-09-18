@@ -17,6 +17,7 @@ export const startLedger = () => (dispatch, getState) => {
   dispatch(setLedgerData(null))
 
   ledger.on('open', data => {
+    console.log('open', data)
     const security = getSecurity(state, data.symbol)
     dispatch(setLedgerData(data))
     dispatch(addWallet({

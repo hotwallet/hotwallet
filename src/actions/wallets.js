@@ -1,4 +1,5 @@
 import Promise from 'bluebird'
+import Big from 'big.js'
 import client from '../lib/hotwalletClient'
 import { addImportedTransaction } from './transactions'
 import { getBalancesByWalletIdForSymbol } from '../selectors/transactions'
@@ -28,18 +29,19 @@ const getChainBalances = (symbol, xpub, change, index = 0, totals = {}, unused =
     .then(balances => {
       const newTotals = {...totals}
       balances.forEach(row => {
-        const total = totals[row.symbol] || 0
-        // TODO: safe math
-        newTotals[row.symbol] = total + Number(row.balance)
+        const total = Big(totals[row.symbol] || 0)
+        newTotals[row.symbol] = total.add(row.balance)
       })
       if (unused > gapLimit) {
         return Object.keys(newTotals).map(sym => ({
           symbol: sym,
-          balance: totals[sym]
+          balance: totals[sym].toString()
         }))
       }
-      return Promise.delay(50)
-        .then(() => getChainBalances(symbol, xpub, change, index + 1, newTotals, unused + 1))
+      // TODO: only increment if this address has 0 transactions
+      const numUnused = unused + 1
+      return Promise.delay(1000)
+        .then(() => getChainBalances(symbol, xpub, change, index + 1, newTotals, numUnused))
     })
 }
 
@@ -49,9 +51,14 @@ const getHDBalances = (symbol, xpub) => {
     change: getChainBalances(symbol, xpub, 1)
   })
     .then(results => {
-      console.log('results:', results)
-      // TODO: add together the receive and change balances
-      return []
+      const totals = results.receive.map(r => {
+        const change = results.change.find(c => c.symbol === r.symbol)
+        return {
+          symbol: r.symbol,
+          balance: Big(r.balance).add(change.balance).toString()
+        }
+      })
+      return totals
     })
     .catch(() => {
       console.log('There was a problem getting wallet balance, try again later.')
