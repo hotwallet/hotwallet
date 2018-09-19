@@ -192,3 +192,11 @@ export const ledgerSymbols = [
   'NEO',
   'DOGE'
 ]
+
+export const sync = {
+  url: 'https://some.endpoint.here/',
+  symmetricSalt: 'coffee streams thing retain kabul handful spark broaden liable gerald desert carbon',
+  asymmetricSalt: 'promote islamic felony koch span lottery tropical herald quebec petition delta help',
+  iterations: 100000,
+  hash: 'SHA-256'
+}

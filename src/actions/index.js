@@ -9,6 +9,7 @@ import * as securities from './securities'
 import * as transactions from './transactions'
 import * as user from './user'
 import * as wallets from './wallets'
+import * as sync from './sync'
 
 export const mapDispatchToProps = dispatch => {
   return bindActionCreators({
@@ -20,6 +21,7 @@ export const mapDispatchToProps = dispatch => {
     ...securities,
     ...transactions,
     ...user,
-    ...wallets
+    ...wallets,
+    ...sync
   }, dispatch)
 }

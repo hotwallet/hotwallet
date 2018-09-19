@@ -1,5 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Button } from 'semantic-ui-react'
+import { mapDispatchToProps } from '../actions'
+
 import H1 from './H1'
 
 class Settings extends React.Component {
@@ -7,6 +10,7 @@ class Settings extends React.Component {
     return (
       <div>
         <H1 text="Settings" />
+        <Button onClick={this.props.generateKeys}> Generate Keys </Button>
       </div>
     )
   }
@@ -14,4 +18,4 @@ class Settings extends React.Component {
 
 const mapStateToProps = state => ({})
 
-export default connect(mapStateToProps)(Settings)
+export default connect(mapStateToProps, mapDispatchToProps)(Settings)
