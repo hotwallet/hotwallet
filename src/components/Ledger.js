@@ -74,6 +74,76 @@ class Ledger extends React.Component {
     this.props.setWalletName(id, name)
   }
 
+  renderTable() {
+    const wallets = this.props.wallets
+    return (
+      <Table
+        basic="very"
+        celled
+        compact="very"
+        unstackable
+      >
+        <Table.Header>
+          <Table.Row style={headerStyle}>
+            <Table.HeaderCell
+              style={cellStyle}
+              colSpan={4}
+            >Ledger Wallets</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {wallets.map(wallet => {
+            const iconSrc = `https://chnnl.imgix.net/tarragon/icons/32x32/${wallet.symbol}.png`
+            return (
+              <Table.Row style={rowStyle} key={wallet.id}>
+                <Table.Cell style={{ ...cellStyle, width: 32 }}>
+                  <Image src={iconSrc} />
+                </Table.Cell>
+                <Table.Cell style={{ ...cellStyle, width: '50%' }}>
+                  <div>
+                    <Input
+                      data-walletid={wallet.id}
+                      defaultValue={wallet.name}
+                      inverted
+                      transparent
+                      fluid
+                      onChange={this.onChangeWalletName}
+                    />
+                  </div>
+                  <div>
+                    {wallet.isSegwit ? '' : <span style={smallFont}>Legacy</span>}
+                  </div>
+                </Table.Cell>
+                <Table.Cell style={cellStyle} textAlign="right">
+                  {Object.keys(wallet.balances).map(symbol => (
+                    <div key={`${wallet.id}:${symbol}`}>
+                      <div>
+                        {wallet.balances[symbol]}
+                        <span style={{ marginLeft: 8 }}>{symbol}</span>
+                      </div>
+                      <div style={smallFont}>Updated {moment(wallet.lastSync).fromNow()}</div>
+                    </div>
+                  ))}
+                </Table.Cell>
+                <Table.Cell style={{ ...cellStyle, width: 32 }} textAlign="right">
+                  <Button
+                    data-id={wallet.id}
+                    data-name={wallet.name}
+                    inverted
+                    basic
+                    color="red"
+                    icon="remove"
+                    onClick={this.onClickDeleteWallet}
+                  />
+                </Table.Cell>
+              </Table.Row>
+            )
+          })}
+        </Table.Body>
+      </Table>
+    )
+  }
+
   render() {
     const wallets = this.props.wallets
     return (
@@ -85,71 +155,7 @@ class Ledger extends React.Component {
           }}
         >
           {this.renderLedgerStatus()}
-          {wallets.length ?
-          <Table
-            basic="very"
-            celled
-            compact="very"
-            unstackable
-          >
-            <Table.Header>
-              <Table.Row style={headerStyle}>
-                <Table.HeaderCell
-                  style={cellStyle}
-                  colSpan={4}
-                >Ledger Wallets</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {wallets.map(wallet => {
-                const iconSrc = `https://chnnl.imgix.net/tarragon/icons/32x32/${wallet.symbol}.png`
-                return (
-                  <Table.Row style={rowStyle} key={wallet.id}>
-                    <Table.Cell style={{ ...cellStyle, width: 32 }}>
-                      <Image src={iconSrc} />
-                    </Table.Cell>
-                    <Table.Cell style={{ ...cellStyle, width: '50%' }}>
-                      <div>
-                        <Input
-                          data-walletid={wallet.id}
-                          defaultValue={wallet.name}
-                          inverted
-                          transparent
-                          fluid
-                          onChange={this.onChangeWalletName}
-                        />
-                      </div>
-                      <div>
-                        {wallet.isSegwit ? '' : <span style={smallFont}>Legacy</span>}
-                      </div>
-                    </Table.Cell>
-                    <Table.Cell style={cellStyle} textAlign="right">
-                      {Object.keys(wallet.balances).map(symbol => (
-                        <div key={`${wallet.id}:${symbol}`}>
-                          <div>
-                            {wallet.balances[symbol]}
-                            <span style={{ marginLeft: 8 }}>{symbol}</span>
-                          </div>
-                          <div style={smallFont}>Updated {moment(wallet.lastSync).fromNow()}</div>
-                        </div>
-                      ))}
-                    </Table.Cell>
-                    <Table.Cell style={{ ...cellStyle, width: 32 }} textAlign="right">
-                      <Button
-                        data-id={wallet.id}
-                        data-name={wallet.name}
-                        inverted
-                        basic
-                        color="red"
-                        icon="remove"
-                        onClick={this.onClickDeleteWallet}
-                      />
-                    </Table.Cell>
-                  </Table.Row>
-                )
-              })}
-            </Table.Body>
-          </Table> : ''}
+          {wallets.length ? this.renderTable() : ''}
         </div>
       </div>
     )

@@ -1,10 +1,9 @@
 import Promise from 'bluebird'
 import Big from 'big.js'
 import client from '../lib/hotwalletClient'
-import { addImportedTransaction } from './transactions'
+import { addImportedTransaction, removeTransactions } from './transactions'
 import { getBalancesByWalletIdForSymbol, getTransactionsForWallet } from '../selectors/transactions'
 import { deriveAddress } from 'xpubjs'
-import { removeTransactions } from '../actions/transactions'
 
 const fifteenMinutes = 1000 * 60 * 15
 const gapLimit = 10
