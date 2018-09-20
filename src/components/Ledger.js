@@ -4,7 +4,7 @@ import moment from 'moment'
 import H1 from './H1'
 import { mobilePadding, desktopPadding } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
-import { Table, Image, Icon, Message, Input } from 'semantic-ui-react'
+import { Button, Table, Image, Icon, Message, Input } from 'semantic-ui-react'
 import { getLedgerWallets } from '../selectors/transactions'
 
 const rowStyle = {}
@@ -12,6 +12,11 @@ const rowStyle = {}
 const headerStyle = {
   ...rowStyle,
   backgroundColor: 'rgba(0,0,0,.3)'
+}
+
+const smallFont = {
+  fontSize: 13,
+  color: '#999'
 }
 
 const cellStyle = {
@@ -54,6 +59,15 @@ class Ledger extends React.Component {
     )
   }
 
+  onClickDeleteWallet = event => {
+    const id = event.target.parentNode.getAttribute('data-id')
+    const name = event.target.parentNode.getAttribute('data-name')
+    const confirmed = window.confirm(`Delete ${name}?`)
+    if (confirmed) {
+      this.props.deleteWallet(id)
+    }
+  }
+
   onChangeWalletName = event => {
     const id = event.target.parentNode.getAttribute('data-walletid')
     const name = event.target.value
@@ -71,6 +85,7 @@ class Ledger extends React.Component {
           }}
         >
           {this.renderLedgerStatus()}
+          {wallets.length ?
           <Table
             basic="very"
             celled
@@ -93,7 +108,7 @@ class Ledger extends React.Component {
                     <Table.Cell style={{ ...cellStyle, width: 32 }}>
                       <Image src={iconSrc} />
                     </Table.Cell>
-                    <Table.Cell style={cellStyle}>
+                    <Table.Cell style={{ ...cellStyle, width: '50%' }}>
                       <div>
                         <Input
                           data-walletid={wallet.id}
@@ -105,7 +120,7 @@ class Ledger extends React.Component {
                         />
                       </div>
                       <div>
-                        {wallet.isSegwit ? '' : '(legacy)'}
+                        {wallet.isSegwit ? '' : <span style={smallFont}>Legacy</span>}
                       </div>
                     </Table.Cell>
                     <Table.Cell style={cellStyle} textAlign="right">
@@ -115,18 +130,26 @@ class Ledger extends React.Component {
                             {wallet.balances[symbol]}
                             <span style={{ marginLeft: 8 }}>{symbol}</span>
                           </div>
-                          <div>Updated {moment(wallet.lastSync).fromNow()}</div>
+                          <div style={smallFont}>Updated {moment(wallet.lastSync).fromNow()}</div>
                         </div>
                       ))}
                     </Table.Cell>
-                    <Table.Cell style={cellStyle} textAlign="right">
-                      <Icon name="remove circle" size="large" />
+                    <Table.Cell style={{ ...cellStyle, width: 32 }} textAlign="right">
+                      <Button
+                        data-id={wallet.id}
+                        data-name={wallet.name}
+                        inverted
+                        basic
+                        color="red"
+                        icon="remove"
+                        onClick={this.onClickDeleteWallet}
+                      />
                     </Table.Cell>
                   </Table.Row>
                 )
               })}
             </Table.Body>
-          </Table>
+          </Table> : ''}
         </div>
       </div>
     )
