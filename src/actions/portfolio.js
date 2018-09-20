@@ -81,6 +81,6 @@ const runRefreshChart = (dispatch, getState) => {
     })
 }
 
-const refreshChartDebounced = debounce(runRefreshChart, 500)
+const refreshChartDebounced = debounce(runRefreshChart, 1000)
 
 export const refreshChart = () => refreshChartDebounced

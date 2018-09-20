@@ -4,7 +4,7 @@ import moment from 'moment'
 import H1 from './H1'
 import { mobilePadding, desktopPadding } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
-import { Table, Image, Icon, Message } from 'semantic-ui-react'
+import { Table, Image, Icon, Message, Input } from 'semantic-ui-react'
 import { getLedgerWallets } from '../selectors/transactions'
 
 const rowStyle = {}
@@ -54,6 +54,12 @@ class Ledger extends React.Component {
     )
   }
 
+  onChangeWalletName = event => {
+    const id = event.target.parentNode.getAttribute('data-walletid')
+    const name = event.target.value
+    this.props.setWalletName(id, name)
+  }
+
   render() {
     const wallets = this.props.wallets
     return (
@@ -73,9 +79,10 @@ class Ledger extends React.Component {
           >
             <Table.Header>
               <Table.Row style={headerStyle}>
-                <Table.HeaderCell style={cellStyle}>Ledger Wallets</Table.HeaderCell>
-                <Table.HeaderCell style={cellStyle} textAlign="right" />
-                <Table.HeaderCell style={cellStyle} />
+                <Table.HeaderCell
+                  style={cellStyle}
+                  colSpan={4}
+                >Ledger Wallets</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -83,14 +90,23 @@ class Ledger extends React.Component {
                 const iconSrc = `https://chnnl.imgix.net/tarragon/icons/32x32/${wallet.symbol}.png`
                 return (
                   <Table.Row style={rowStyle} key={wallet.id}>
+                    <Table.Cell style={{ ...cellStyle, width: 32 }}>
+                      <Image src={iconSrc} />
+                    </Table.Cell>
                     <Table.Cell style={cellStyle}>
-                      <Image
-                        src={iconSrc}
-                        inline
-                        verticalAlign="middle"
-                        style={{ marginRight: 12 }}
-                      />
-                      {wallet.name} {wallet.isSegwit ? '' : '(legacy)'}
+                      <div>
+                        <Input
+                          data-walletid={wallet.id}
+                          defaultValue={wallet.name}
+                          inverted
+                          transparent
+                          fluid
+                          onChange={this.onChangeWalletName}
+                        />
+                      </div>
+                      <div>
+                        {wallet.isSegwit ? '' : '(legacy)'}
+                      </div>
                     </Table.Cell>
                     <Table.Cell style={cellStyle} textAlign="right">
                       {Object.keys(wallet.balances).map(symbol => (

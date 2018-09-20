@@ -10,8 +10,11 @@ const gapLimit = 10
 
 export const ADD_WALLET = 'ADD_WALLET'
 export const SET_WALLET_SYNC_TIME = 'SET_WALLET_SYNC_TIME'
+export const SET_WALLET_NAME = 'SET_WALLET_NAME'
 
 export const addWallet = wallet => ({ type: ADD_WALLET, wallet })
+
+export const setWalletName = (id, name) => ({ type: SET_WALLET_NAME, id, name })
 
 const getBalances = (symbol, address) => {
   const url = `/addresses/${symbol}/${address}`
