@@ -40,20 +40,25 @@ const getChainBalances = (symbol, xpub, change, index = 0, totals = {}, unused =
   return getBalances(symbol, address)
     .then(balances => {
       const newTotals = {...totals}
+      let isUnused = true
       balances.forEach(row => {
         const total = Big(totals[row.symbol] || 0)
         newTotals[row.symbol] = total.add(row.balance)
+        if (row.unused === false) {
+          isUnused = false
+        }
       })
+      if (isUnused) {
+        unused += 1
+      }
       if (unused > gapLimit) {
         return Object.keys(newTotals).map(sym => ({
           symbol: sym,
           balance: totals[sym].toString()
         }))
       }
-      // TODO: only increment if this address has 0 transactions
-      const numUnused = unused + 1
-      return Promise.delay(1000)
-        .then(() => getChainBalances(symbol, xpub, change, index + 1, newTotals, numUnused))
+      return Promise.delay(100)
+        .then(() => getChainBalances(symbol, xpub, change, index + 1, newTotals, unused))
     })
 }
 
@@ -92,18 +97,18 @@ export const fetchWalletBalances = () => (dispatch, getState) => {
         if (xpub) return getHDBalances(symbol, xpub)
         return getBalances(symbol, address)
       })
-      .then(balances => {
+      .then(totals => {
         dispatch({
           type: SET_WALLET_SYNC_TIME,
           wallet
         })
         // save balances
-        balances.forEach(row => {
+        totals.forEach(row => {
           // don't add a new transaction if the balance hasn't changed
           const balances = getBalancesByWalletIdForSymbol(state, row.symbol) || {}
-          if (balances[walletId] === row.balance) return
+          if (balances[walletId] === Number(row.balance)) return
           addImportedTransaction({
-            symbol,
+            symbol: row.symbol,
             balance: row.balance,
             walletId
           })(dispatch, getState)
