@@ -88,7 +88,6 @@ class SideNav extends React.Component {
             to={navItem.uri}
             name={navItem.name}
             value={value}
-            onClick={this.props.onClick}
           />
         </li>
       )
