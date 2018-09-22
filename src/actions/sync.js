@@ -4,7 +4,6 @@ export const SET_SYMMETRIC_KEY = 'SET_SYMMETRIC_KEY'
 export const SET_ASYMMETRIC_KEY = 'SET_ASYMMETRIC_KEY'
 
 export const generateKeys = (password) => async (dispatch, getState) => {
-  password = 'tendered sierra orlando israelis unix'
   let keys = await sync.generateKeys(password)
 
   dispatch({
