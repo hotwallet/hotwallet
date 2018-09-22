@@ -150,7 +150,7 @@ class SecurityModal extends React.Component {
 
     const getWalletName = walletId => {
       const wallet = this.props.wallets[walletId]
-      if (wallet.name) return wallet.name
+      if (wallet && wallet.name) return wallet.name
       if (walletId.includes(':')) return walletId.split(':')[1].substr(0, 10)
       return walletId
     }

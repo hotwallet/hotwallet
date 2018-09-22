@@ -21,7 +21,7 @@ export const startLedger = () => (dispatch, getState) => {
     const security = getSecurity(state, data.symbol)
     dispatch(setLedgerData(data))
     dispatch(addWallet({
-      name: `My ${security.name} Wallet`,
+      name: `${security.name} Ledger Wallet`,
       symbol: data.symbol,
       xpub: data.xpub,
       isSegwit: false,
