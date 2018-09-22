@@ -15,7 +15,7 @@ const headerStyle = {
 }
 
 const smallFont = {
-  fontSize: 13,
+  fontSize: 12,
   color: '#999'
 }
 
@@ -115,15 +115,17 @@ class Ledger extends React.Component {
                   </div>
                 </Table.Cell>
                 <Table.Cell style={cellStyle} textAlign="right">
-                  {Object.keys(wallet.balances).map(symbol => (
-                    <div key={`${wallet.id}:${symbol}`}>
-                      <div>
+                  {Object.keys(wallet.balances)
+                    .filter(symbol => {
+                      return symbol === wallet.symbol || Number(wallet.balances[symbol]) > 0
+                    })
+                    .map(symbol => (
+                      <div key={`${wallet.id}:${symbol}`}>
                         {wallet.balances[symbol]}
                         <span style={{ marginLeft: 8 }}>{symbol}</span>
                       </div>
-                      <div style={smallFont}>Updated {moment(wallet.lastSync).fromNow()}</div>
-                    </div>
-                  ))}
+                    ))}
+                  <div style={smallFont}>Updated {moment(wallet.lastSync).fromNow()}</div>
                 </Table.Cell>
                 <Table.Cell style={{ ...cellStyle, width: 32 }} textAlign="right">
                   <Button
