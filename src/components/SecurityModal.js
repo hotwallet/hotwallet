@@ -149,6 +149,8 @@ class SecurityModal extends React.Component {
     const clearButton = isNumber(balances.manual) && this.state.manualBalance === ''
 
     const getWalletName = walletId => {
+      const wallet = this.props.wallets[walletId]
+      if (wallet.name) return wallet.name
       if (walletId.includes(':')) return walletId.split(':')[1].substr(0, 10)
       return walletId
     }
@@ -276,7 +278,8 @@ class SecurityModal extends React.Component {
 const mapStateToProps = state => ({
   isMobile: state.app.isMobile,
   binanceApiKey: state.binance.apiKey,
-  transactionsBySymbol: state.transactions.bySymbol
+  transactionsBySymbol: state.transactions.bySymbol,
+  wallets: state.wallets
 })
 
 export default connect(mapStateToProps)(SecurityModal)
