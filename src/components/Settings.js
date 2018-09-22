@@ -13,8 +13,8 @@ class Settings extends React.Component {
     this.state = {isModalOpen: false}
   }
 
-  acceptPassphrase = () => {
-    window.alert('passphrase accepted')
+  acceptPassphrase = (event, props) => {
+    this.props.generateKeys(props.passphrase)
   }
 
   createAccount = () => {
@@ -29,7 +29,12 @@ class Settings extends React.Component {
     return (
       <div>
         <H1 text="Settings" />
-        <PassphraseModal isModalOpen={this.state.isModalOpen} passphrase={this.state.passphrase} onClose={this.generatePassphraseClose} onNext={this.acceptPassphrase} />
+        <PassphraseModal
+          isModalOpen={this.state.isModalOpen}
+          passphrase={this.state.passphrase}
+          onClose={this.generatePassphraseClose}
+          onNext={this.acceptPassphrase}
+        />
         <Button onClick={this.createAccount}> Create New Account </Button>
         <Button onClick={() => window.alert('unimplemented')}> Link to existing account </Button>
       </div>

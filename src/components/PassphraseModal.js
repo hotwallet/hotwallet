@@ -68,13 +68,13 @@ class PassphraseModal extends React.Component {
         <Modal.Content style={{ paddingTop: 0 }}>
           <Table basic="very" celled compact="very">
             <Table.Body>
-              <Table.Row style={rowStyle} key="manual">
+              <Table.Row style={rowStyle} key="passphrase">
                 <Table.Cell width="ten">
                   <Segment vertical style={{color: 'green', backgroundColor: 'rgba(0,0,0,.15)'}}>{this.props.passphrase}</Segment>
                   <Segment vertical style={{backgroundColor: 'rgba(0,0,0,.15)'}}> Please write down your passphrase.  You will need it to link other devices to the account </Segment>
                 </Table.Cell>
               </Table.Row>
-              <Table.Row style={rowStyle} key="manual">
+              <Table.Row style={rowStyle} key="buttons">
                 <Table.Cell width="ten">
                   <Button
                     color="red"
@@ -86,6 +86,7 @@ class PassphraseModal extends React.Component {
                   <Button
                     color="black"
                     style={nextButtonStyle}
+                    passphrase={this.props.passphrase}
                     onClick={this.props.onNext}
                   >
                     Next

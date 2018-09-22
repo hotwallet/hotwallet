@@ -73,7 +73,7 @@ export const generateKeys = async (password) => {
   const asymmetricKey = await generateAsymmetric(passwordKey)
 
   return {
-    rawSymmetricKey: rawSymmetricKey,
-    rawAsymmetricKey: asymmetricKey.getPrivate('hex')
+    symmetricKeyString: arrayBufferToHexString(rawSymmetricKey),
+    asymmetricKeyString: asymmetricKey.getPrivate('hex')
   }
 }
