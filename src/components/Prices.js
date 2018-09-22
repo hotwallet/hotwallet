@@ -8,25 +8,46 @@ import 'react-virtualized/styles.css'
 import { Table as VTable, WindowScroller, AutoSizer, Column } from 'react-virtualized'
 import {
   formatFiat,
-  roundToSignificantFigures,
+  formatBalance,
   formatPercentChange,
   shortenLargeNumber
 } from '../lib/formatNumber'
 import './Prices.css'
 import {subscribeSymbol} from '../lib/subscribe'
 
-const PriceCell = subscribeSymbol(({security, delta24h, isMobile}) => (
-  <React.Fragment>
-    <div>{formatFiat(security.price, security.baseCurrency)}</div>
-    {isMobile && (
-      <div style={{
-        ...delta24h.style,
-        fontSize: 10,
-        textAlign: 'right'
-      }}>{delta24h.value}</div>
-    )}
-  </React.Fragment>
-))
+const PriceCell = subscribeSymbol(({security, delta24h, isMobile}) => {
+  // const updated = moment(security.lastUpdated).fromNow()
+  return (
+    <React.Fragment>
+      <div>{formatFiat(security.price, security.baseCurrency)}</div>
+      {/*
+      <Popup
+        trigger={<span>{formatFiat(security.price, security.baseCurrency)}</span>}
+        content={updated}
+        inverted
+        hideOnScroll
+        position="bottom right"
+        style={{
+          opacity: 0.7,
+          fontSize: 10,
+          padding: '5px 10px'
+        }}
+        on="hover"
+        onOpen={(event, data) => {
+          // TODO: render the content on hover so the time fromNow updates
+        }}
+      />
+      */}
+      {isMobile && (
+        <div style={{
+          ...delta24h.style,
+          fontSize: 10,
+          textAlign: 'right'
+        }}>{delta24h.value}</div>
+      )}
+    </React.Fragment>
+  )
+})
 
 const ValueCell = subscribeSymbol(({balance, security, isMobile}) => (
   <React.Fragment>
@@ -284,7 +305,7 @@ class Prices extends React.PureComponent {
                               })
                             }}
                             style={balanceStyle}>
-                            {(security.balance >= 0) ? roundToSignificantFigures(security.balance) : '\u00A0'}
+                            {(security.balance >= 0) ? formatBalance(security.balance) : '\u00A0'}
                           </div>
                         )
                       }

@@ -66,7 +66,7 @@ class AddressModal extends React.Component {
           <span style={{
             fontSize: 18,
             verticalAlign: 'middle'
-          }}>Track {security.name} Balance</span>
+          }}>Track {security.symbol} Balance</span>
         </Modal.Header>
         <Modal.Content>
           <fieldset style={fieldsetStyle}>
