@@ -8,7 +8,7 @@ import 'react-virtualized/styles.css'
 import { Table as VTable, WindowScroller, AutoSizer, Column } from 'react-virtualized'
 import {
   formatFiat,
-  roundToSignificantFigures,
+  formatBalance,
   formatPercentChange,
   shortenLargeNumber
 } from '../lib/formatNumber'
@@ -284,7 +284,7 @@ class Prices extends React.PureComponent {
                               })
                             }}
                             style={balanceStyle}>
-                            {(security.balance >= 0) ? roundToSignificantFigures(security.balance) : '\u00A0'}
+                            {(security.balance >= 0) ? formatBalance(security.balance) : '\u00A0'}
                           </div>
                         )
                       }

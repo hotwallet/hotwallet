@@ -13,6 +13,14 @@ export function roundToSignificantFigures(num, digits = 3) {
   return shifted / magnitude
 }
 
+export function formatBalance(num) {
+  const sigFigs = 3
+  if (String(num).split('.')[0].length >= sigFigs) {
+    return Math.round(num)
+  }
+  return roundToSignificantFigures(num)
+}
+
 export function formatFiat(num, currency) {
   const currencyOptions = {
     style: 'currency',
