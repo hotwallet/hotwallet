@@ -1,7 +1,6 @@
 import React from 'react'
-import moment from 'moment'
 import { desktopPadding, mobilePadding } from '../lib/styles'
-import { Dimmer, Loader, Image, Popup } from 'semantic-ui-react'
+import { Dimmer, Loader, Image } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import AddressModal from './AddressModal'
 import SecurityModal from './SecurityModal'
@@ -17,7 +16,7 @@ import './Prices.css'
 import {subscribeSymbol} from '../lib/subscribe'
 
 const PriceCell = subscribeSymbol(({security, delta24h, isMobile}) => {
-  const updated = moment(security.lastUpdated).fromNow()
+  // const updated = moment(security.lastUpdated).fromNow()
   return (
     <React.Fragment>
       <div>{formatFiat(security.price, security.baseCurrency)}</div>
