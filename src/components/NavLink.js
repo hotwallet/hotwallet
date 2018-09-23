@@ -37,7 +37,6 @@ class NavLink extends React.Component {
           <Link style={style}
             to={props.to}
             onClick={() => {
-              props.onClick()
               this.setState({ showTooltip: false })
             }}
             onMouseOver={() => this.setState({ hover: true, showTooltip: true })}
