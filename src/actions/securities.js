@@ -1,6 +1,7 @@
 import client from '../lib/hotwalletClient'
 import { normalize } from 'normalizr'
 import * as schema from './schema'
+import debounce from 'lodash/debounce'
 
 export const SECURITIES_FETCH = 'SECURITIES_FETCH'
 export const SECURITIES_FETCH_SUCCESS = 'SECURITIES_FETCH_SUCCESS'
@@ -8,7 +9,7 @@ export const SECURITIES_FETCH_FAILURE = 'SECURITIES_FETCH_FAILURE'
 export const SECURITIES_UPDATE = 'SECURITIES_UPDATE'
 export const SECURITIES_BALANCES_ONLY = 'SECURITIES_BALANCES_ONLY'
 
-export const fetchSecurities = () => (dispatch, getState) => {
+const fetchSecuritiesDebounced = debounce((dispatch, getState) => {
   dispatch({
     type: SECURITIES_FETCH
   })
@@ -27,7 +28,9 @@ export const fetchSecurities = () => (dispatch, getState) => {
         message: error.message || 'Unknown price fetch failure'
       })
     })
-}
+}, 1000)
+
+export const fetchSecurities = () => fetchSecuritiesDebounced
 
 export const updateSecurity = security => ({
   type: SECURITIES_UPDATE,

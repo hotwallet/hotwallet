@@ -1,6 +1,6 @@
 import moment from 'moment'
 import _get from 'lodash/get'
-import _debounce from 'lodash/debounce'
+import debounce from 'lodash/debounce'
 import { getDailyBalances } from '../selectors/transactions'
 import client from '../lib/hotwalletClient'
 import { setPrices } from './prices'
@@ -24,7 +24,7 @@ export const setDateRange = range => (dispatch, getState) => {
   refreshChart()(dispatch, getState)
 }
 
-const refreshChartDebounced = (dispatch, getState) => {
+const runRefreshChart = (dispatch, getState) => {
   const state = getState()
   const baseCurrency = state.user.baseCurrency
 
@@ -81,6 +81,6 @@ const refreshChartDebounced = (dispatch, getState) => {
     })
 }
 
-export const refreshChart = () => (dispatch, getState) => {
-  _debounce(() => refreshChartDebounced(dispatch, getState), 500)()
-}
+const refreshChartDebounced = debounce(runRefreshChart, 1000)
+
+export const refreshChart = () => refreshChartDebounced

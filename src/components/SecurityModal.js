@@ -59,7 +59,7 @@ class SecurityModal extends React.Component {
     if (this.props.binanceApiKey) return
     if (!binanceSymbols.includes(security.symbol)) return
     return (
-      <Link to="/binance">
+      <Link to="/binance" key="binance">
         <Button
           key="import-binance"
           color="black"
@@ -76,7 +76,7 @@ class SecurityModal extends React.Component {
     const { security } = this.props
     if (!ledgerSymbols.includes(security.symbol)) return
     return (
-      <Link to="/ledger">
+      <Link to="/ledger" key="ledger">
         <Button
           color="black"
           fluid
@@ -149,6 +149,8 @@ class SecurityModal extends React.Component {
     const clearButton = isNumber(balances.manual) && this.state.manualBalance === ''
 
     const getWalletName = walletId => {
+      const wallet = this.props.wallets[walletId]
+      if (wallet && wallet.name) return wallet.name
       if (walletId.includes(':')) return walletId.split(':')[1].substr(0, 10)
       return walletId
     }
@@ -276,7 +278,8 @@ class SecurityModal extends React.Component {
 const mapStateToProps = state => ({
   isMobile: state.app.isMobile,
   binanceApiKey: state.binance.apiKey,
-  transactionsBySymbol: state.transactions.bySymbol
+  transactionsBySymbol: state.transactions.bySymbol,
+  wallets: state.wallets
 })
 
 export default connect(mapStateToProps)(SecurityModal)

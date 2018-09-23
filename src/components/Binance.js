@@ -97,7 +97,7 @@ class Binance extends React.Component {
         <i aria-hidden="true" class="check circle icon" />
         <div class="content">
           <div class="header">Connected</div>
-          Last updated {moment(this.props.lastUpdated).fromNow()}
+            Updated balances {moment(this.props.lastUpdated).fromNow()}
         </div>
       </div>
     )
