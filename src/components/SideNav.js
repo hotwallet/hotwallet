@@ -85,6 +85,7 @@ class SideNav extends React.Component {
       return (
         <li key={i} style={style}>
           <NavLink
+            onClick={this.props.onClick}
             to={navItem.uri}
             name={navItem.name}
             value={value}

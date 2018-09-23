@@ -20,14 +20,26 @@ export const startLedger = () => (dispatch, getState) => {
     console.log('open', data)
     const security = getSecurity(state, data.symbol)
     dispatch(setLedgerData(data))
-    dispatch(addWallet({
+    const wallet = {
       name: `${security.name} Ledger Wallet`,
       symbol: data.symbol,
       xpub: data.xpub,
       isSegwit: false,
       isLedgerWallet: true
-    }))
-    fetchWalletBalances()(dispatch, getState)
+    }
+    if (!wallet.xpub) {
+      wallet.address = data.address
+    }
+    const alreadyExists = Object.keys(state.wallets).find(walletId => {
+      let exists = false
+      if (walletId === `${wallet.symbol}:${wallet.xpub}`) exists = true
+      if (walletId === `${wallet.symbol}:${wallet.address}`) exists = true
+      return exists
+    })
+    if (!alreadyExists) {
+      dispatch(addWallet(wallet))
+      fetchWalletBalances()(dispatch, getState)
+    }
   })
 
   ledger.on('close', () => dispatch(setLedgerData(null)))
