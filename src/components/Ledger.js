@@ -22,7 +22,8 @@ const smallFont = {
 const cellStyle = {
   color: '#fff',
   borderBottom: '1px solid #444',
-  padding: '15px 10px'
+  padding: '15px 10px',
+  verticalAlign: 'top'
 }
 
 class Ledger extends React.Component {
@@ -117,7 +118,8 @@ class Ledger extends React.Component {
                 <Table.Cell style={cellStyle} textAlign="right">
                   {Object.keys(wallet.balances)
                     .filter(symbol => {
-                      return symbol === wallet.symbol || Number(wallet.balances[symbol]) > 0
+                      if (wallet.symbol === 'ETH' && symbol !== 'ETH') return false
+                      return symbol && (symbol === wallet.symbol || Number(wallet.balances[symbol]) > 0)
                     })
                     .map(symbol => (
                       <div key={`${wallet.id}:${symbol}`}>
