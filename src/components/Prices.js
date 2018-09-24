@@ -1,6 +1,6 @@
 import React from 'react'
 import { desktopPadding, mobilePadding } from '../lib/styles'
-import { Dimmer, Loader, Image } from 'semantic-ui-react'
+import { Image } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import AddressModal from './AddressModal'
 import SecurityModal from './SecurityModal'
@@ -76,9 +76,6 @@ class Prices extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {}
-    this.closeSecurityModal = this.closeSecurityModal.bind(this)
-    this.openSecurityModal = this.openSecurityModal.bind(this)
-    this.getRow = this.getRow.bind(this)
   }
 
   openAddressModal = ({ security, isOpen }) => {
@@ -110,13 +107,6 @@ class Prices extends React.PureComponent {
   }
 
   render() {
-    if (this.props.isFetching) {
-      return (
-        <Dimmer active>
-          <Loader inverted content="Loading" />
-        </Dimmer>
-      )
-    }
     if (this.props.failureMessage) {
       return (
         <div>Failed to fetch symbols:  {this.props.failureMessage} </div>
