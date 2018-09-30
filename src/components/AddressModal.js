@@ -32,10 +32,17 @@ class AddressModal extends React.Component {
   }
 
   connectWallet = () => {
-    this.props.addWallet({
-      symbol: this.props.security.addressType,
-      address: this.state.address
-    })
+    const newWallet = {
+      symbol: this.props.security.addressType
+    }
+    const inputAddress = this.state.address
+    // naive hd xpub detection logic
+    if (this.props.security.hasHD && inputAddress.length > 64) {
+      newWallet.xpub = inputAddress
+    } else {
+      newWallet.address = inputAddress
+    }
+    this.props.addWallet(newWallet)
     this.props.openAddressModal({ isOpen: false })
     this.props.fetchWalletBalances()
   }
@@ -72,6 +79,7 @@ class AddressModal extends React.Component {
           <fieldset style={fieldsetStyle}>
             <label style={labelStyle}>
               {security.addressType} Address
+              {security.hasHD ? ' or HD Wallet' : ''}
             </label>
             <Input
               transparent

@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import H1 from './H1'
 import { mapDispatchToProps } from '../actions'
-import { Button, Message, Input, Icon } from 'semantic-ui-react'
+import { Button, Message, Input } from 'semantic-ui-react'
 import { borderColor, mobilePadding, desktopPadding } from '../lib/styles'
 import { appName } from '../config'
 import { createApiKeyUrl } from '../actions/binance'
@@ -81,25 +81,23 @@ class Binance extends React.Component {
   renderErrorMessage() {
     if (!this.props.errorMessage) return
     return (
-      <div class="ui inverted icon message">
-        <Icon name="warning circle" />
-        <div class="content">
-          <div class="header">Error connecting to Binance</div>
-          <p>{this.props.errorMessage}</p>
-        </div>
-      </div>
+      <Message
+        color="black"
+        icon="warning circle"
+        header="Error connecting to Binance"
+        content={this.props.errorMessage}
+      />
     )
   }
 
   renderLastUpdated() {
     return (
-      <div class="ui inverted icon message">
-        <i aria-hidden="true" class="check circle icon" />
-        <div class="content">
-          <div class="header">Connected</div>
-            Updated balances {moment(this.props.lastUpdated).fromNow()}
-        </div>
-      </div>
+      <Message
+        color="black"
+        icon="check circle"
+        header="Connected"
+        content={`Updated balances ${moment(this.props.lastUpdated).fromNow()}`}
+      />
     )
   }
 
