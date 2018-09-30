@@ -19,7 +19,7 @@ const lineColor = lightBlue
 const lineWidth = 1.5
 const fiveMinutes = 1000 //* 60 * 5
 
-class NetWorthChart extends React.Component { 
+class NetWorthChart extends React.Component {
   componentDidMount() {
     const { lastRefresh, chartData } = this.props
     const age = Date.now() - lastRefresh
@@ -117,7 +117,7 @@ class NetWorthChart extends React.Component {
             zIndex: 200,
             padding: '0 100px'
           }}>Add balances to track your portfolio</div>) : null}
-        {isStale ? <Loader active={true} /> : ''}
+        {isStale ? <Loader active /> : ''}
         <DateRangeSelector
           baseCurrency={this.props.baseCurrency}
           deviceType={this.props.deviceType}
