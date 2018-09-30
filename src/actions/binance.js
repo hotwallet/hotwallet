@@ -17,7 +17,7 @@ export const fetchBinanceBalances = () => (dispatch, getState) => {
   const { apiKey, secretKey } = state.binance
   if (!apiKey || !secretKey) return
   // don't check binance balance too often
-  if (state.lastBinanceSync + fiveMinutes < Date.now()) return
+  if (state.binance.lastSync + fiveMinutes < Date.now()) return
   const binance = new BinanceClient(apiKey, secretKey)
   binance.getAccount()
     .then(data => {
