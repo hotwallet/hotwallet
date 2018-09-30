@@ -15,7 +15,11 @@ export default (state = initialState, action) => {
     case PORTFOLIO_SET_DATE_RANGE:
       return { ...state, range: action.range }
     case SET_CHART_DATA:
-      return { ...state, chartData: action.chartData }
+      return {
+        ...state,
+        chartData: action.chartData,
+        lastRefresh: Date.now()
+      }
     default:
       return state
   }

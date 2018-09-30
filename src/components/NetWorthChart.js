@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import ReactHighcharts from 'react-highcharts'
 import Highcharts from 'highcharts'
 import DateRangeSelector from './DateRangeSelector'
+import { Loader } from 'semantic-ui-react'
 import { lightBlue, darkBlue, darkBg, desktopPadding, mobilePadding } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
 import { getSymbolsWithTransactions } from '../selectors/transactions'
@@ -16,18 +17,23 @@ const gridLineColor = '#323a42'
 const gridLineWidth = 2
 const lineColor = lightBlue
 const lineWidth = 1.5
+const fiveMinutes = 1000 //* 60 * 5
 
-class NetWorthChart extends React.Component {
+class NetWorthChart extends React.Component { 
   componentDidMount() {
-    if (!this.props.chartData || !this.props.chartData.length) {
+    const { lastRefresh, chartData } = this.props
+    const age = Date.now() - lastRefresh
+    const isStale = (age > fiveMinutes)
+    if (!chartData || !chartData.length || isStale) {
       this.props.refreshChart()
     }
   }
 
   render() {
-    const isMobile = this.props.isMobile
-    const isTablet = this.props.isTablet
-    const data = this.props.chartData
+    const { lastRefresh, chartData, isMobile, isTablet } = this.props
+    const age = Date.now() - lastRefresh
+    const isStale = (age > fiveMinutes)
+    const data = isStale ? [] : chartData
     const chartConfig = {
       chart: {
         // zoomType: 'x',
@@ -111,6 +117,7 @@ class NetWorthChart extends React.Component {
             zIndex: 200,
             padding: '0 100px'
           }}>Add balances to track your portfolio</div>) : null}
+        {isStale ? <Loader active={true} /> : ''}
         <DateRangeSelector
           baseCurrency={this.props.baseCurrency}
           deviceType={this.props.deviceType}
@@ -126,6 +133,7 @@ const mapStateToProps = state => ({
   deviceType: state.app.deviceType,
   isTablet: state.app.isTablet,
   chartData: state.portfolio.chartData,
+  lastRefresh: state.portfolio.lastRefresh,
   hasNoTransactions: !Object.keys(state.transactions.byId).length,
   baseCurrency: state.user.baseCurrency,
   symbols: getSymbolsWithTransactions(state)
