@@ -112,7 +112,7 @@ class Ledger extends React.Component {
                     />
                   </div>
                   <div>
-                    {wallet.isSegwit ? '' : <span style={smallFont}>Legacy</span>}
+                    {wallet.isSegwit === false ? <span style={smallFont}>Legacy</span> : ''}
                   </div>
                 </Table.Cell>
                 <Table.Cell style={cellStyle} textAlign="right">
