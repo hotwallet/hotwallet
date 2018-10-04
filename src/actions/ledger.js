@@ -17,29 +17,67 @@ export const startLedger = () => (dispatch, getState) => {
   dispatch(setLedgerData(null))
 
   ledger.on('open', data => {
-    console.log('open', data)
     const security = getSecurity(state, data.symbol)
     dispatch(setLedgerData(data))
-    const wallet = {
-      name: `${security.name} Ledger Wallet`,
-      symbol: data.symbol,
-      xpub: data.xpub,
-      isSegwit: false,
-      isLedgerWallet: true
+
+    const wallets = []
+
+    if (data.legacy) {
+      wallets.push({
+        name: `${security.name} Ledger Wallet`,
+        symbol: data.symbol,
+        xpub: data.legacy.xpub,
+        isSegwit: false,
+        isLedgerWallet: true
+      })
     }
-    if (!wallet.xpub) {
-      wallet.address = data.address
+
+    if (data.segwit) {
+      wallets.push({
+        name: `${security.name} Ledger Wallet`,
+        symbol: data.symbol,
+        xpub: data.segwit.xpub,
+        isSegwit: true,
+        isLedgerWallet: true
+      })
     }
-    const alreadyExists = Object.keys(state.wallets).find(walletId => {
-      let exists = false
-      if (walletId === `${wallet.symbol}:${wallet.xpub}`) exists = true
-      if (walletId === `${wallet.symbol}:${wallet.address}`) exists = true
-      return exists
+
+    if (data.xpub) {
+      wallets.push({
+        name: `${security.name} Ledger Wallet`,
+        symbol: data.symbol,
+        xpub: data.xpub,
+        isLedgerWallet: true
+      })
+    }
+
+    if (wallets.length === 0 && data.address) {
+      wallets.push({
+        name: `${security.name} Ledger Wallet`,
+        symbol: data.symbol,
+        address: data.address,
+        isLedgerWallet: true
+      })
+    }
+
+    let newWallets = 0
+    wallets.forEach(wallet => {
+      const alreadyExists = Object.keys(state.wallets).find(walletId => {
+        let exists = false
+        if (walletId === `${wallet.symbol}:${wallet.xpub}`) exists = true
+        if (walletId === `${wallet.symbol}:${wallet.address}`) exists = true
+        return exists
+      })
+      if (!alreadyExists) {
+        newWallets += 1
+        dispatch(addWallet(wallet))
+      }
     })
-    if (!alreadyExists) {
-      dispatch(addWallet(wallet))
+
+    if (newWallets > 0) {
       fetchWalletBalances()(dispatch, getState)
     }
+
   })
 
   ledger.on('close', () => dispatch(setLedgerData(null)))
