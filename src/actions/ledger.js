@@ -77,7 +77,6 @@ export const startLedger = () => (dispatch, getState) => {
     if (newWallets > 0) {
       fetchWalletBalances()(dispatch, getState)
     }
-
   })
 
   ledger.on('close', () => dispatch(setLedgerData(null)))
