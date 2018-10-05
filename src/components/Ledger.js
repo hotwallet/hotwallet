@@ -31,6 +31,18 @@ class Ledger extends React.Component {
     this.props.startLedger()
   }
 
+  renderError(error) {
+    return (
+      <Message icon color="black">
+        <Icon name="exclamation circle" />
+        <Message.Content>
+          <Message.Header>Ledger Error</Message.Header>
+          {error.message.replace("Also make sure you're on an HTTPS connection", '')}
+        </Message.Content>
+      </Message>
+    )
+  }
+
   renderInstructions() {
     return (
       <Message icon color="black">
@@ -44,7 +56,10 @@ class Ledger extends React.Component {
   }
 
   renderLedgerStatus() {
-    const symbol = this.props.status.symbol
+    const { symbol, error } = this.props.status
+    if (error) {
+      return this.renderError(error)
+    }
     if (!symbol) {
       return this.renderInstructions()
     }
@@ -152,7 +167,10 @@ class Ledger extends React.Component {
     const wallets = this.props.wallets
     return (
       <div>
-        <H1 text="Ledger Connect" />
+        <H1
+          text="Ledger Connect"
+          subtitle="Bitcoin, Ethereum, Litecoin, and Zcash are currently supported."
+        />
         <div
           style={{
             padding: this.props.isMobile ? mobilePadding : desktopPadding

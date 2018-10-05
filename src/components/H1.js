@@ -4,16 +4,27 @@ import { mobilePadding, desktopPadding, border } from '../lib/styles'
 
 class H1 extends React.Component {
   render() {
-    const isMobile = this.props.isMobile
-    const style = {
+    const { isMobile, text, subtitle } = this.props
+    const div = {
       padding: isMobile ? mobilePadding : desktopPadding,
-      fontSize: 21,
-      fontWeight: 100,
-      margin: 0,
       borderBottom: border
     }
+    const h1 = {
+      fontSize: 21,
+      margin: 0,
+      fontWeight: 100
+    }
+    const h5 = {
+      fontSize: 13,
+      margin: '5px 0 0',
+      fontWeight: 100,
+      color: '#999'
+    }
     return (
-      <h1 style={style}>{this.props.text}</h1>
+      <div style={div}>
+        <h1 style={h1}>{text}</h1>
+        {subtitle ? <h5 style={h5}>{subtitle}</h5> : ''}
+      </div>
     )
   }
 }

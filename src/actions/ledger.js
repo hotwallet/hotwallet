@@ -83,5 +83,5 @@ export const startLedger = () => (dispatch, getState) => {
 
   ledger.on('disconnect', () => console.log('disconnect'))
 
-  ledger.start()
+  ledger.start().catch(error => dispatch(setLedgerData({ error })))
 }
