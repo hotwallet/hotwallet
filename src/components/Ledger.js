@@ -36,7 +36,7 @@ class Ledger extends React.Component {
       <Message icon color="black">
         <Icon name="exclamation circle" />
         <Message.Content>
-          <Message.Header>Ledger Error</Message.Header>
+          <Message.Header>Try a different web browser</Message.Header>
           {error.message.replace("Also make sure you're on an HTTPS connection", '')}
         </Message.Content>
       </Message>
