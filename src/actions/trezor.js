@@ -1,6 +1,8 @@
-import TrezorConnect, { DEVICE_EVENT, DEVICE } from 'trezor-connect'
+// import TrezorConnect, { DEVICE_EVENT, DEVICE } from 'trezor-connect'
 import { addWallet, fetchWalletBalances } from './wallets'
 import b58 from 'bs58check'
+
+const TrezorConnect = window.TrezorConnect
 
 function ypubToXpub(ypub) {
   var data = b58.decode(ypub)
@@ -35,10 +37,10 @@ export const getTrezorAccountInfo = (symbol) => (dispatch, getState) => {
     })
 }
 
-TrezorConnect.on(DEVICE_EVENT, event => {
-  if (event.type === DEVICE.CONNECT) {
+TrezorConnect.on('DEVICE_EVENT', event => {
+  if (event.type === 'device-connect') {
 
-  } else if (DEVICE.DISCONNECT) {
+  } else if (event.type === 'device-disconnect') {
 
   }
 })
