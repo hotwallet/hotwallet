@@ -9,24 +9,29 @@ function ypubToXpub(ypub) {
   return b58.encode(data)
 }
 
-export const getTrezorAccountInfo = () => (dispatch, getState) => {
-  const symbol = 'BTC'
+export const getTrezorAccountInfo = (symbol) => (dispatch, getState) => {
   TrezorConnect.getAccountInfo({
     coin: symbol.toLowerCase()
   })
     .then(({ payload }) => {
-      const isSegwit = payload.address[0] === '3'
-      const isYpub = payload.xpub[0] === 'y'
-      const xpub = isYpub ? ypubToXpub(payload.xpub) : payload.xpub
-      const wallet = {
-        name: `Bitcoin Trezor Wallet`,
-        isTrezorWallet: true,
-        symbol,
-        xpub,
-        isSegwit
+      const wallets = []
+      if (symbol === 'BTC') {
+        const isSegwit = payload.address[0] === '3'
+        const isYpub = payload.xpub[0] === 'y'
+        const xpub = isYpub ? ypubToXpub(payload.xpub) : payload.xpub
+        wallets.push({
+          name: `Bitcoin Trezor Wallet`,
+          isTrezorWallet: true,
+          symbol,
+          xpub,
+          isSegwit
+        })
       }
-      dispatch(addWallet(wallet))
-      fetchWalletBalances()(dispatch, getState)
+      const wallet = wallets[0]
+      if (wallet) {
+        dispatch(addWallet(wallet))
+        fetchWalletBalances()(dispatch, getState)
+      }
     })
 
 }

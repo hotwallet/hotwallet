@@ -115,6 +115,10 @@ class Trezor extends React.Component {
     )
   }
 
+  getBitcoinAccount = () => {
+    this.props.getTrezorAccountInfo('BTC')
+  }
+
   render() {
     const wallets = this.props.wallets
     return (
@@ -126,7 +130,7 @@ class Trezor extends React.Component {
           }}
         >
           <Button
-            onClick={this.props.getTrezorAccountInfo}
+            onClick={this.getBitcoinAccount}
             icon="plus"
             color="black"
             content="Add Trezor Bitcoin Wallet"
