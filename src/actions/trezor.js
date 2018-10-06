@@ -5,7 +5,7 @@ import b58 from 'bs58check'
 function ypubToXpub(ypub) {
   var data = b58.decode(ypub)
   data = data.slice(4)
-  data = Buffer.concat([Buffer.from('0488b21e','hex'), data])
+  data = Buffer.concat([Buffer.from('0488b21e', 'hex'), data])
   return b58.encode(data)
 }
 
@@ -33,7 +33,6 @@ export const getTrezorAccountInfo = (symbol) => (dispatch, getState) => {
         fetchWalletBalances()(dispatch, getState)
       }
     })
-
 }
 
 TrezorConnect.on(DEVICE_EVENT, event => {
