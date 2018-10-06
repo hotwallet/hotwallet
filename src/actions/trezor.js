@@ -1,7 +1,7 @@
-// import TrezorConnect, { DEVICE_EVENT, DEVICE } from 'trezor-connect'
 import { addWallet, fetchWalletBalances } from './wallets'
 import b58 from 'bs58check'
 
+// import TrezorConnect, { DEVICE_EVENT, DEVICE } from 'trezor-connect'
 const TrezorConnect = window.TrezorConnect
 
 function ypubToXpub(ypub) {
