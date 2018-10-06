@@ -13,7 +13,7 @@ export default class SocketClient {
     this.unsubscriptionQueue = []
     this.subscribed = []
 
-    this.syncSubscriptions = _.debounce(this.syncSubscriptions, 3000, {maxWait: 30000})
+    this.syncSubscriptions = _.debounce(this.syncSubscriptions, 3000, { maxWait: 30000 })
     this.socketReady = false
     this.join = this.join.bind(this)
     this.leave = this.leave.bind(this)

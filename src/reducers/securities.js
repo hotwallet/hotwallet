@@ -91,4 +91,4 @@ const metadata = (state = {}, action) => {
   }
 }
 
-export default combineReducers({allSymbols, bySymbol, metadata})
+export default combineReducers({ allSymbols, bySymbol, metadata })

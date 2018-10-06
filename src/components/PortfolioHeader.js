@@ -20,7 +20,7 @@ class PortfolioHeader extends React.Component {
   }
 
   getChangeDiv({ days }) {
-    const change = formatPercentChange(this.getChange({days}))
+    const change = formatPercentChange(this.getChange({ days }))
     return (
       <div style={change.style}>
         {change.value}

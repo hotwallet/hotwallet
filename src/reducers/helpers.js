@@ -40,7 +40,7 @@ export const addToOneToOneMapping = (map, entities, byProp) => {
     newMap[entity[byProp]] = entity
     return newMap
   }, {})
-  return {...map, ...newMap}
+  return { ...map, ...newMap }
 }
 
 /**
@@ -66,7 +66,7 @@ export const removeFromOneToOneMapping = (map, entityIds, idProp) => {
  **/
 export const addToOneToManyMapping = (map, entities, byProp) => {
   let changed = false
-  const newMap = {...map}
+  const newMap = { ...map }
   for (let entity of entities) {
     if (newMap[entity[byProp]] !== undefined) {
       if (!newMap[entity[byProp]].includes(entity)) {
@@ -90,7 +90,7 @@ export const addToOneToManyMapping = (map, entities, byProp) => {
  **/
 export const removeFromOneToManyMapping = (map, entityIds, idProp) => {
   let changed = false
-  const newMap = {...map}
+  const newMap = { ...map }
   const existingKeys = Object.keys(newMap)
 
   for (let k of existingKeys) {

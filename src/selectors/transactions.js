@@ -10,7 +10,7 @@ export const getTransactionsBySymbol = state => state.transactions.bySymbol
 
 export const getTransactionsBySymbolSlice = createSelector(
   [getTransactionsBySymbol],
-  txbs => ({transactions: {bySymbol: txbs}})
+  txbs => ({ transactions: { bySymbol: txbs } })
 )
 
 export const getAllTransactions = createSelector([getTransactionsById], (byId) => Object.values(byId))

@@ -13,9 +13,9 @@ import {
   shortenLargeNumber
 } from '../lib/formatNumber'
 import './Prices.css'
-import {subscribeSymbol} from '../lib/subscribe'
+import { subscribeSymbol } from '../lib/subscribe'
 
-const PriceCell = subscribeSymbol(({security, delta24h, isMobile}) => {
+const PriceCell = subscribeSymbol(({ security, delta24h, isMobile }) => {
   // const updated = moment(security.lastUpdated).fromNow()
   return (
     <React.Fragment>
@@ -49,7 +49,7 @@ const PriceCell = subscribeSymbol(({security, delta24h, isMobile}) => {
   )
 })
 
-const ValueCell = subscribeSymbol(({balance, security, isMobile}) => (
+const ValueCell = subscribeSymbol(({ balance, security, isMobile }) => (
   <React.Fragment>
     <div>{balance ? formatFiat(balance * security.price, security.baseCurrency) : '-'}</div>
     {isMobile && (
@@ -64,11 +64,11 @@ const ValueCell = subscribeSymbol(({balance, security, isMobile}) => (
   </React.Fragment>
 ))
 
-const SupplyCell = subscribeSymbol(({security, price}) => (
+const SupplyCell = subscribeSymbol(({ security, price }) => (
   <div>{shortenLargeNumber(security.marketCap / security.price)}</div>
 ))
 
-const MarketCapCell = subscribeSymbol(({security}) => (
+const MarketCapCell = subscribeSymbol(({ security }) => (
   <div>{shortenLargeNumber(security.marketCap, security.baseCurrency)}</div>
 ))
 
@@ -90,7 +90,7 @@ class Prices extends React.PureComponent {
   }
 
   closeSecurityModal = () => {
-    this.setState({isModalOpen: false})
+    this.setState({ isModalOpen: false })
   }
 
   openSecurityModal = ({ security, iconSrc }) => {
@@ -157,7 +157,7 @@ class Prices extends React.PureComponent {
         sortBy,
         sortDirection
       }) => {
-        return <div style={{...headerStyle, ...style}}> {label} </div>
+        return <div style={{ ...headerStyle, ...style }}> {label} </div>
       }
     }
 
@@ -168,9 +168,9 @@ class Prices extends React.PureComponent {
       }}>
         <WindowScroller
           scrollElement={window}>
-          {({height, isScrolling, registerChild, onChildScroll, scrollTop}) => (
+          {({ height, isScrolling, registerChild, onChildScroll, scrollTop }) => (
             <AutoSizer disableHeight>
-              {({width}) => (
+              {({ width }) => (
                 <div ref={registerChild}>
                   <VTable
                     autoHeight
@@ -196,7 +196,7 @@ class Prices extends React.PureComponent {
                       dataKey="slug"
                       className="allow-overflow"
                       cellRenderer={
-                        ({rowData: security, rowIndex}) => (
+                        ({ rowData: security, rowIndex }) => (
                           <a
                             style={{ color: '#fff' }}
                             href={`https://coinmarketcap.com/currencies/${security.slug}/`}
@@ -221,16 +221,16 @@ class Prices extends React.PureComponent {
                       label="Price"
                       dataKey="price"
                       width={60}
-                      headerRenderer={headerRenderer({textAlign: 'right'})}
-                      style={{textAlign: 'right'}}
+                      headerRenderer={headerRenderer({ textAlign: 'right' })}
+                      style={{ textAlign: 'right' }}
                       className="allow-overflow"
                       cellDataGetter={
-                        ({rowData: security}) => {
+                        ({ rowData: security }) => {
                           return formatPercentChange(security.percentChange24h)
                         }
                       }
                       cellRenderer={
-                        ({rowData: security, cellData: delta24h}) => (
+                        ({ rowData: security, cellData: delta24h }) => (
                           <PriceCell symbol={security.symbol} security={security} delta24h={delta24h} isMobile={isMobile} />
                         )
                       }
@@ -241,16 +241,16 @@ class Prices extends React.PureComponent {
                       label="24h"
                       dataKey="percentChange24h"
                       width={60}
-                      headerRenderer={headerRenderer({textAlign: 'right'})}
-                      style={{textAlign: 'right'}}
+                      headerRenderer={headerRenderer({ textAlign: 'right' })}
+                      style={{ textAlign: 'right' }}
                       className="allow-overflow"
                       cellDataGetter={
-                        ({dataKey, rowData: security}) => {
+                        ({ dataKey, rowData: security }) => {
                           return formatPercentChange(security[dataKey])
                         }
                       }
                       cellRenderer={
-                        ({cellData: delta24h}) => (
+                        ({ cellData: delta24h }) => (
                           <div style={delta24h.style}> {delta24h.value} </div>
                         )
                       }
@@ -261,16 +261,16 @@ class Prices extends React.PureComponent {
                       label="7d"
                       dataKey="percentChange7d"
                       width={60}
-                      headerRenderer={headerRenderer({textAlign: 'right'})}
-                      style={{textAlign: 'right'}}
+                      headerRenderer={headerRenderer({ textAlign: 'right' })}
+                      style={{ textAlign: 'right' }}
                       className="allow-overflow"
                       cellDataGetter={
-                        ({dataKey, rowData: security}) => {
+                        ({ dataKey, rowData: security }) => {
                           return formatPercentChange(security[dataKey])
                         }
                       }
                       cellRenderer={
-                        ({cellData: delta7d}) => (
+                        ({ cellData: delta7d }) => (
                           <div style={delta7d.style}> {delta7d.value} </div>
                         )
                       }
@@ -280,13 +280,13 @@ class Prices extends React.PureComponent {
                       flexGrow={1}
                       label="Balance"
                       dataKey="balance"
-                      headerRenderer={headerRenderer({textAlign: 'center'})}
-                      style={{textAlign: 'center'}}
+                      headerRenderer={headerRenderer({ textAlign: 'center' })}
+                      style={{ textAlign: 'center' }}
                       className="allow-overflow"
                       width={isMobile ? 95 : 120}
                       minWidth={isMobile ? 95 : 120}
                       cellRenderer={
-                        ({rowData: security}) => (
+                        ({ rowData: security }) => (
                           <div
                             onClick={() => {
                               this.openSecurityModal({
@@ -305,12 +305,12 @@ class Prices extends React.PureComponent {
                       flexGrow={2}
                       label="Value"
                       dataKey="balance"
-                      headerRenderer={headerRenderer({textAlign: 'center'})}
-                      style={{textAlign: 'center'}}
+                      headerRenderer={headerRenderer({ textAlign: 'center' })}
+                      style={{ textAlign: 'center' }}
                       width={60}
                       className="allow-overflow"
                       cellRenderer={
-                        ({rowData: security, cellData: balance}) => (
+                        ({ rowData: security, cellData: balance }) => (
                           <ValueCell security={security} balance={balance} symbol={security.symbol} isMobile={isMobile} />
                         )
                       }
@@ -319,12 +319,12 @@ class Prices extends React.PureComponent {
                     {isDesktop && <Column
                       label="Supply"
                       dataKey="supply"
-                      headerRenderer={headerRenderer({textAlign: 'right'})}
-                      style={{textAlign: 'right', overflow: 'visible'}}
+                      headerRenderer={headerRenderer({ textAlign: 'right' })}
+                      style={{ textAlign: 'right', overflow: 'visible' }}
                       width={60}
                       className="allow-overflow"
                       cellRenderer={
-                        ({rowData: security}) => (
+                        ({ rowData: security }) => (
                           <SupplyCell security={security} symbol={security.symbol} />
                         )
                       }
@@ -333,12 +333,12 @@ class Prices extends React.PureComponent {
                     {!isMobile && <Column
                       label="Mkt Cap"
                       dataKey="marketCap"
-                      headerRenderer={headerRenderer({textAlign: 'right'})}
-                      style={{textAlign: 'right'}}
+                      headerRenderer={headerRenderer({ textAlign: 'right' })}
+                      style={{ textAlign: 'right' }}
                       className="allow-overflow"
                       width={60}
                       cellRenderer={
-                        ({rowData: security}) => (
+                        ({ rowData: security }) => (
                           <MarketCapCell security={security} symbol={security.symbol} />
                         )
                       }

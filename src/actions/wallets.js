@@ -39,7 +39,7 @@ const getChainBalances = (symbol, xpub, change, index = 0, totals = {}, unused =
   const address = deriveAddress({ symbol, xpub, path })
   return getBalances(symbol, address)
     .then(balances => {
-      const newTotals = {...totals}
+      const newTotals = { ...totals }
       let isUnused = true
       balances.forEach(row => {
         const total = Big(totals[row.symbol] || 0)

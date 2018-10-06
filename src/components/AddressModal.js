@@ -68,7 +68,7 @@ class AddressModal extends React.Component {
             src={`https://chnnl.imgix.net/tarragon/icons/32x32/${security.symbol}.png`}
             inline
             verticalAlign="middle"
-            style={{marginRight: 12}}
+            style={{ marginRight: 12 }}
           />
           <span style={{
             fontSize: 18,

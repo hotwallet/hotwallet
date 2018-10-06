@@ -35,4 +35,4 @@ const byWalletId = (state = {}, action) => {
   }
 }
 
-export default combineReducers({byId, bySymbol, byWalletId})
+export default combineReducers({ byId, bySymbol, byWalletId })
