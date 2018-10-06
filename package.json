@@ -52,6 +52,9 @@
     "husky": "^0.14.3",
     "react-scripts": "^2.0.4"
   },
+  "engines": {
+    "node": "8.11.1"
+  },
   "husky": {
     "hooks": {
       "pre-push": "yarn run eslint"
