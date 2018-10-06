@@ -56,7 +56,7 @@ class Trezor extends React.Component {
             <Table.HeaderCell
               style={cellStyle}
               colSpan={4}
-            >Ledger Wallets</Table.HeaderCell>
+            >Trezor Wallets</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -144,7 +144,6 @@ class Trezor extends React.Component {
 
 const mapStateToProps = state => ({
   isMobile: state.app.isMobile,
-  status: state.ledger.data || {},
   wallets: getTrezorWallets(state)
 })
 
