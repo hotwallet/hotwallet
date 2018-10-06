@@ -62,7 +62,7 @@ class SecurityModal extends React.Component {
   getImportBinanceButton() {
     const { security } = this.props
     if (this.props.binanceApiKey) return
-    if (!binanceSymbols.includes(security.symbol)) return
+    if (!binanceSymbols.includes(security.addressType)) return
     return (
       <Link to="/binance" key="binance">
         <Button
@@ -79,7 +79,7 @@ class SecurityModal extends React.Component {
 
   getImportLedgerButton() {
     const { security } = this.props
-    if (!ledgerSymbols.includes(security.symbol)) return
+    if (!ledgerSymbols.includes(security.addressType)) return
     return (
       <Link to="/ledger" key="ledger">
         <Button
@@ -95,7 +95,7 @@ class SecurityModal extends React.Component {
 
   getImportTrezorButton() {
     const { security } = this.props
-    if (!trezorSymbols.includes(security.symbol)) return
+    if (!trezorSymbols.includes(security.addressType)) return
     return (
       <Link to="/trezor" key="trezor">
         <Button
