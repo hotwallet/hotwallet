@@ -143,7 +143,7 @@ export const getDailyBalances = createSelector(
   }
 )
 
-export const getLedgerWallets = state =>
+export const getWallets = state =>
   Object.keys(state.wallets)
     .map(walletId => {
       const wallet = state.wallets[walletId]
@@ -154,4 +154,11 @@ export const getLedgerWallets = state =>
         balances: balances || { [wallet.symbol]: 0 }
       }
     })
+
+export const getLedgerWallets = state =>
+  getWallets(state)
     .filter(wallet => wallet.isLedgerWallet)
+
+export const getTrezorWallets = state =>
+  getWallets(state)
+    .filter(wallet => wallet.isTrezorWallet)

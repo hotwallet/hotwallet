@@ -1,10 +1,122 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import moment from 'moment'
+import { Button, Table, Image, Input } from 'semantic-ui-react'
 import H1 from './H1'
+import { mapDispatchToProps } from '../actions'
 import { mobilePadding, desktopPadding } from '../lib/styles'
+import { getTrezorWallets } from '../selectors/transactions'
+
+const rowStyle = {}
+
+const headerStyle = {
+  ...rowStyle,
+  backgroundColor: 'rgba(0,0,0,.3)'
+}
+
+const smallFont = {
+  fontSize: 12,
+  color: '#999'
+}
+
+const cellStyle = {
+  color: '#fff',
+  borderBottom: '1px solid #444',
+  padding: '15px 10px',
+  verticalAlign: 'top'
+}
 
 class Trezor extends React.Component {
+  onClickDeleteWallet = event => {
+    const id = event.target.parentNode.getAttribute('data-id')
+    const name = event.target.parentNode.getAttribute('data-name')
+    const confirmed = window.confirm(`Delete ${name}?`)
+    if (confirmed) {
+      this.props.deleteWallet(id)
+    }
+  }
+
+  onChangeWalletName = event => {
+    const id = event.target.parentNode.getAttribute('data-walletid')
+    const name = event.target.value
+    this.props.setWalletName(id, name)
+  }
+
+  renderTable() {
+    const wallets = this.props.wallets
+    return (
+      <Table
+        basic="very"
+        celled
+        compact="very"
+        unstackable
+      >
+        <Table.Header>
+          <Table.Row style={headerStyle}>
+            <Table.HeaderCell
+              style={cellStyle}
+              colSpan={4}
+            >Ledger Wallets</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {wallets.map(wallet => {
+            const iconSrc = `https://chnnl.imgix.net/tarragon/icons/32x32/${wallet.symbol}.png`
+            return (
+              <Table.Row style={rowStyle} key={wallet.id}>
+                <Table.Cell style={{ ...cellStyle, width: 32 }}>
+                  <Image src={iconSrc} />
+                </Table.Cell>
+                <Table.Cell style={{ ...cellStyle, width: '50%' }}>
+                  <div>
+                    <Input
+                      data-walletid={wallet.id}
+                      defaultValue={wallet.name}
+                      inverted
+                      transparent
+                      fluid
+                      onChange={this.onChangeWalletName}
+                    />
+                  </div>
+                  <div>
+                    {wallet.isSegwit === false ? <span style={smallFont}>Legacy</span> : ''}
+                  </div>
+                </Table.Cell>
+                <Table.Cell style={cellStyle} textAlign="right">
+                  {Object.keys(wallet.balances)
+                    .filter(symbol => {
+                      if (wallet.symbol === 'ETH' && symbol !== 'ETH') return false
+                      return symbol && (symbol === wallet.symbol || Number(wallet.balances[symbol]) > 0)
+                    })
+                    .map(symbol => (
+                      <div key={`${wallet.id}:${symbol}`}>
+                        {wallet.balances[symbol]}
+                        <span style={{ marginLeft: 8 }}>{symbol}</span>
+                      </div>
+                    ))}
+                  <div style={smallFont}>Updated {moment(wallet.lastSync).fromNow()}</div>
+                </Table.Cell>
+                <Table.Cell style={{ ...cellStyle, width: 32 }} textAlign="right">
+                  <Button
+                    data-id={wallet.id}
+                    data-name={wallet.name}
+                    inverted
+                    basic
+                    color="red"
+                    icon="remove"
+                    onClick={this.onClickDeleteWallet}
+                  />
+                </Table.Cell>
+              </Table.Row>
+            )
+          })}
+        </Table.Body>
+      </Table>
+    )
+  }
+
   render() {
+    const wallets = this.props.wallets
     return (
       <div>
         <H1 text="Trezor Connect" />
@@ -13,7 +125,13 @@ class Trezor extends React.Component {
             padding: this.props.isMobile ? mobilePadding : desktopPadding
           }}
         >
-          Coming soon.
+          <Button
+            onClick={this.props.getTrezorAccountInfo}
+            icon="plus"
+            color="black"
+            content="Add Trezor Bitcoin Wallet"
+          />
+          {wallets.length ? this.renderTable() : ''}
         </div>
       </div>
     )
@@ -21,7 +139,9 @@ class Trezor extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.app.isMobile
+  isMobile: state.app.isMobile,
+  status: state.ledger.data || {},
+  wallets: getTrezorWallets(state)
 })
 
-export default connect(mapStateToProps)(Trezor)
+export default connect(mapStateToProps, mapDispatchToProps)(Trezor)
