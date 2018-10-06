@@ -1,4 +1,19 @@
-# hotwallet
+<div width="100%" style="padding:25px 0; background-color:#1c242a;">
+  <img style="display: block; margin:auto;" src="https://hotwallet.com/hotwallet-144x144.png" />
+</div>
+
+# HotWallet
+Open Source Cryptocurrency Platform
+
+[![CircleCI](https://circleci.com/gh/hotwallet/hotwallet.svg?style=svg&circle-token=19f992cd74dd31acc5b238e8099be75c6ada94f6)](https://circleci.com/gh/hotwallet/hotwallet)
+
+## Features
+
+- No Login
+- Ledger & Trezor Connect
+- Binance Connect (more exchanges coming soon)
+- All major crypto and fiat currencies
+- Multi-device sync (coming soon)
 
 ## Install
 
@@ -13,5 +28,3 @@ yarn
 ```bash
 yarn start
 ```
-
-This boilerplate is built using [create-react-app](https://github.com/facebookincubator/create-react-app) so you will want to read the User Guide for more goodies.
