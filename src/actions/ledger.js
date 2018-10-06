@@ -9,6 +9,10 @@ export const setLedgerData = data => ({
   data
 })
 
+export const getLedgerSymbols = () => {
+  return LedgerSDK.prototype.getSupportedSymbols()
+}
+
 export const startLedger = () => (dispatch, getState) => {
   const ledger = new LedgerSDK()
   const state = getState()

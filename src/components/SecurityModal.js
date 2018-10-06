@@ -6,7 +6,11 @@ import { Modal, Button, Table, Divider, Input, Image } from 'semantic-ui-react'
 import { lightBg } from '../lib/styles'
 import PricesInputQty from './PricesInputQty'
 import ImportWalletButton from './ImportWalletButton'
-import { binanceSymbols, ledgerSymbols } from '../config'
+import { binanceSymbols } from '../config'
+import { getLedgerSymbols } from '../actions/ledger'
+
+const ledgerSymbols = getLedgerSymbols()
+const trezorSymbols = ['BTC']
 
 const buttonStyle = {
   marginBottom: 5
@@ -42,7 +46,8 @@ class SecurityModal extends React.Component {
     return [
       this.getImportWalletButton(),
       this.getImportBinanceButton(),
-      this.getImportLedgerButton()
+      this.getImportLedgerButton(),
+      this.getImportTrezorButton()
     ].filter(Boolean)
   }
 
@@ -83,6 +88,22 @@ class SecurityModal extends React.Component {
           style={buttonStyle}
         >
           Ledger Connect
+        </Button>
+      </Link>
+    )
+  }
+
+  getImportTrezorButton() {
+    const { security } = this.props
+    if (!trezorSymbols.includes(security.symbol)) return
+    return (
+      <Link to="/trezor" key="trezor">
+        <Button
+          color="black"
+          fluid
+          style={buttonStyle}
+        >
+          Trezor Connect
         </Button>
       </Link>
     )

@@ -179,16 +179,3 @@ export const binanceSymbols = [
   'THETA',
   'IOTX'
 ]
-
-export const ledgerSymbols = [
-  'BTC',
-  'ETH',
-  'LTC',
-  'ZEC',
-  'XRP',
-  'BCH',
-  'XLM',
-  'DASH',
-  'NEO',
-  'DOGE'
-]
