@@ -32,12 +32,14 @@
     "start": "react-scripts start",
     "start-ssl": "HTTPS=true react-scripts start",
     "build": "react-scripts build",
-    "test": "yarn run eslint && react-scripts test --env=jsdom",
+    "test": "yarn run eslint && jest",
     "eject": "react-scripts eject",
     "eslint": "eslint ./",
-    "prepush": "yarn run eslint"
+    "prepush": "yarn run eslint",
+    "ci": "serve -s build & jest"
   },
   "devDependencies": {
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "eslint-config-standard": "^12.0.0",
     "eslint-config-standard-jsx": "^6.0.2",
     "eslint-plugin-jest": "^21.24.1",
@@ -45,7 +47,9 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
     "husky": "^0.14.3",
-    "react-scripts": "^2.0.4"
+    "puppeteer": "^1.9.0",
+    "react-scripts": "^2.0.4",
+    "serve": "^10.0.2"
   },
   "engines": {
     "node": "8"

@@ -28,3 +28,10 @@ yarn
 ```bash
 yarn start
 ```
+
+## Run tests
+
+```bash
+yarn start
+yarn test
+```
