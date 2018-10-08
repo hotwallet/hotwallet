@@ -1,4 +1,5 @@
 if ('serviceWorker' in navigator) {
+  // disabling for now because create-react-app 2.0 injects a broken service worker
   // navigator.serviceWorker.register('service-worker.js')
 }
 
