@@ -23,7 +23,7 @@ cd hotwallet
 yarn
 ```
 
-## Get started
+## Start app
 
 ```bash
 yarn start
@@ -33,5 +33,5 @@ yarn start
 
 ```bash
 yarn start
-yarn test
+yarn test --watch
 ```
