@@ -30,13 +30,13 @@ class NavLink extends React.PureComponent {
     const style = { ...props.style, ...normalStyle, ...linkStyle }
     const link = (
       <Link style={style}
-            to={props.to}
-            onClick={() => {
-              if (props.onClick) props.onClick()
-              this.setState({ showTooltip: false })
-            }}
-            onMouseOver={() => this.setState({ hover: true, showTooltip: true })}
-            onMouseOut={() => this.setState({ hover: false, showTooltip: false })}
+        to={props.to}
+        onClick={() => {
+          if (props.onClick) props.onClick()
+          this.setState({ showTooltip: false })
+        }}
+        onMouseOver={() => this.setState({ hover: true, showTooltip: true })}
+        onMouseOut={() => this.setState({ hover: false, showTooltip: false })}
       >{props.value}</Link>
     )
     if (isMobile) {
