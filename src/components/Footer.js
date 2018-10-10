@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
 import { border, smallFontSize, mobilePadding, desktopPadding } from '../lib/styles'
 
-class Footer extends React.Component {
+class Footer extends React.PureComponent {
   render() {
     const isMobile = this.props.isMobile
     const footerStyle = {

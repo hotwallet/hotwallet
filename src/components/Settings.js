@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import H1 from './H1'
 
-class Settings extends React.Component {
+class Settings extends React.PureComponent {
   render() {
     return (
       <div>

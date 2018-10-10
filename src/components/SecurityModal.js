@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
+import PropTypes from 'prop-types'
 import { Modal, Button, Table, Divider, Input, Image } from 'semantic-ui-react'
 import { lightBg } from '../lib/styles'
 import PricesInputQty from './PricesInputQty'
@@ -25,7 +26,7 @@ const dividerStyle = {
 
 const isNumber = (n) => !isNaN(parseFloat(n)) && isFinite(n)
 
-class SecurityModal extends React.Component {
+class SecurityModal extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -294,6 +295,16 @@ class SecurityModal extends React.Component {
       </Modal>
     )
   }
+}
+
+SecurityModal.propTypes = {
+  security: PropTypes.object,
+  isModalOpen: PropTypes.bool.isRequired,
+  iconSrc: PropTypes.string,
+  onClose: PropTypes.func.isRequired,
+  addManualTransaction: PropTypes.func.isRequired,
+  removeManualTransactions: PropTypes.func.isRequired,
+  openAddressModal: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({

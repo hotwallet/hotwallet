@@ -1,7 +1,8 @@
 import React from 'react'
 import { Button } from 'semantic-ui-react'
+import { PropTypes } from 'prop-types'
 
-class ImportWalletButton extends React.Component {
+class ImportWalletButton extends React.PureComponent {
   onClick = () => {
     this.props.onClick(this.props.security.symbol)
   }
@@ -21,6 +22,16 @@ class ImportWalletButton extends React.Component {
       </Button>
     )
   }
+}
+
+ImportWalletButton.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  style: PropTypes.object,
+  security: PropTypes.shape({
+    symbol: PropTypes.string.isRequired,
+    addressType: PropTypes.string,
+    hasHD: PropTypes.bool
+  })
 }
 
 export default ImportWalletButton

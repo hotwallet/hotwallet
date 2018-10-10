@@ -17,9 +17,9 @@ const gridLineColor = '#323a42'
 const gridLineWidth = 2
 const lineColor = lightBlue
 const lineWidth = 1.5
-const fiveMinutes = 1000 //* 60 * 5
+const fiveMinutes = 1000 * 60 * 5
 
-class NetWorthChart extends React.Component {
+class NetWorthChart extends React.PureComponent {
   componentDidMount() {
     const { lastRefresh, chartData } = this.props
     const age = Date.now() - lastRefresh

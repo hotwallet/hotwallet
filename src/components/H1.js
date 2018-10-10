@@ -1,8 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { PropTypes } from 'prop-types'
 import { mobilePadding, desktopPadding, border } from '../lib/styles'
 
-class H1 extends React.Component {
+class H1 extends React.PureComponent {
   render() {
     const { isMobile, text, subtitle } = this.props
     const div = {
@@ -27,6 +28,11 @@ class H1 extends React.Component {
       </div>
     )
   }
+}
+
+H1.propTypes = {
+  text: PropTypes.string.isRequired,
+  subtitle: PropTypes.string
 }
 
 const mapStateToProps = state => ({

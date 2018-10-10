@@ -5,7 +5,7 @@ import { Checkbox, Input, Grid } from 'semantic-ui-react'
 import { mapDispatchToProps } from '../actions'
 import { desktopPadding, mobilePadding } from '../lib/styles'
 
-class PricesFilters extends React.Component {
+class PricesFilters extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = { value: '' }

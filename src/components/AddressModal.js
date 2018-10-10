@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { mapDispatchToProps } from '../actions'
 import { Modal, Button, Input, Image } from 'semantic-ui-react'
 import { lightBg, borderColor } from '../lib/styles'
+import { PropTypes } from 'prop-types'
 
 const buttonStyle = {
   marginBottom: 20
@@ -25,7 +26,7 @@ const fieldsetStyle = {
   marginBottom: 20
 }
 
-class AddressModal extends React.Component {
+class AddressModal extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {}
@@ -101,6 +102,16 @@ class AddressModal extends React.Component {
       </Modal>
     )
   }
+}
+
+AddressModal.propTypes = {
+  isModalOpen: PropTypes.bool.isRequired,
+  openAddressModal: PropTypes.func.isRequired,
+  security: PropTypes.shape({
+    symbol: PropTypes.string.isRequired,
+    addressType: PropTypes.string,
+    hasHD: PropTypes.bool
+  })
 }
 
 const mapStateToProps = state => ({

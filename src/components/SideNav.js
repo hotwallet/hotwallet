@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import NavLink from './NavLink'
 import { Icon, Image } from 'semantic-ui-react'
 import { sidebarWidth } from '../lib/styles'
@@ -20,7 +21,7 @@ const ulStyle = {
   listStyleType: 'none'
 }
 
-class SideNav extends React.Component {
+class SideNav extends React.PureComponent {
   render() {
     const width = this.props.width || sidebarWidth
     return (
@@ -94,6 +95,12 @@ class SideNav extends React.Component {
       )
     })
   }
+}
+
+SideNav.propTypes = {
+  onClick: PropTypes.func,
+  width: PropTypes.string,
+  opacity: PropTypes.number
 }
 
 const mapStateToProps = state => ({

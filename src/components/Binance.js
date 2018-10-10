@@ -33,7 +33,7 @@ const fieldsetStyle = {
   marginBottom: 20
 }
 
-class Binance extends React.Component {
+class Binance extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {

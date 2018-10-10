@@ -75,7 +75,10 @@ const MarketCapCell = subscribeSymbol(({ security }) => (
 class Prices extends React.PureComponent {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      isSecurityModalOpen: false,
+      isAddressModalOpen: false
+    }
   }
 
   openAddressModal = ({ security, isOpen }) => {
@@ -90,12 +93,12 @@ class Prices extends React.PureComponent {
   }
 
   closeSecurityModal = () => {
-    this.setState({ isModalOpen: false })
+    this.setState({ isSecurityModalOpen: false })
   }
 
   openSecurityModal = ({ security, iconSrc }) => {
     this.setState({
-      isModalOpen: true,
+      isSecurityModalOpen: true,
       modalSecurity: security,
       modalIconSrc: iconSrc
     })
@@ -118,7 +121,7 @@ class Prices extends React.PureComponent {
 
     const {
       modalSecurity,
-      isModalOpen,
+      isSecurityModalOpen,
       modalIconSrc
     } = this.state
 
@@ -352,7 +355,7 @@ class Prices extends React.PureComponent {
 
         <SecurityModal
           security={modalSecurity}
-          isModalOpen={isModalOpen}
+          isModalOpen={isSecurityModalOpen}
           iconSrc={modalIconSrc}
           onClose={this.closeSecurityModal}
           addManualTransaction={this.props.addManualTransaction}
