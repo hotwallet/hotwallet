@@ -36,8 +36,13 @@ const getBalances = (symbol, address) => {
 
 const getChainBalances = (symbol, xpub, change, index = 0, totals = {}, unused = 0) => {
   const path = `${change}/${index}`
-  const address = deriveAddress({ symbol, xpub, path })
-  return getBalances(symbol, address)
+  return Promise.resolve()
+    .then(() => deriveAddress({ symbol, xpub, path }))
+    .catch(err => {
+      err.details = { symbol, xpub }
+      throw err
+    })
+    .then(address => getBalances(symbol, address))
     .then(balances => {
       const newTotals = { ...totals }
       let isUnused = true
@@ -77,8 +82,8 @@ const getHDBalances = (symbol, xpub) => {
       })
       return totals
     })
-    .catch(() => {
-      console.log('There was a problem getting wallet balance, try again later.')
+    .catch(err => {
+      console.log('Could not get wallet balance, try again later.', err.details)
       return []
     })
 }
