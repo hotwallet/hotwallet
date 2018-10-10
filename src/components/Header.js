@@ -6,7 +6,7 @@ import { darkBg, sidebarWidth, border } from '../lib/styles'
 import CurrencyContainer from '../containers/CurrencyContainer'
 import MobileMenu from './MobileMenu'
 
-class Header extends React.Component {
+class Header extends React.PureComponent {
   state = { visible: false }
 
   openMenu = () => {

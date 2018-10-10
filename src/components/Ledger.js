@@ -26,7 +26,7 @@ const cellStyle = {
   verticalAlign: 'top'
 }
 
-class Ledger extends React.Component {
+class Ledger extends React.PureComponent {
   componentDidMount() {
     this.props.startLedger()
   }

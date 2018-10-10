@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { PropTypes } from 'prop-types'
 import SideNav from './SideNav'
 import { darkBg } from '../lib/styles'
 
@@ -23,7 +24,7 @@ const menuStyle = {
   boxShadow: '8px 8px 8px rgba(0, 0, 0, .2)'
 }
 
-class MobileMenu extends React.Component {
+class MobileMenu extends React.PureComponent {
   state = { isHover: false }
 
   onClickOverlay = () => {
@@ -81,6 +82,11 @@ class MobileMenu extends React.Component {
       </div>
     )
   }
+}
+
+MobileMenu.propTypes = {
+  visible: PropTypes.bool.isRequired,
+  closeMenu: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({

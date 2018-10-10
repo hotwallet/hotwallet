@@ -6,7 +6,7 @@ import NetWorthChart from './NetWorthChart'
 import PricesFilters from './PricesFilters'
 import PortfolioHeader from './PortfolioHeader'
 
-class Settings extends React.Component {
+class Settings extends React.PureComponent {
   render() {
     return (
       <div>

@@ -5,7 +5,7 @@ import { formatFiat, formatPercentChange } from '../lib/formatNumber'
 import { getSecurities } from '../selectors/securities'
 import { getBalancesBySymbol } from '../selectors/transactions'
 
-class PortfolioHeader extends React.Component {
+class PortfolioHeader extends React.PureComponent {
   getTotalValue() {
     const baseCurrency = this.props.baseCurrency
     const balancesBySymbol = this.props.balancesBySymbol

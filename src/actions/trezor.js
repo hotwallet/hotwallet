@@ -16,6 +16,7 @@ export const getTrezorAccountInfo = (symbol) => (dispatch, getState) => {
     coin: symbol.toLowerCase()
   })
     .then(({ payload }) => {
+      if (!payload) return
       const wallets = []
       if (symbol === 'BTC') {
         const isSegwit = payload.address[0] === '3'

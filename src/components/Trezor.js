@@ -26,7 +26,7 @@ const cellStyle = {
   verticalAlign: 'top'
 }
 
-class Trezor extends React.Component {
+class Trezor extends React.PureComponent {
   onClickDeleteWallet = event => {
     const id = event.target.parentNode.getAttribute('data-id')
     const name = event.target.parentNode.getAttribute('data-name')
