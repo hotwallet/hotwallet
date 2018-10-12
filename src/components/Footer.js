@@ -7,7 +7,6 @@ class Footer extends React.PureComponent {
   render() {
     const isMobile = this.props.isMobile
     const footerStyle = {
-      marginTop: 50,
       borderTop: border,
       fontSize: smallFontSize,
       color: 'gray',
