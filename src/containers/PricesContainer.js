@@ -31,20 +31,6 @@ class PricesContainer extends React.Component {
   }
 }
 
-// Unrequired?
-// PricesContainer.propTypes = {
-//   updatedAt: PropTypes.string,
-//   baseCurrency: PropTypes.string.isRequired,
-//   securities: PropTypes.array.isRequired,
-//   isFetching: PropTypes.bool,
-//   failureMessage: PropTypes.string,
-//   balancesOnly: PropTypes.bool,
-//   transactions: PropTypes.array.isRequired,
-//   isMobile: PropTypes.bool,
-//   isDesktop: PropTypes.bool,
-//   query: PropTypes.string
-// }
-
 const mapStateToProps = (state, props) => {
   return ({
     // updatedAt: state.securities.metadata.updatedAt,

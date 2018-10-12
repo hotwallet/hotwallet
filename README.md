@@ -3,7 +3,7 @@
 </div>
 
 # HotWallet
-Open Source Cryptocurrency Platform
+Cryptoasset Platform
 
 [![CircleCI](https://circleci.com/gh/hotwallet/hotwallet.svg?style=svg&circle-token=19f992cd74dd31acc5b238e8099be75c6ada94f6)](https://circleci.com/gh/hotwallet/hotwallet)
 
