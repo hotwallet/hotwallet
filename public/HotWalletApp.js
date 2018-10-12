@@ -1,4 +1,4 @@
-const HotWallet_appId = window.location.search.substr(1)
+const __HotWalletAppId = window.location.search.substr(1)
 
 window.HotWallet = {}
 
@@ -11,9 +11,7 @@ window.HotWallet.getWallets = () => {
 }
 
 const script = document.createElement('script')
-script.onload = function () {
-  //do stuff with the script
-}
+
 script.onerror = function () {
   const notFoundHTML = `
    <div style="padding: 25px;">
@@ -22,7 +20,7 @@ script.onerror = function () {
   `
   document.getElementsByTagName('main')[0].innerHTML = notFoundHTML
 }
-script.src = `https://api.hotwallet.com/apps/${HotWallet_appId}.js`
 
+script.src = `https://api.hotwallet.com/apps/${__HotWalletAppId}.js`
 
 document.head.appendChild(script)

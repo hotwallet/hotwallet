@@ -32,7 +32,7 @@ class Iframe extends React.PureComponent {
             height: obj.contentWindow.document.body.scrollHeight
           })
         }}
-      ></iframe>
+      />
     )
   }
 }
