@@ -10,7 +10,8 @@ const navItems = [
   { image: 'https://chnnl.s3.amazonaws.com/tarragon/hardware/128x128/ledger.png', uri: '/ledger', name: 'Ledger Connect' },
   { image: 'https://chnnl.s3.amazonaws.com/tarragon/hardware/64x64/trezor.png', uri: '/trezor', name: 'Trezor Connect' },
   { image: 'https://chnnl.s3.amazonaws.com/tarragon/exchanges/64x64/binance.png', uri: '/binance', name: 'Binance Connect' },
-  { icon: 'setting', uri: '/settings', name: 'Settings' }
+  { icon: 'setting', uri: '/settings', name: 'Settings' },
+  { icon: 'add', uri: '/apps', name: 'More Integrations' }
 ]
 
 const ulStyle = {
@@ -79,12 +80,13 @@ class SideNav extends React.PureComponent {
       const delay = i * 0.05 + 0.075
       const style = {
         opacity: this.props.opacity || 1,
-        padding: '5px 0',
+        padding: 0,
         transition: 'opacity .5s',
         transitionDelay: `${delay}s`
       }
       return (
         <li key={i} style={style}>
+          {navItem.uri === '/apps' ? <hr /> : ''}
           <NavLink
             onClick={this.props.onClick}
             to={navItem.uri}

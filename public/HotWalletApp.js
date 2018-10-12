@@ -22,7 +22,7 @@ script.onerror = function () {
   `
   document.getElementsByTagName('main')[0].innerHTML = notFoundHTML
 }
-script.src = `https://hotwallet.com/apps/${HotWallet_appId}.js`
+script.src = `https://api.hotwallet.com/apps/${HotWallet_appId}.js`
 
 
 document.head.appendChild(script)

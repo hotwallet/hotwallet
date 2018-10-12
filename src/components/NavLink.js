@@ -47,7 +47,7 @@ class NavLink extends React.PureComponent {
         inverted
         open={this.state.showTooltip}
         size="tiny"
-        horizontalOffset={-15}
+        horizontalOffset={-5}
         trigger={link}
         content={props.name}
         position="right center"
