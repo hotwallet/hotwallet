@@ -11,7 +11,7 @@ class Iframe extends React.PureComponent {
     }
   }
 
-  addListenerOnce()  {
+  addListenerOnce() {
     if (this.listener) return
     this.listener = true
     window.addEventListener('message', event => {
