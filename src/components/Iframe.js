@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { contentMinHeight } from './App'
 
@@ -8,14 +7,32 @@ class Iframe extends React.PureComponent {
     super(props)
     this.state = {
       appId: props.match.params.appId,
-      height: 0
+      height: contentMinHeight
     }
   }
 
+  addListenerOnce()  {
+    if (this.listener) return
+    this.listener = true
+    window.addEventListener('message', event => {
+      if (!event.data.height) return
+      const height = event.data.height || contentMinHeight
+      console.log('height:', height)
+      this.setState({ height })
+    }, false)
+  }
+
+  componentDidMount() {
+    console.log('mounted')
+    this.addListenerOnce()
+  }
+
   render() {
+    if (!this.state.appId) return
     const height = Math.max(contentMinHeight, this.state.height)
     return (
       <iframe
+        sandbox="allow-scripts allow-forms"
         ref="iframe"
         style={{
           border: 'none',
@@ -26,12 +43,6 @@ class Iframe extends React.PureComponent {
         height={height}
         title={this.state.appId}
         src={`/iframe.html?${this.state.appId}`}
-        onLoad={() => {
-          const obj = ReactDOM.findDOMNode(this)
-          this.setState({
-            height: obj.contentWindow.document.body.scrollHeight
-          })
-        }}
       />
     )
   }

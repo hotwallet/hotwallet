@@ -7,6 +7,7 @@ import Trezor from './Trezor'
 import Binance from './Binance'
 import Settings from './Settings'
 import Iframe from './Iframe'
+import ExternalApps from './ExternalApps'
 import Header from './Header'
 import Footer from './Footer'
 import SideNav from './SideNav'
@@ -71,7 +72,8 @@ class App extends React.Component {
               <Route exact path="/trezor" component={withTracker(Trezor)} />
               <Route exact path="/binance" component={withTracker(Binance)} />
               <Route exact path="/settings" component={withTracker(Settings)} />
-              <Route exact path="/:appId" component={withTracker(Iframe)} />
+              <Route exact path="/apps" component={withTracker(ExternalApps)} />
+              <Route exact path="/apps/:appId" component={withTracker(Iframe)} />
             </div>
             <Footer />
           </main>

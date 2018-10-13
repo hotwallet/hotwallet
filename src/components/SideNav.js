@@ -5,13 +5,18 @@ import NavLink from './NavLink'
 import { Icon, Image } from 'semantic-ui-react'
 import { sidebarWidth } from '../lib/styles'
 
-const navItems = [
+const defaultNavItems = [
   { icon: 'pie chart', uri: '/', name: 'Portfolio' },
   { image: 'https://chnnl.s3.amazonaws.com/tarragon/hardware/128x128/ledger.png', uri: '/ledger', name: 'Ledger Connect' },
   { image: 'https://chnnl.s3.amazonaws.com/tarragon/hardware/64x64/trezor.png', uri: '/trezor', name: 'Trezor Connect' },
-  { image: 'https://chnnl.s3.amazonaws.com/tarragon/exchanges/64x64/binance.png', uri: '/binance', name: 'Binance Connect' },
-  { icon: 'setting', uri: '/settings', name: 'Settings' },
-  { icon: 'add', uri: '/apps', name: 'More Integrations' }
+  { image: 'https://chnnl.s3.amazonaws.com/tarragon/exchanges/64x64/binance.png', uri: '/binance', name: 'Binance Connect' }
+  // { icon: 'setting', uri: '/settings', name: 'Settings' },
+]
+
+const lastNavItem = { icon: 'add', uri: '/apps', name: 'Apps' }
+
+const customNavItems = [
+  { icon: 'coffee', uri: '/apps/demo', name: 'Demo App' }
 ]
 
 const ulStyle = {
@@ -36,6 +41,9 @@ class SideNav extends React.PureComponent {
 
   getNavLinks() {
     const isMobile = this.props.isMobile
+    const navItems = defaultNavItems
+      .concat(customNavItems)
+      .concat([lastNavItem])
     return navItems.map((navItem, i) => {
       const mobileItem = (
         <div style={{ lineHeight: '1.5em' }}>
