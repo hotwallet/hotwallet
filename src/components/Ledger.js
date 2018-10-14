@@ -76,8 +76,9 @@ class Ledger extends React.PureComponent {
   }
 
   onClickDeleteWallet = event => {
-    const id = event.target.parentNode.getAttribute('data-id')
-    const name = event.target.parentNode.getAttribute('data-name')
+    const el = event.target
+    const id = el.parentNode.getAttribute('data-id') || el.getAttribute('data-id')
+    const name = el.parentNode.getAttribute('data-name') || el.getAttribute('data-name')
     const confirmed = window.confirm(`Delete ${name}?`)
     if (confirmed) {
       this.props.deleteWallet(id)
@@ -185,7 +186,7 @@ class Ledger extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.app.isMobile,
+  isMobile: state.ephemeral.isMobile,
   status: state.ledger.data || {},
   wallets: getLedgerWallets(state)
 })

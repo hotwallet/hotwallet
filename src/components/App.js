@@ -85,7 +85,7 @@ class App extends React.Component {
 
 const mapStateToProps = state => ({
   uri: state.router.location.pathname,
-  isMobile: state.app.isMobile,
+  isMobile: state.ephemeral.isMobile,
   lastBinanceSync: state.binance.lastSync
 })
 

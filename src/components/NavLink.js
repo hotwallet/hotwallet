@@ -78,7 +78,7 @@ NavLink.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.app.isMobile,
+  isMobile: state.ephemeral.isMobile,
   uri: state.router.location.pathname
 })
 

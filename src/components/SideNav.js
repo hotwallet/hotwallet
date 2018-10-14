@@ -5,8 +5,10 @@ import NavLink from './NavLink'
 import { Icon, Image } from 'semantic-ui-react'
 import { sidebarWidth } from '../lib/styles'
 
+const portfolioNavItem = { icon: 'pie chart', uri: '/', name: 'Portfolio' }
+
 const defaultNavItems = [
-  { icon: 'pie chart', uri: '/', name: 'Portfolio' },
+  portfolioNavItem,
   { image: 'https://chnnl.s3.amazonaws.com/tarragon/hardware/128x128/ledger.png', uri: '/ledger', name: 'Ledger Connect' },
   { image: 'https://chnnl.s3.amazonaws.com/tarragon/hardware/64x64/trezor.png', uri: '/trezor', name: 'Trezor Connect' },
   { image: 'https://chnnl.s3.amazonaws.com/tarragon/exchanges/64x64/binance.png', uri: '/binance', name: 'Binance Connect' }
@@ -41,8 +43,11 @@ class SideNav extends React.PureComponent {
 
   getNavLinks() {
     const isMobile = this.props.isMobile
-    const navItems = defaultNavItems
-      .concat(customNavItems)
+    // const navItems = defaultNavItems
+    //   .concat(customNavItems)
+    //   .concat([lastNavItem])
+    const navItems = [portfolioNavItem]
+      .concat(this.props.enabledApps)
       .concat([lastNavItem])
     return navItems.map((navItem, i) => {
       const mobileItem = (
@@ -113,8 +118,11 @@ SideNav.propTypes = {
   opacity: PropTypes.number
 }
 
+const getEnabledApps = apps => apps.all.filter(app => apps.enabled.includes(app.id))
+
 const mapStateToProps = state => ({
-  isMobile: state.app.isMobile
+  isMobile: state.ephemeral.isMobile,
+  enabledApps: getEnabledApps(state.apps)
 })
 
 export default connect(mapStateToProps)(SideNav)

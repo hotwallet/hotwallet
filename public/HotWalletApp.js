@@ -1,38 +1,38 @@
-const HotWalletAppId = window.location.search.substr(1)
+var HotWallet = {}
 
-window.HotWallet = {}
+window.HotWallet = HotWallet
 
-window.HotWallet.getTransactions = () => {
-  return []
+HotWallet.appId = window.location.search.substr(1)
+
+HotWallet.appScript = document.createElement('script')
+HotWallet.appScript.onerror = function (err) {
+  console.log('script err:', err)
+  document.getElementsByTagName('main')[0].innerHTML = [
+    '<div style="padding: 25px;">',
+    '  <h1>Page Not Found</h1>',
+    '</div>'
+  ].join('\n')
 }
+// HotWallet.appScriptElement.src = `https://api.hotwallet.com/apps/${HotWalletAppId}.js`
+HotWallet.appScript.src = `http://localhost:3001/apps/${HotWallet.appId}.js`
+document.head.appendChild(HotWallet.appScript)
 
-window.HotWallet.getWallets = () => {
-  return []
-}
-
-const HotWalletScript = document.createElement('script')
-HotWalletScript.onerror = function () {
-  const notFoundHTML = `
-   <div style="padding: 25px;">
-     <h1>Page Not Found</h1>
-   </div>
-  `
-  document.getElementsByTagName('main')[0].innerHTML = notFoundHTML
-}
-HotWalletScript.src = `https://api.hotwallet.com/apps/${HotWalletAppId}.js`
-document.head.appendChild(HotWalletScript)
-
-const HotWalletStyle = document.createElement('link')
-HotWalletStyle.rel = 'stylesheet'
-HotWalletStyle.type = 'text/css'
-HotWalletStyle.href = '/HotWalletApp.css'
-document.head.prepend(HotWalletStyle)
-
-const HotWalletSendHeight = function () {
+HotWallet.resizeIframe = function () {
+  if (document.body.scrollHeight === HotWallet.iframeHeight) return
+  HotWallet.iframeHeight = document.body.scrollHeight
   window.parent.postMessage({
     height: document.body.scrollHeight
   }, '*')
 }
 
-window.addEventListener('load', HotWalletSendHeight)
-window.addEventListener('resize', HotWalletSendHeight)
+window.addEventListener('load', HotWallet.resizeIframe)
+
+setInterval(HotWallet.resizeIframe, 250)
+
+HotWallet.getTransactions = function () { return [] }
+HotWallet.getWallets = function () {}
+HotWallet.encrypt = function () {}
+HotWallet.decrypt = function () {}
+HotWallet.sign = function () {}
+HotWallet.verify = function () {}
+HotWallet.getPublicKey = function () {}

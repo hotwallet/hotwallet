@@ -86,7 +86,7 @@ class PortfolioHeader extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.app.isMobile,
+  isMobile: state.ephemeral.isMobile,
   balancesBySymbol: getBalancesBySymbol(state),
   securities: getSecurities(state),
   baseCurrency: state.user.baseCurrency,

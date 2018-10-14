@@ -1,12 +1,12 @@
 /**
- * state.app is ephemeral data that will not be saved to localStorage
+ * state.ephemeral is ephemeral data that will not be saved to localStorage
  */
 
 import {
   SET_DEVICE,
   FILTER_SYMBOLS,
   SET_ROW_SLICE
-} from '../actions/app'
+} from '../actions/ephemeral'
 
 const initialState = {
   device: {},

@@ -11,20 +11,24 @@ class Iframe extends React.PureComponent {
     }
   }
 
+  handleWindowMessage = event => {
+    if (!event.data.height) return
+    const height = event.data.height || contentMinHeight
+    this.setState({ height })
+  }
+
   addListenerOnce() {
     if (this.listener) return
     this.listener = true
-    window.addEventListener('message', event => {
-      if (!event.data.height) return
-      const height = event.data.height || contentMinHeight
-      console.log('height:', height)
-      this.setState({ height })
-    }, false)
+    window.addEventListener('message', this.handleWindowMessage, false)
   }
 
   componentDidMount() {
-    console.log('mounted')
     this.addListenerOnce()
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('message', this.handleWindowMessage, false)
   }
 
   render() {

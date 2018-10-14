@@ -129,9 +129,9 @@ class NetWorthChart extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.app.isMobile,
-  deviceType: state.app.deviceType,
-  isTablet: state.app.isTablet,
+  isMobile: state.ephemeral.isMobile,
+  deviceType: state.ephemeral.deviceType,
+  isTablet: state.ephemeral.isTablet,
   chartData: state.portfolio.chartData,
   lastRefresh: state.portfolio.lastRefresh,
   hasNoTransactions: !Object.keys(state.transactions.byId).length,

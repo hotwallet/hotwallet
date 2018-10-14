@@ -224,7 +224,7 @@ class Binance extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.app.isMobile,
+  isMobile: state.ephemeral.isMobile,
   apiKey: state.binance.apiKey,
   errorMessage: state.binance.errorMessage,
   lastUpdated: state.binance.lastSync

@@ -36,11 +36,11 @@ const mapStateToProps = (state, props) => {
     // updatedAt: state.securities.metadata.updatedAt,
     baseCurrency: state.user.baseCurrency,
     securities: getVisibleSecurities(state, props),
-    symbolOffset: state.app.rowSlice[0] || 0,
+    symbolOffset: state.ephemeral.rowSlice[0] || 0,
     isFetching: state.securities.metadata.isFetching,
     failureMessage: state.securities.metadata.failureMessage,
-    isMobile: state.app.isMobile,
-    isDesktop: state.app.isDesktop
+    isMobile: state.ephemeral.isMobile,
+    isDesktop: state.ephemeral.isDesktop
   })
 }
 
