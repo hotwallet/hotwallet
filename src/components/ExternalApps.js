@@ -28,24 +28,23 @@ class ExternalApps extends React.PureComponent {
   }
 
   getIcon(app) {
-    return
-    const iconStyle = {
-      width: 24,
-      display: 'inline-block',
-      marginRight: 15
-    }
-    return app.icon ? (
-      <Icon
-        size="large"
-        name={app.icon}
-        style={iconStyle}
-      />
-    ) : (
-      <Image
-        src={app.image}
-        style={iconStyle}
-      />
-    )
+    // const iconStyle = {
+    //   width: 24,
+    //   display: 'inline-block',
+    //   marginRight: 15
+    // }
+    // return app.icon ? (
+    //   <Icon
+    //     size="large"
+    //     name={app.icon}
+    //     style={iconStyle}
+    //   />
+    // ) : (
+    //   <Image
+    //     src={app.image}
+    //     style={iconStyle}
+    //   />
+    // )
   }
 
   render() {
@@ -75,7 +74,7 @@ class ExternalApps extends React.PureComponent {
             paddingRight: 0
           }}
         >
-          <Input inverted icon='search' placeholder='Search...' />
+          <Input inverted icon="search" placeholder="Search..." />
           <Table
             basic="very"
             celled
