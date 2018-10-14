@@ -8,7 +8,6 @@ class Footer extends React.PureComponent {
     const isMobile = this.props.isMobile
     const footerStyle = {
       borderTop: border,
-      fontSize: smallFontSize,
       color: 'gray',
       padding: isMobile ? mobilePadding : desktopPadding
     }
@@ -21,7 +20,15 @@ class Footer extends React.PureComponent {
             name="github"
             inverted
           />
-          HotWallet
+          GitHub
+        </a>
+        <span style={{ margin: '0 15px' }}>|</span>
+        <a href="https://t.me/hotwalletapp" style={{ color: '#fff' }}>
+          <Icon
+            name="telegram plane"
+            inverted
+          />
+          Telegram
         </a>
       </footer>
     )
