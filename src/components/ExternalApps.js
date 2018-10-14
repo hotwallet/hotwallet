@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Table, Input, Checkbox, Icon, Image } from 'semantic-ui-react'
+import { Table, Input, Checkbox } from 'semantic-ui-react'
 import H1 from './H1'
 import { mobilePadding, desktopPadding } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
