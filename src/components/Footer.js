@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
-import { border, smallFontSize, mobilePadding, desktopPadding } from '../lib/styles'
+import { border, mobilePadding, desktopPadding } from '../lib/styles'
 
 class Footer extends React.PureComponent {
   render() {
