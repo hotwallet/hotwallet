@@ -1,6 +1,10 @@
 import { refreshChart } from './portfolio'
 import { v4 } from 'uuid'
-import { getTransactionsForSymbol } from '../selectors/transactions'
+import {
+  getTransactionsForSymbol,
+  getAllTransactions,
+  getBalancesBySymbol
+} from '../selectors/transactions'
 
 export const ADD_TRANSACTIONS = 'ADD_TRANSACTIONS'
 export const REMOVE_TRANSACTIONS = 'REMOVE_TRANSACTIONS'
@@ -64,4 +68,12 @@ export const removeTransactions = txIds => (dispatch, getState) => {
     txIds
   })
   refreshChart()(dispatch, getState)
+}
+
+export const getTransactions = () => (dispatch, getState) => {
+  return getAllTransactions(getState())
+}
+
+export const getBalances = () => (dispatch, getState) => {
+  return getBalancesBySymbol(getState())
 }

@@ -13,8 +13,8 @@ HotWallet.appScript.onerror = function (err) {
     '</div>'
   ].join('\n')
 }
-// HotWallet.appScriptElement.src = `https://api.hotwallet.com/apps/${HotWalletAppId}.js`
-HotWallet.appScript.src = `http://localhost:3001/apps/${HotWallet.appId}.js`
+HotWallet.appScript.src = `https://api.hotwallet.com/apps/${HotWallet.appId}.js`
+// HotWallet.appScript.src = `http://localhost:3001/apps/${HotWallet.appId}.js`
 document.head.appendChild(HotWallet.appScript)
 
 HotWallet.resizeIframe = function () {
@@ -27,9 +27,35 @@ HotWallet.resizeIframe = function () {
 
 window.addEventListener('load', HotWallet.resizeIframe)
 
+window.addEventListener('message', function (message) {
+  if (!message.data.rpcId) return
+  var event = new window.CustomEvent(message.data.rpcId, {
+    detail: message.data.response
+  })
+  window.dispatchEvent(event)
+})
+
 setInterval(HotWallet.resizeIframe, 250)
 
-HotWallet.getTransactions = function () { return [] }
+HotWallet.rpc = function (action, payload) {
+  var rpcId = Math.random().toString()
+  window.parent.postMessage({
+    rpcId: rpcId,
+    action: action,
+    payload: payload
+  }, '*')
+  return new Promise(function (resolve) {
+    var handler = function (event) {
+      resolve(event.detail)
+      window.removeEventListener(rpcId, handler)
+    }
+    window.addEventListener(rpcId, handler)
+  })
+}
+
+HotWallet.getTransactions = function () {
+  return HotWallet.rpc('getTransactions')
+}
 HotWallet.getWallets = function () {}
 HotWallet.encrypt = function () {}
 HotWallet.decrypt = function () {}

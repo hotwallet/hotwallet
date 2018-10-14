@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { contentMinHeight } from './App'
+import { mapDispatchToProps } from '../actions'
 
 class Iframe extends React.PureComponent {
   constructor(props) {
@@ -12,9 +13,18 @@ class Iframe extends React.PureComponent {
   }
 
   handleWindowMessage = event => {
-    if (!event.data.height) return
-    const height = event.data.height || contentMinHeight
-    this.setState({ height })
+    if (event.data.height) {
+      const height = event.data.height || contentMinHeight
+      return this.setState({ height })
+    }
+    if (event.data.action) {
+      const actionFunctionName = event.data.action
+      // TODO: check if this.appId has permission to perform this action
+      this.iframe.contentWindow.postMessage({
+        rpcId: event.data.rpcId,
+        response: this.props[actionFunctionName](event.data.payload)
+      }, '*')
+    }
   }
 
   addListenerOnce() {
@@ -37,7 +47,7 @@ class Iframe extends React.PureComponent {
     return (
       <iframe
         sandbox="allow-scripts allow-forms"
-        ref="iframe"
+        ref={f => { this.iframe = f }}
         style={{
           border: 'none',
           margin: 0,
@@ -54,4 +64,4 @@ class Iframe extends React.PureComponent {
 
 const mapStateToProps = state => ({})
 
-export default connect(mapStateToProps)(Iframe)
+export default connect(mapStateToProps, mapDispatchToProps)(Iframe)
