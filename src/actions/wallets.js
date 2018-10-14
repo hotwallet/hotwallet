@@ -2,7 +2,7 @@ import Promise from 'bluebird'
 import Big from 'big.js'
 import client from '../lib/hotwalletClient'
 import { addImportedTransaction, removeTransactions } from './transactions'
-import { getBalancesByWalletIdForSymbol, getTransactionsForWallet } from '../selectors/transactions'
+import { getBalancesByWalletIdForSymbol, getTransactionsForWallet, getWallets as getWalletsSelector } from '../selectors/transactions'
 import { deriveAddress } from 'xpubjs'
 
 const fifteenMinutes = 1000 * 60 * 15
@@ -12,6 +12,8 @@ export const ADD_WALLET = 'ADD_WALLET'
 export const DELETE_WALLET = 'DELETE_WALLET'
 export const SET_WALLET_SYNC_TIME = 'SET_WALLET_SYNC_TIME'
 export const SET_WALLET_NAME = 'SET_WALLET_NAME'
+
+export const getWallets = () => (dispatch, getState) => getWalletsSelector(getState())
 
 export const addWallet = wallet => ({ type: ADD_WALLET, wallet })
 

@@ -3,7 +3,7 @@ import { v4 } from 'uuid'
 const id = v4()
 
 const ephemeralState = {
-  app: undefined
+  ephemeral: undefined
 }
 
 // always become primary on load
@@ -21,9 +21,7 @@ export const loadState = () => {
     if (serializedState === null) {
       return undefined
     }
-    const state = JSON.parse(serializedState)
-    delete state.apps
-    return state
+    return JSON.parse(serializedState)
   } catch (err) {
     return undefined
   }
