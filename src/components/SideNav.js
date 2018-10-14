@@ -7,19 +7,7 @@ import { sidebarWidth } from '../lib/styles'
 
 const portfolioNavItem = { icon: 'pie chart', uri: '/', name: 'Portfolio' }
 
-const defaultNavItems = [
-  portfolioNavItem,
-  { image: 'https://chnnl.s3.amazonaws.com/tarragon/hardware/128x128/ledger.png', uri: '/ledger', name: 'Ledger Connect' },
-  { image: 'https://chnnl.s3.amazonaws.com/tarragon/hardware/64x64/trezor.png', uri: '/trezor', name: 'Trezor Connect' },
-  { image: 'https://chnnl.s3.amazonaws.com/tarragon/exchanges/64x64/binance.png', uri: '/binance', name: 'Binance Connect' }
-  // { icon: 'setting', uri: '/settings', name: 'Settings' },
-]
-
 const lastNavItem = { icon: 'add', uri: '/apps', name: 'Apps' }
-
-const customNavItems = [
-  { icon: 'coffee', uri: '/apps/demo', name: 'Demo App' }
-]
 
 const ulStyle = {
   position: 'absolute',
@@ -43,9 +31,6 @@ class SideNav extends React.PureComponent {
 
   getNavLinks() {
     const isMobile = this.props.isMobile
-    // const navItems = defaultNavItems
-    //   .concat(customNavItems)
-    //   .concat([lastNavItem])
     const navItems = [portfolioNavItem]
       .concat(this.props.enabledApps)
       .concat([lastNavItem])

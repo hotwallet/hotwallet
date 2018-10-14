@@ -23,16 +23,8 @@ class ExternalApps extends React.PureComponent {
   toggleApp = event => {
     const el = event.target
     const id = el.parentNode.getAttribute('data-id') || el.getAttribute('data-id')
-    const name = el.parentNode.getAttribute('data-name') || el.getAttribute('data-name')
     const isEnabled = !el.parentNode.classList.value.includes('checked')
-    if (isEnabled) {
-      return this.props.addApp(id)
-    }
-    this.props.removeApp(id)
-    // const confirmed = window.confirm(`Remove ${name}?`)
-    // if (confirmed) {
-    //   this.props.removeApp(id)
-    // }
+    return isEnabled ? this.props.addApp(id) : this.props.removeApp(id)
   }
 
   getIcon(app) {
@@ -83,9 +75,7 @@ class ExternalApps extends React.PureComponent {
             paddingRight: 0
           }}
         >
-          {/*
           <Input inverted icon='search' placeholder='Search...' />
-          */}
           <Table
             basic="very"
             celled

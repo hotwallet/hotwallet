@@ -32,14 +32,14 @@ const allApps = [
 
 const initialState = {
   all: allApps,
-  enabled: ['ledger','trezor', 'binance']
+  enabled: ['ledger', 'trezor', 'binance']
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_APP:
       const enabled = [...state.enabled, action.appId]
-      return { ...state, enabled: enabled.filter((item, pos) => enabled.indexOf(item) == pos) }
+      return { ...state, enabled: enabled.filter((item, pos) => enabled.indexOf(item) === pos) }
     case REMOVE_APP:
       return { ...state, enabled: state.enabled.filter(appId => appId !== action.appId) }
     default:
