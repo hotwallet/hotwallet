@@ -47,7 +47,7 @@ class Iframe extends React.PureComponent {
     return (
       <iframe
         sandbox="allow-scripts allow-forms"
-        ref={f => this.iframe = f}
+        ref={f => { this.iframe = f }}
         style={{
           border: 'none',
           margin: 0,

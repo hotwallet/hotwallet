@@ -29,7 +29,7 @@ window.addEventListener('load', HotWallet.resizeIframe)
 
 window.addEventListener('message', function (message) {
   if (!message.data.rpcId) return
-  var event = new CustomEvent(message.data.rpcId, {
+  var event = new window.CustomEvent(message.data.rpcId, {
     detail: message.data.response
   })
   window.dispatchEvent(event)
