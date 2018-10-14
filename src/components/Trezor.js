@@ -143,7 +143,7 @@ class Trezor extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.app.isMobile,
+  isMobile: state.ephemeral.isMobile,
   wallets: getTrezorWallets(state)
 })
 

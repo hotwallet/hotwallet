@@ -127,9 +127,9 @@ class PricesFilters extends React.PureComponent {
 
 const mapStateToProps = state => ({
   balancesOnly: state.securities.metadata.balancesOnly,
-  query: state.app.filterSymbolsQuery,
-  isMobile: state.app.isMobile,
-  isTablet: state.app.isTablet
+  query: state.ephemeral.filterSymbolsQuery,
+  isMobile: state.ephemeral.isMobile,
+  isTablet: state.ephemeral.isTablet
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PricesFilters)

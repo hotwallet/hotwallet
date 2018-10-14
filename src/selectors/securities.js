@@ -12,7 +12,7 @@ export const getSecurities = createSelector(
 )
 
 export const getBalancesOnlyFilter = state => state.securities.metadata.balancesOnly
-export const getQuery = state => state.app.filterSymbolsQuery
+export const getQuery = state => state.ephemeral.filterSymbolsQuery
 
 export const getSecurity = (state, symbol) => {
   return state.securities.bySymbol[symbol]
@@ -21,8 +21,8 @@ export const getSecurity = (state, symbol) => {
 export const getStateSlices = createStructuredSelector({
   securities: state => state.securities,
   transactions: state => state.transactions,
-  app: createStructuredSelector({
-    rowSlice: state => state.app.rowSlice
+  ephemeral: createStructuredSelector({
+    rowSlice: state => state.ephemeral.rowSlice
   })
 })
 
@@ -40,7 +40,7 @@ export const getDecoratedSecurity = createCachedSelector(
 export const getVisibleSecurities = createSelector(
   [getStateSlices, getSecurities, getBalancesOnlyFilter, getQuery],
   (state, securities, isHidingEmptyBalances, query) => {
-    const [first, last] = state.app.rowSlice
+    const [first, last] = state.ephemeral.rowSlice
     const byMktCap = (a, b) => (a.marketCap > b.marketCap) ? -1 : 1
     const sortedSecurities = securities.slice().sort(byMktCap)
     return sortedSecurities

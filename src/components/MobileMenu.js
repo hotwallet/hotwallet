@@ -90,7 +90,7 @@ MobileMenu.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.app.isMobile
+  isMobile: state.ephemeral.isMobile
 })
 
 export default connect(mapStateToProps)(MobileMenu)

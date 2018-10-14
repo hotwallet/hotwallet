@@ -85,7 +85,7 @@ const headerStyle = {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.app.isMobile,
+  isMobile: state.ephemeral.isMobile,
   location: state.router.location
 })
 

@@ -308,7 +308,7 @@ SecurityModal.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.app.isMobile,
+  isMobile: state.ephemeral.isMobile,
   binanceApiKey: state.binance.apiKey,
   transactionsBySymbol: state.transactions.bySymbol,
   wallets: state.wallets

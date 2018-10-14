@@ -6,6 +6,8 @@ import Ledger from './Ledger'
 import Trezor from './Trezor'
 import Binance from './Binance'
 import Settings from './Settings'
+import Iframe from './Iframe'
+import ExternalApps from './ExternalApps'
 import Header from './Header'
 import Footer from './Footer'
 import SideNav from './SideNav'
@@ -14,6 +16,12 @@ import 'semantic-ui-css/semantic.min.css'
 import { sidebarWidth, border } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
 import withTracker from './withTracker'
+
+export const contentMinHeight = 600
+
+const routeStyle = {
+  minHeight: contentMinHeight
+}
 
 class App extends React.Component {
   componentDidMount() {
@@ -64,6 +72,8 @@ class App extends React.Component {
               <Route exact path="/trezor" component={withTracker(Trezor)} />
               <Route exact path="/binance" component={withTracker(Binance)} />
               <Route exact path="/settings" component={withTracker(Settings)} />
+              <Route exact path="/apps" component={withTracker(ExternalApps)} />
+              <Route exact path="/apps/:appId" component={withTracker(Iframe)} />
             </div>
             <Footer />
           </main>
@@ -73,13 +83,9 @@ class App extends React.Component {
   }
 }
 
-const routeStyle = {
-  minHeight: 600
-}
-
 const mapStateToProps = state => ({
   uri: state.router.location.pathname,
-  isMobile: state.app.isMobile,
+  isMobile: state.ephemeral.isMobile,
   lastBinanceSync: state.binance.lastSync
 })
 

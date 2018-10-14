@@ -7,7 +7,6 @@ class Footer extends React.PureComponent {
   render() {
     const isMobile = this.props.isMobile
     const footerStyle = {
-      marginTop: 50,
       borderTop: border,
       fontSize: smallFontSize,
       color: 'gray',
@@ -30,7 +29,7 @@ class Footer extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.app.isMobile
+  isMobile: state.ephemeral.isMobile
 })
 
 export default connect(mapStateToProps)(Footer)

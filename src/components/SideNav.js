@@ -5,13 +5,9 @@ import NavLink from './NavLink'
 import { Icon, Image } from 'semantic-ui-react'
 import { sidebarWidth } from '../lib/styles'
 
-const navItems = [
-  { icon: 'pie chart', uri: '/', name: 'Portfolio' },
-  { image: 'https://chnnl.s3.amazonaws.com/tarragon/hardware/128x128/ledger.png', uri: '/ledger', name: 'Ledger Connect' },
-  { image: 'https://chnnl.s3.amazonaws.com/tarragon/hardware/64x64/trezor.png', uri: '/trezor', name: 'Trezor Connect' },
-  { image: 'https://chnnl.s3.amazonaws.com/tarragon/exchanges/64x64/binance.png', uri: '/binance', name: 'Binance Connect' },
-  { icon: 'setting', uri: '/settings', name: 'Settings' }
-]
+const portfolioNavItem = { icon: 'pie chart', uri: '/', name: 'Portfolio' }
+
+const lastNavItem = { icon: 'add', uri: '/apps', name: 'Apps' }
 
 const ulStyle = {
   position: 'absolute',
@@ -35,6 +31,9 @@ class SideNav extends React.PureComponent {
 
   getNavLinks() {
     const isMobile = this.props.isMobile
+    const navItems = [portfolioNavItem]
+      .concat(this.props.enabledApps)
+      .concat([lastNavItem])
     return navItems.map((navItem, i) => {
       const mobileItem = (
         <div style={{ lineHeight: '1.5em' }}>
@@ -79,12 +78,13 @@ class SideNav extends React.PureComponent {
       const delay = i * 0.05 + 0.075
       const style = {
         opacity: this.props.opacity || 1,
-        padding: '5px 0',
+        padding: 0,
         transition: 'opacity .5s',
         transitionDelay: `${delay}s`
       }
       return (
         <li key={i} style={style}>
+          {navItem.uri === '/apps' ? <hr /> : ''}
           <NavLink
             onClick={this.props.onClick}
             to={navItem.uri}
@@ -103,8 +103,11 @@ SideNav.propTypes = {
   opacity: PropTypes.number
 }
 
+const getEnabledApps = apps => apps.all.filter(app => apps.enabled.includes(app.id))
+
 const mapStateToProps = state => ({
-  isMobile: state.app.isMobile
+  isMobile: state.ephemeral.isMobile,
+  enabledApps: getEnabledApps(state.apps)
 })
 
 export default connect(mapStateToProps)(SideNav)
