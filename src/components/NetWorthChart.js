@@ -116,7 +116,7 @@ class NetWorthChart extends React.PureComponent {
             fontSize: 20,
             zIndex: 200,
             padding: '0 100px'
-          }}>Add balances to track your portfolio</div>) : null}
+          }}>Add a wallet to get started</div>) : null}
         {isStale ? <Loader active /> : ''}
         <DateRangeSelector
           baseCurrency={this.props.baseCurrency}
