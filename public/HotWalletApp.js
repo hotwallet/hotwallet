@@ -2,20 +2,20 @@ var HotWallet = {}
 
 window.HotWallet = HotWallet
 
-HotWallet.appId = window.location.search.substr(1)
-
-HotWallet.appScript = document.createElement('script')
-HotWallet.appScript.onerror = function (err) {
-  console.log('script err:', err)
-  document.getElementsByTagName('main')[0].innerHTML = [
-    '<div style="padding: 25px;">',
-    '  <h1>Page Not Found</h1>',
-    '</div>'
-  ].join('\n')
-}
-HotWallet.appScript.src = `https://api.hotwallet.com/apps/${HotWallet.appId}.js`
-// HotWallet.appScript.src = `http://localhost:3001/apps/${HotWallet.appId}.js`
-document.head.appendChild(HotWallet.appScript)
+// HotWallet.appId = window.location.search.substr(1)
+//
+// HotWallet.appScript = document.createElement('script')
+// HotWallet.appScript.onerror = function (err) {
+//   console.log('script err:', err)
+//   document.getElementsByTagName('main')[0].innerHTML = [
+//     '<div style="padding: 25px;">',
+//     '  <h1>Page Not Found</h1>',
+//     '</div>'
+//   ].join('\n')
+// }
+// HotWallet.appScript.src = `https://api.hotwallet.com/apps/${HotWallet.appId}.js`
+// // HotWallet.appScript.src = `http://localhost:3001/apps/${HotWallet.appId}.js`
+// document.head.appendChild(HotWallet.appScript)
 
 HotWallet.resizeIframe = function () {
   if (document.body.scrollHeight === HotWallet.iframeHeight) return

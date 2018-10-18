@@ -51,12 +51,14 @@ class Iframe extends React.PureComponent {
         style={{
           border: 'none',
           margin: 0,
-          padding: 0
+          padding: 0,
+          backgroundColor: 'transparent'
         }}
         width="100%"
         height={height}
         title={this.state.appId}
-        src={`/iframe.html?${this.state.appId}`}
+        src={`https://hotwallet.github.io/hotwallet-app-${this.state.appId}`}
+        allowTransparency="true"
       />
     )
   }
