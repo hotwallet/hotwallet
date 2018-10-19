@@ -5,7 +5,7 @@ window.HotWallet = HotWallet
 HotWallet.stylesheet = document.createElement('link')
 HotWallet.stylesheet.rel = 'stylesheet'
 HotWallet.stylesheet.type = 'text/css'
-HotWallet.stylesheet.href = 'https://hotwallet.com/HotWalletApp.css'
+HotWallet.stylesheet.href = 'https://hotwallet.com/app.css'
 document.head.appendChild(HotWallet.stylesheet)
 
 HotWallet.resizeIframe = function () {
