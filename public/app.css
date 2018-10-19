@@ -4,3 +4,11 @@ body {
     background-color: #2b333a;
     color: #eee;
 }
+
+h1 {
+    border-bottom: 1px solid #49525a;
+    font-size: 21;
+    margin: 0;
+    font-weight: 100;
+    padding: 25px;
+}
