@@ -1,6 +1,13 @@
 const g = global || window
 const language = (g.navigator && g.navigator.language) || 'en-US'
 
+const qtySymbols = {
+  1000000000000000: 'Q',
+  1000000000000: 'T',
+  1000000000: 'B',
+  1000000: 'M'
+}
+
 // based on https://stackoverflow.com/a/1581007
 export function roundToSignificantFigures(num, digits = 3) {
   if (num === 0) {
@@ -26,12 +33,13 @@ export function formatFiat(num, currency) {
     style: 'currency',
     currency
   }
-  if (num >= 1000000) {
-    const millions = num / 1000000
-    return millions.toLocaleString(language, Object.assign({
+  const abbreviatedQty = Object.keys(qtySymbols).sort().reverse().find(qty => num >= qty)
+  if (abbreviatedQty) {
+    const qty = num / abbreviatedQty
+    return qty.toLocaleString(language, Object.assign({
       maximumFractionDigits: 2,
       minimumFractionDigits: 0
-    }, currencyOptions)) + 'M'
+    }, currencyOptions)) + qtySymbols[abbreviatedQty]
   }
   if (num >= 1000) {
     return num.toLocaleString(language, Object.assign({
