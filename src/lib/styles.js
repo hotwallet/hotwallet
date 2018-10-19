@@ -20,3 +20,5 @@ export const padding = {
   tablet: desktopPadding,
   desktop: desktopPadding
 }
+
+export const appMaxWidth = 1100

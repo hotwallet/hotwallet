@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
 import { border, mobilePadding, desktopPadding } from '../lib/styles'
+import packageJson from '../../package.json'
 
 class Footer extends React.PureComponent {
   render() {
@@ -25,6 +26,8 @@ class Footer extends React.PureComponent {
     return (
       <footer style={footerStyle}>
         &copy; 2018 Gadget Labs
+        {divider}
+        {packageJson.version}
         {divider}
         <a href="https://github.com/hotwallet" style={aStyle}>
           <Icon

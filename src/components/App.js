@@ -13,7 +13,7 @@ import Footer from './Footer'
 import SideNav from './SideNav'
 import '../lib/addToHomeScreen'
 import 'semantic-ui-css/semantic.min.css'
-import { sidebarWidth, border } from '../lib/styles'
+import { sidebarWidth, border, appMaxWidth } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
 import withTracker from './withTracker'
 
@@ -57,7 +57,7 @@ class App extends React.Component {
     const isMobile = this.props.isMobile
     const mainStyle = {
       marginLeft: isMobile ? 0 : sidebarWidth,
-      maxWidth: 1100,
+      maxWidth: appMaxWidth,
       borderLeft: isMobile ? 'none' : border
     }
     return (

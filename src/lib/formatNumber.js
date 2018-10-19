@@ -26,6 +26,13 @@ export function formatFiat(num, currency) {
     style: 'currency',
     currency
   }
+  if (num >= 1000000) {
+    const millions = num / 1000000
+    return millions.toLocaleString(language, Object.assign({
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 0
+    }, currencyOptions)) + 'M'
+  }
   if (num >= 1000) {
     return num.toLocaleString(language, Object.assign({
       maximumFractionDigits: 0,
