@@ -58,7 +58,6 @@ class SettingsMenu extends React.PureComponent {
 
   onClickOverlay = () => {
     this.props.closeMenu()
-    if (this.state.isHover) return
   }
 
   onMouseEnter = () => {
