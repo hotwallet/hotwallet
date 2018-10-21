@@ -32,11 +32,6 @@ const navItems = [
     icon: 'setting'
   },
   {
-    name: 'Invite a Friend',
-    uri: '/invite',
-    icon: 'user plus'
-  },
-  {
     name: 'Chat with Us',
     uri: 'https://t.me/hotwalletapp',
     icon: 'telegram plane'
