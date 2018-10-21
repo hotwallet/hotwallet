@@ -1,11 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
-import { Button, Table, Image, Input } from 'semantic-ui-react'
+import { Button, Table, Image, Input, Dropdown } from 'semantic-ui-react'
 import H1 from './H1'
 import { mapDispatchToProps } from '../actions'
 import { mobilePadding, desktopPadding } from '../lib/styles'
 import { getTrezorWallets } from '../selectors/transactions'
+import { getSecurity } from '../selectors/securities'
+import { supportedSymbols } from '../actions/trezor'
 
 const rowStyle = {}
 
@@ -115,9 +117,7 @@ class Trezor extends React.PureComponent {
     )
   }
 
-  getBitcoinAccount = () => {
-    this.props.getTrezorAccountInfo('BTC')
-  }
+  getAccount = security => () => this.props.getTrezorAccountInfo(security)
 
   render() {
     const wallets = this.props.wallets
@@ -129,12 +129,27 @@ class Trezor extends React.PureComponent {
             padding: this.props.isMobile ? mobilePadding : desktopPadding
           }}
         >
-          <Button
-            onClick={this.getBitcoinAccount}
+          <Dropdown
+            text="Add Trezor Wallet"
             icon="plus"
-            color="black"
-            content="Add Trezor Bitcoin Wallet"
-          />
+            floating
+            labeled
+            button
+            className="icon"
+          >
+            <Dropdown.Menu>
+              <Dropdown.Header content="Choose type of wallet" />
+              {this.props.trezorSecurities.map(security =>
+                <Dropdown.Item
+                  key={security.symbol}
+                  text={security.name}
+                  value={security.symbol}
+                  color="black"
+                  onClick={this.getAccount(security)}
+                />)}
+            </Dropdown.Menu>
+          </Dropdown>
+
           {wallets.length ? this.renderTable() : ''}
         </div>
       </div>
@@ -144,7 +159,10 @@ class Trezor extends React.PureComponent {
 
 const mapStateToProps = state => ({
   isMobile: state.ephemeral.isMobile,
-  wallets: getTrezorWallets(state)
+  wallets: getTrezorWallets(state),
+  trezorSecurities: supportedSymbols
+    .map(symbol => getSecurity(state, symbol))
+    .sort((a, b) => a.name > b.name ? 1 : -1)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Trezor)

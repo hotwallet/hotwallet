@@ -55,6 +55,25 @@ input::selection {
   background: none;
 }
 
+.ui.dropdown.button,
+.ui.dropdown.button.active {
+  background: #000;
+  color: #fff;
+}
+.ui.dropdown.button > .icon {
+  border-right: 1px solid #333;
+}
+.ui.dropdown .menu {
+  background: rgb(28, 36, 42);
+}
+.ui.dropdown .menu > .header,
+.ui.dropdown .menu > .item {
+  color: #ddd;
+}
+.ui.dropdown .menu > .item:hover {
+  color: #fff;
+}
+
 /* semantic ui modal alignment bug fix */
 .ui.page.modals.transition.visible {
   display: flex !important;
