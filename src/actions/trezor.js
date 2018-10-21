@@ -43,6 +43,7 @@ export const getTrezorAccountInfo = security => (dispatch, getState) => {
           return TrezorConnect.cardanoGetAddress({
             path: "m/44'/1815'/0'/0/0"
           })
+        default:
       }
     })
     .then(({ payload }) => {
