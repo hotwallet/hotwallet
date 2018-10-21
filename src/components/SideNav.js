@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import NavLink from './NavLink'
 import { Icon, Image } from 'semantic-ui-react'
-import { sidebarWidth, darkBlue, lightBg } from '../lib/styles'
+import { sidebarWidth, darkBlue } from '../lib/styles'
 import { allApps } from '../reducers/apps'
 
 const portfolioNavItem = { icon: 'pie chart', uri: '/', name: 'Portfolio' }
