@@ -78,13 +78,14 @@ class SideNav extends React.PureComponent {
       )
       const value = isMobile ? mobileItem : item
       const delay = i * 0.05 + 0.075
+      const transparent = 'rgba(0,0,0,0)'
       const style = {
         opacity: this.props.opacity || 1,
         padding: 0,
         transition: 'opacity .5s',
         transitionDelay: `${delay}s`,
-        borderLeft: `3px solid ${isActive ? darkBlue : lightBg}`,
-        borderRight: `3px solid ${lightBg}`
+        borderLeft: `3px solid ${isActive ? darkBlue : transparent}`,
+        borderRight: `3px solid ${transparent}`
       }
       return (
         <li key={i} style={style}>
