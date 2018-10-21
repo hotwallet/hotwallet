@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import NavLink from './NavLink'
 import { Icon, Image } from 'semantic-ui-react'
 import { sidebarWidth } from '../lib/styles'
+import { allApps } from '../reducers/apps'
 
 const portfolioNavItem = { icon: 'pie chart', uri: '/', name: 'Portfolio' }
 
@@ -103,7 +104,7 @@ SideNav.propTypes = {
   opacity: PropTypes.number
 }
 
-const getEnabledApps = apps => apps.all.filter(app => apps.enabled.includes(app.id))
+const getEnabledApps = apps => allApps.filter(app => apps.enabled.includes(app.id))
 
 const mapStateToProps = state => ({
   isMobile: state.ephemeral.isMobile,

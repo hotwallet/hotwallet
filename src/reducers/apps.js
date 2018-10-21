@@ -3,7 +3,13 @@ import {
   REMOVE_APP
 } from '../actions/apps'
 
-const allApps = [
+export const allApps = [
+  {
+    id: 'hotwallet-app-news',
+    icon: 'world teal',
+    uri: '/apps/news',
+    name: 'Crypto News'
+  },
   {
     id: 'ledger',
     image: 'https://chnnl.s3.amazonaws.com/tarragon/hardware/128x128/ledger.png',
@@ -26,13 +32,12 @@ const allApps = [
     id: 'hotwallet-app-demo',
     icon: 'coffee',
     uri: '/apps/demo',
-    name: 'Demo App'
+    name: 'App Demo'
   }
 ]
 
 const initialState = {
-  all: allApps,
-  enabled: ['ledger', 'trezor', 'binance']
+  enabled: ['ledger', 'trezor', 'binance', 'news']
 }
 
 export default (state = initialState, action) => {

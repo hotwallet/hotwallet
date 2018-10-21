@@ -4,6 +4,7 @@ import { Table, Input, Checkbox } from 'semantic-ui-react'
 import H1 from './H1'
 import { mobilePadding, desktopPadding } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
+import { allApps } from '../reducers/apps'
 
 const rowStyle = {}
 
@@ -48,7 +49,7 @@ class ExternalApps extends React.PureComponent {
   }
 
   render() {
-    const rows = this.props.allApps.map(app => (
+    const rows = allApps.map(app => (
       <Table.Row key={app.id}>
         <Table.Cell style={cellStyle}>
           {this.getIcon(app)}
@@ -98,7 +99,7 @@ class ExternalApps extends React.PureComponent {
 
 const mapStateToProps = state => ({
   isMobile: state.ephemeral.isMobile,
-  allApps: state.apps.all,
+  allApps,
   enabledAppIds: state.apps.enabled
 })
 
