@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { Table, Input, Checkbox } from 'semantic-ui-react'
 import H1 from './H1'
 import { mobilePadding, desktopPadding } from '../lib/styles'
@@ -48,15 +49,26 @@ class ExternalApps extends React.PureComponent {
     // )
   }
 
-  render() {
-    const rows = allApps.map(app => (
+  getLink(appId) {
+    const prefix = 'hotwallet-app-'
+    return appId.includes(prefix)
+      ? `/apps/${appId.replace('hotwallet-app-', '')}`
+      : `/${appId}`
+  }
+
+  getRows() {
+    return allApps.map(app => (
       <Table.Row key={app.id}>
         <Table.Cell style={cellStyle}>
           {this.getIcon(app)}
-          {app.name}
+          <Link
+            style={{ color: '#eee', fontSize: 16 }}
+            to={this.getLink(app.id)}
+          >{app.name}</Link>
         </Table.Cell>
         <Table.Cell style={{ ...cellStyle, width: 32 }} textAlign="right">
           <Checkbox
+            style={{ marginRight: 15 }}
             toggle
             data-id={app.id}
             data-name={app.name}
@@ -66,6 +78,9 @@ class ExternalApps extends React.PureComponent {
         </Table.Cell>
       </Table.Row>
     ))
+  }
+
+  render() {
     return (
       <div>
         <H1 text="Manage Apps" />
@@ -84,11 +99,12 @@ class ExternalApps extends React.PureComponent {
           >
             <Table.Header>
               <Table.Row style={headerStyle}>
-                <Table.HeaderCell colSpan="2" style={cellStyle}>App</Table.HeaderCell>
+                <Table.HeaderCell style={cellStyle}>App</Table.HeaderCell>
+                <Table.HeaderCell style={cellStyle}>Shortcut</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {rows}
+              {this.getRows()}
             </Table.Body>
           </Table>
         </div>

@@ -6,7 +6,7 @@ import {
 export const allApps = [
   {
     id: 'hotwallet-app-news',
-    icon: 'world teal',
+    icon: 'world',
     uri: '/apps/news',
     name: 'Crypto News'
   },
