@@ -120,11 +120,12 @@ class SettingsMenu extends React.PureComponent {
   }
 
   render() {
+    const maxWidth = this.props.maxWidth
     const isVisible = this.props.visible
     const height = isVisible ? menuStyle.height : 0
     const width = isVisible ? menuStyle.width : 0
     const top = isVisible ? 0 : -2000
-    const right = isVisible ? 0 : -2000
+    const right = this.props.windowWidth > maxWidth ? this.props.windowWidth - maxWidth : 0
     return (
       <div
         style={{ ...overlayStyle, top, right }}
@@ -151,7 +152,8 @@ SettingsMenu.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile
+  isMobile: state.ephemeral.isMobile,
+  windowWidth: window.innerWidth
 })
 
 export default connect(mapStateToProps)(SettingsMenu)

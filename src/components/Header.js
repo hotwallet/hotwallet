@@ -67,6 +67,7 @@ class Header extends React.PureComponent {
           />
         ) : ''}
         <SettingsMenu
+          maxWidth={appMaxWidth + sidebarWidth}
           visible={this.state.settingsMenuVisible}
           closeMenu={this.closeSettingsMenu}
         />
