@@ -35,6 +35,10 @@ class Iframe extends React.PureComponent {
 
   componentDidMount() {
     this.addListenerOnce()
+    // TODO: show spinner when iframe is loading
+    this.iframe.addEventListener('load', () => {
+      this.iframe.style.visibility = 'visible'
+    })
   }
 
   componentWillUnmount() {
@@ -49,6 +53,7 @@ class Iframe extends React.PureComponent {
         sandbox="allow-scripts allow-forms"
         ref={f => { this.iframe = f }}
         style={{
+          visibility: 'hidden',
           border: 'none',
           margin: 0,
           padding: 0,
@@ -57,7 +62,10 @@ class Iframe extends React.PureComponent {
         width="100%"
         height={height}
         title={this.state.appId}
-        src={`https://hotwallet.github.io/hotwallet-app-${this.state.appId}`}
+        src={
+          // 'http://localhost:4000'
+          `https://hotwallet.github.io/hotwallet-app-${this.state.appId}`
+        }
         allowtransparency="true"
       />
     )
