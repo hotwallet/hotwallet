@@ -5,6 +5,8 @@ import { mapDispatchToProps } from '../actions'
 import { Icon } from 'semantic-ui-react'
 import { darkBg } from '../lib/styles'
 
+const isLocalAppDev = false
+
 class Iframe extends React.PureComponent {
   constructor(props) {
     super(props)
@@ -77,8 +79,9 @@ class Iframe extends React.PureComponent {
           height={height}
           title={this.state.appId}
           src={
-            'http://localhost:4000'
-            //`https://hotwallet.github.io/hotwallet-app-${this.state.appId}`
+            isLocalAppDev
+            ? 'http://localhost:4000'
+            : `https://hotwallet.github.io/hotwallet-app-${this.state.appId}`
           }
           allowtransparency="true"
         />
