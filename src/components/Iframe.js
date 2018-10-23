@@ -64,7 +64,7 @@ class Iframe extends React.PureComponent {
           <Icon loading name="asterisk" size="massive" style={{ color: darkBg }} />
         </div>
         <iframe
-          sandbox="allow-scripts allow-forms"
+          sandbox="allow-scripts allow-forms allow-popups"
           ref={f => { this.iframe = f }}
           style={{
             visibility: 'hidden',
@@ -77,8 +77,8 @@ class Iframe extends React.PureComponent {
           height={height}
           title={this.state.appId}
           src={
-            // 'http://localhost:4000'
-            `https://hotwallet.github.io/hotwallet-app-${this.state.appId}`
+            'http://localhost:4000'
+            //`https://hotwallet.github.io/hotwallet-app-${this.state.appId}`
           }
           allowtransparency="true"
         />
