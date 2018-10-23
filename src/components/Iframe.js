@@ -80,8 +80,8 @@ class Iframe extends React.PureComponent {
           title={this.state.appId}
           src={
             isLocalAppDev
-            ? 'http://localhost:4000'
-            : `https://hotwallet.github.io/hotwallet-app-${this.state.appId}`
+              ? 'http://localhost:4000'
+              : `https://hotwallet.github.io/hotwallet-app-${this.state.appId}`
           }
           allowtransparency="true"
         />
