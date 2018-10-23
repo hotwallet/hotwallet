@@ -27,17 +27,11 @@ export const allApps = [
     image: 'https://chnnl.s3.amazonaws.com/tarragon/exchanges/64x64/binance.png',
     uri: '/binance',
     name: 'Binance Connect'
-  },
-  {
-    id: 'hotwallet-app-demo',
-    icon: 'coffee',
-    uri: '/apps/demo',
-    name: 'App Demo'
   }
 ]
 
 const initialState = {
-  enabled: ['ledger', 'trezor', 'binance', 'news']
+  enabled: ['ledger', 'trezor', 'binance', 'hotwallet-app-news']
 }
 
 export default (state = initialState, action) => {

@@ -2,6 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { contentMinHeight } from './App'
 import { mapDispatchToProps } from '../actions'
+import { Icon } from 'semantic-ui-react'
+import { darkBg } from '../lib/styles'
 
 class Iframe extends React.PureComponent {
   constructor(props) {
@@ -38,6 +40,7 @@ class Iframe extends React.PureComponent {
     // TODO: show spinner when iframe is loading
     this.iframe.addEventListener('load', () => {
       this.iframe.style.visibility = 'visible'
+      this.loader.style.display = 'none'
     })
   }
 
@@ -49,25 +52,37 @@ class Iframe extends React.PureComponent {
     if (!this.state.appId) return
     const height = Math.max(contentMinHeight, this.state.height)
     return (
-      <iframe
-        sandbox="allow-scripts allow-forms"
-        ref={f => { this.iframe = f }}
-        style={{
-          visibility: 'hidden',
-          border: 'none',
-          margin: 0,
-          padding: 0,
-          backgroundColor: 'transparent'
-        }}
-        width="100%"
-        height={height}
-        title={this.state.appId}
-        src={
-          // 'http://localhost:4000'
-          `https://hotwallet.github.io/hotwallet-app-${this.state.appId}`
-        }
-        allowtransparency="true"
-      />
+      <div>
+        <div
+          ref={l => { this.loader = l }}
+          style={{
+            width: '100%',
+            paddingTop: 200,
+            textAlign: 'center'
+          }}
+        >
+          <Icon loading name="asterisk" size="massive" style={{ color: darkBg }} />
+        </div>
+        <iframe
+          sandbox="allow-scripts allow-forms"
+          ref={f => { this.iframe = f }}
+          style={{
+            visibility: 'hidden',
+            border: 'none',
+            margin: 0,
+            padding: 0,
+            backgroundColor: 'transparent'
+          }}
+          width="100%"
+          height={height}
+          title={this.state.appId}
+          src={
+            // 'http://localhost:4000'
+            `https://hotwallet.github.io/hotwallet-app-${this.state.appId}`
+          }
+          allowtransparency="true"
+        />
+      </div>
     )
   }
 }

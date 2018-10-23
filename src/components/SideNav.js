@@ -65,7 +65,7 @@ class SideNav extends React.PureComponent {
         <Icon
           size="large"
           name={navItem.icon}
-          style={{ margin: '0 auto' }}
+          style={{ margin: '0 0 0 -3px' }}
         />
       ) : (
         <Image

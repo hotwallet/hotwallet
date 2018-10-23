@@ -37,13 +37,13 @@ const navItems = [
     icon: 'telegram plane'
   },
   {
-    name: 'Open Source',
+    name: '@hotwallet',
     uri: 'https://github.com/hotwallet',
     icon: 'github'
   },
   {
-    name: 'Developer API',
-    uri: 'https://github.com/hotwallet/hotwallet/wiki/HotWallet-Developer-API',
+    name: 'Apps API',
+    uri: 'https://github.com/hotwallet/hotwallet/wiki/HotWallet-Apps-API',
     icon: 'cubes'
   }
 ]
