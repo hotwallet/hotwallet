@@ -1,8 +1,13 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Cordova -->
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'self' gap://ready data:; img-src * 'self' data:; style-src * 'unsafe-inline'; script-src * 'self' 'unsafe-inline' 'unsafe-eval'; ">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="initial-scale=1, width=device-width, height=device-height, viewport-fit=cover">
+
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <title>HotWallet</title>
@@ -23,6 +28,7 @@
   </head>
   <body>
     <div id="root"></div>
+    <script type="text/javascript" src="cordova.js"></script>
     <!-- temporary until trezor/connect/pull/229 is fixed -->
     <script src="https://connect.trezor.io/5/trezor-connect.js"></script>
   </body>

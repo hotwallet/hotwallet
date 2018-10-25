@@ -2,9 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import NavLink from './NavLink'
+import { withRouter } from 'react-router-dom'
 import { Icon, Image } from 'semantic-ui-react'
 import { sidebarWidth, darkBlue } from '../lib/styles'
 import { allApps } from '../reducers/apps'
+import getPathName from '../lib/getPathName'
 
 const portfolioNavItem = { icon: 'pie chart', uri: '/', name: 'Portfolio' }
 
@@ -36,7 +38,7 @@ class SideNav extends React.PureComponent {
       .concat(this.props.enabledApps)
       .concat([lastNavItem])
     return navItems.map((navItem, i) => {
-      const isActive = this.props.uri === navItem.uri
+      const isActive = getPathName(this.props.location) === navItem.uri
       const mobileItem = (
         <div style={{ lineHeight: '1.5em' }}>
           {navItem.icon ? (
@@ -105,15 +107,15 @@ class SideNav extends React.PureComponent {
 SideNav.propTypes = {
   onClick: PropTypes.func,
   width: PropTypes.string,
-  opacity: PropTypes.number
+  opacity: PropTypes.number,
+  location: PropTypes.object.isRequired
 }
 
 const getEnabledApps = apps => allApps.filter(app => apps.enabled.includes(app.id))
 
 const mapStateToProps = state => ({
   isMobile: state.ephemeral.isMobile,
-  enabledApps: getEnabledApps(state.apps),
-  uri: state.router.location.pathname
+  enabledApps: getEnabledApps(state.apps)
 })
 
-export default connect(mapStateToProps)(SideNav)
+export default withRouter(connect(mapStateToProps)(SideNav))

@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Route } from 'react-router-dom'
+import { Route, BrowserRouter, HashRouter } from 'react-router-dom'
 import Portfolio from './Portfolio'
 import Ledger from './Ledger'
 import Trezor from './Trezor'
@@ -18,6 +18,8 @@ import { mapDispatchToProps } from '../actions'
 import withTracker from './withTracker'
 
 export const contentMinHeight = 600
+
+const Router = window.cordova ? HashRouter : BrowserRouter
 
 const routeStyle = {
   minHeight: contentMinHeight
@@ -61,30 +63,31 @@ class App extends React.Component {
       borderLeft: isMobile ? 'none' : border
     }
     return (
-      <div>
-        <Header />
-        <div style={{ borderBottom: border }}>
-          {isMobile ? null : <SideNav />}
-          <main style={mainStyle}>
-            <div style={routeStyle}>
-              <Route exact path="/" component={withTracker(Portfolio)} />
-              <Route exact path="/ledger" component={withTracker(Ledger)} />
-              <Route exact path="/trezor" component={withTracker(Trezor)} />
-              <Route exact path="/binance" component={withTracker(Binance)} />
-              <Route exact path="/settings" component={withTracker(Settings)} />
-              <Route exact path="/apps" component={withTracker(ExternalApps)} />
-              <Route exact path="/apps/:appId" component={withTracker(Iframe)} />
-            </div>
-            <Footer />
-          </main>
+      <Router>
+        <div>
+          <Header />
+          <div style={{ borderBottom: border }}>
+            {isMobile ? null : <SideNav />}
+            <main style={mainStyle}>
+              <div style={routeStyle}>
+                <Route exact path="/" component={withTracker(Portfolio)} />
+                <Route exact path="/ledger" component={withTracker(Ledger)} />
+                <Route exact path="/trezor" component={withTracker(Trezor)} />
+                <Route exact path="/binance" component={withTracker(Binance)} />
+                <Route exact path="/settings" component={withTracker(Settings)} />
+                <Route exact path="/apps" component={withTracker(ExternalApps)} />
+                <Route exact path="/apps/:appId" component={withTracker(Iframe)} />
+              </div>
+              <Footer />
+            </main>
+          </div>
         </div>
-      </div>
+      </Router>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  uri: state.router.location.pathname,
   isMobile: state.ephemeral.isMobile,
   lastBinanceSync: state.binance.lastSync
 })
