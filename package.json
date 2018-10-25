@@ -16,9 +16,8 @@
     "react-ga": "^2.5.0",
     "react-highcharts": "^16.0.2",
     "react-redux": "^5.0.6",
-    "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2",
-    "react-router-redux": "next",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
     "react-virtualized": "^9.19.1",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
@@ -32,11 +31,13 @@
     "start": "react-scripts start",
     "start-ssl": "HTTPS=true react-scripts start",
     "build": "node patch-react-scripts && react-scripts build",
+    "build:cordova": "npm run build && cd cordova && rm -rf www && cp -R ../build www",
     "test": "yarn run eslint && PORT=3000 jest --coverage",
     "eject": "react-scripts eject",
     "eslint": "eslint ./",
     "prepush": "yarn run eslint",
-    "ci": "serve -s build & jest --coverage"
+    "ci": "serve -s build & jest --coverage",
+    "ios": "npm run build:cordova && cd cordova && cordova prepare && cordova build ios && cordova run ios"
   },
   "devDependencies": {
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
@@ -54,6 +55,7 @@
   "engines": {
     "node": "8"
   },
+  "homepage": "./",
   "husky": {
     "hooks": {
       "pre-push": "yarn run eslint"

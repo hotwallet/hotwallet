@@ -1,8 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { Popup } from 'semantic-ui-react'
 import { PropTypes } from 'prop-types'
+import getPathName from '../lib/getPathName'
 
 class NavLink extends React.PureComponent {
   constructor(props) {
@@ -26,7 +27,7 @@ class NavLink extends React.PureComponent {
       color: '#fff'
     }
     if (this.state.hover) linkStyle = hoverStyle
-    if (props.uri === props.to) linkStyle = activeStyle
+    if (getPathName(props.location) === props.to) linkStyle = activeStyle
     const style = { ...props.style, ...normalStyle, ...linkStyle }
     const link = (
       <Link style={style}
@@ -74,12 +75,12 @@ NavLink.propTypes = {
   onClick: PropTypes.func,
   to: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  value: PropTypes.element.isRequired
+  value: PropTypes.element.isRequired,
+  location: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile,
-  uri: state.router.location.pathname
+  isMobile: state.ephemeral.isMobile
 })
 
-export default connect(mapStateToProps)(NavLink)
+export default withRouter(connect(mapStateToProps)(NavLink))

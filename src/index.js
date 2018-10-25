@@ -1,21 +1,21 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { ConnectedRouter } from 'react-router-redux'
-import store, { history } from './store'
+import store from './store'
 import App from './components/App'
 import 'sanitize.css/sanitize.css'
 import './index.css'
 
-const target = document.querySelector('#root')
+const startApp = () =>
+  render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.querySelector('#root')
+  )
 
-render(
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <div>
-        <App />
-      </div>
-    </ConnectedRouter>
-  </Provider>,
-  target
-)
+if (!window.cordova) {
+  startApp()
+} else {
+  document.addEventListener('deviceready', startApp, false)
+}

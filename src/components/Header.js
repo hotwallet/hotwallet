@@ -1,11 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { Icon, Image } from 'semantic-ui-react'
+import PropTypes from 'prop-types'
 import { darkBg, sidebarWidth, border, appMaxWidth } from '../lib/styles'
 import CurrencyContainer from '../containers/CurrencyContainer'
 import MobileMenu from './MobileMenu'
 import SettingsMenu from './SettingsMenu'
+import getPathName from '../lib/getPathName'
 
 class Header extends React.PureComponent {
   state = {
@@ -37,7 +39,7 @@ class Header extends React.PureComponent {
         />
       </Link>
     }
-    if (this.props.location.pathname === '/') {
+    if (getPathName(this.props.location) === '/') {
       return <Icon
         name="bars"
         size="large"
@@ -96,6 +98,10 @@ class Header extends React.PureComponent {
   }
 }
 
+Header.propTypes = {
+  location: PropTypes.object.isRequired
+}
+
 const currencySelectorStyle = {
   marginLeft: 5,
   display: 'inline-block'
@@ -108,8 +114,7 @@ const headerStyle = {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile,
-  location: state.router.location
+  isMobile: state.ephemeral.isMobile
 })
 
-export default connect(mapStateToProps)(Header)
+export default withRouter(connect(mapStateToProps)(Header))

@@ -7,6 +7,8 @@ body {
   padding: 0;
   background-color: #2b333a;
   color: #eee;
+  padding-top: env(safe-area-inset-top);
+  padding-top: constant(safe-area-inset-top);
 }
 
 button {

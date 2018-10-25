@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux'
-import { routerReducer as router } from 'react-router-redux'
 import apps from './apps'
 import binance from './binance'
 import ephemeral from './ephemeral'
@@ -18,7 +17,6 @@ export default combineReducers({
   ledger,
   portfolio,
   prices,
-  router,
   securities,
   transactions,
   user,
