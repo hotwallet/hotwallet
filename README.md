@@ -9,12 +9,11 @@ Crypto Platform
 
 ## Features
 
-- No Login
-- Ledger Connect
-- Trezor Connect
-- Binance Connect (more exchanges coming soon)
-- All major crypto and fiat currencies
-- Multi-device sync (coming soon)
+- No login
+- Manage wallets and exchange accounts
+- Ledger and Trezor support
+- HotWallet App Store ([Apps API](https://github.com/hotwallet/hotwallet/wiki/HotWallet-Apps-API))
+- Sync devices (coming soon)
 
 ## Install
 
@@ -41,5 +40,6 @@ yarn test --watch
 ## Start iOS app
 
 ```bash
+yarn global add cordova
 yarn ios
 ```
