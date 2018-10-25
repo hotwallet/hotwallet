@@ -27,4 +27,6 @@
         <preference name="StatusBarBackgroundColor" value="#1c242a" />
     </platform>
     <plugin name="cordova-plugin-statusbar" spec="^2.4.2" />
+    <engine name="ios" spec="^4.5.5" />
+    <engine name="android" spec="^7.1.1" />
 </widget>

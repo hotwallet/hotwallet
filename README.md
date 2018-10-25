@@ -24,10 +24,11 @@ cd hotwallet
 yarn
 ```
 
-## Start app
+## Start web app
 
 ```bash
 yarn start
+# yarn start-ssl
 ```
 
 ## Run tests
@@ -35,4 +36,10 @@ yarn start
 ```bash
 yarn start
 yarn test --watch
+```
+
+## Start iOS app
+
+```bash
+yarn ios
 ```
