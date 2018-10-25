@@ -1,14 +1,14 @@
 {
     "name": "com.hotwallet.app",
-    "displayName": "hotwallet",
+    "displayName": "HotWallet",
     "version": "1.0.0",
-    "description": "A sample Apache Cordova application that responds to the deviceready event.",
+    "description": "Crypto Platform",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "author": "Apache Cordova Team",
-    "license": "Apache-2.0",
+    "author": "hotwallet",
+    "license": "UNLICENSED",
     "dependencies": {
         "cordova-android": "^7.1.1",
         "cordova-ios": "4.5.5",
