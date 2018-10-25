@@ -2,7 +2,7 @@
 <widget id="com.hotwallet.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>HotWallet</name>
     <description>
-        Crypto Platform
+        HotWallet Crypto Platform
     </description>
     <author email="hello@hotwallet.com" href="https://hotwallet.com">
         HotWallet Team

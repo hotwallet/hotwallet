@@ -2,7 +2,7 @@
     "name": "com.hotwallet.app",
     "displayName": "HotWallet",
     "version": "1.0.0",
-    "description": "Crypto Platform",
+    "description": "HotWallet Crypto Platform",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"

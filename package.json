@@ -31,7 +31,7 @@
     "start": "react-scripts start",
     "start-ssl": "HTTPS=true react-scripts start",
     "build": "node patch-react-scripts && react-scripts build",
-    "build:cordova": "npm run build && cd cordova && rm -rf www && cp -R ../build www",
+    "build:cordova": "PUBLIC_URL=./ npm run build && cd cordova && rm -rf www && mv ../build www",
     "test": "yarn run eslint && PORT=3000 jest --coverage",
     "eject": "react-scripts eject",
     "eslint": "eslint ./",
@@ -55,7 +55,6 @@
   "engines": {
     "node": "8"
   },
-  "homepage": "./",
   "husky": {
     "hooks": {
       "pre-push": "yarn run eslint"
