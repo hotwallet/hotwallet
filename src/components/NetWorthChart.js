@@ -110,7 +110,7 @@ class NetWorthChart extends React.PureComponent {
             position: 'absolute',
             top: '47%',
             marginTop: '-0.25em',
-            marginLeft: '1em',
+            paddingLeft: '1em',
             width: '100%',
             textAlign: 'center',
             fontSize: 20,
