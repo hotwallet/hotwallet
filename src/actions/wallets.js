@@ -2,6 +2,7 @@ import Promise from 'bluebird'
 import Big from 'big.js'
 import client from '../lib/hotwalletClient'
 import { addImportedTransaction, removeTransactions } from './transactions'
+import { updateAddress as updateAddressAction } from './addresses'
 import { getBalancesByWalletIdForSymbol, getTransactionsForWallet, getWallets as getWalletsSelector } from '../selectors/transactions'
 import { deriveAddress } from 'xpubjs'
 
@@ -27,16 +28,20 @@ export const deleteWallet = id => (dispatch, getState) => {
 
 export const setWalletName = (id, name) => ({ type: SET_WALLET_NAME, id, name })
 
-const getBalances = (symbol, address) => {
+const getBalances = ({ symbol, address, updateAddress }) => {
   const url = `/addresses/${symbol}/${address}`
   return client.get(url)
     .then(response => {
       if (!Array.isArray(response.balances)) return []
+      response.balances.forEach(row => {
+        const { balance } = row
+        updateAddress({ symbol, address, balance })
+      })
       return response.balances
     })
 }
 
-const getChainBalances = (symbol, xpub, change, index = 0, totals = {}, unused = 0) => {
+const getChainBalances = (symbol, xpub, change, updateAddress, index = 0, totals = {}, unused = 0) => {
   const path = `${change}/${index}`
   return Promise.resolve()
     .then(() => deriveAddress({ symbol, xpub, path }))
@@ -44,7 +49,7 @@ const getChainBalances = (symbol, xpub, change, index = 0, totals = {}, unused =
       err.details = { symbol, xpub }
       throw err
     })
-    .then(address => getBalances(symbol, address))
+    .then(address => getBalances({ symbol, address, updateAddress }))
     .then(balances => {
       const newTotals = { ...totals }
       let isUnused = true
@@ -65,14 +70,14 @@ const getChainBalances = (symbol, xpub, change, index = 0, totals = {}, unused =
         }))
       }
       return Promise.delay(100)
-        .then(() => getChainBalances(symbol, xpub, change, index + 1, newTotals, unused))
+        .then(() => getChainBalances(symbol, xpub, change, updateAddress, index + 1, newTotals, unused))
     })
 }
 
-const getHDBalances = (symbol, xpub) => {
+const getHDBalances = ({ symbol, xpub, updateAddress }) => {
   return Promise.props({
-    receive: getChainBalances(symbol, xpub, 0),
-    change: getChainBalances(symbol, xpub, 1)
+    receive: getChainBalances(symbol, xpub, 0, updateAddress),
+    change: getChainBalances(symbol, xpub, 1, updateAddress)
   })
     .then(results => {
       const totals = results.receive.map(r => {
@@ -97,12 +102,18 @@ export const fetchWalletBalances = () => (dispatch, getState) => {
     const wallet = wallets[walletId]
     const { symbol, address, xpub, lastSync } = wallet
     if (!address && !xpub) return
+    const updateAddress = ({ symbol, address, balance }) => dispatch(updateAddressAction({
+      walletId,
+      symbol,
+      address,
+      balance
+    }))
     // don't check wallet balance too often
     if (lastSync + fifteenMinutes > Date.now()) return
     return Promise.resolve()
       .then(() => {
-        if (xpub) return getHDBalances(symbol, xpub)
-        return getBalances(symbol, address)
+        if (xpub) return getHDBalances({ symbol, xpub, updateAddress })
+        return getBalances({ symbol, address, updateAddress })
       })
       .then(totals => {
         dispatch({

@@ -1,5 +1,6 @@
 import { bindActionCreators } from 'redux'
 
+import * as addresses from './addresses'
 import * as apps from './apps'
 import * as binance from './binance'
 import * as ephemeral from './ephemeral'
@@ -14,6 +15,7 @@ import * as wallets from './wallets'
 
 export const mapDispatchToProps = dispatch => {
   return bindActionCreators({
+    ...addresses,
     ...apps,
     ...binance,
     ...ephemeral,
