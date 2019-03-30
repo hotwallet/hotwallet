@@ -3,10 +3,10 @@
     color: #fff!important;
 }
 
-
 .ReactVirtualized__Table__row {
 	border-color: hsla(0,0%,100%,.1)!important;
-    border-top: 1px solid rgba(34,36,38,.1);
+	border-top: 1px solid rgba(34,36,38,.1);
+	cursor: pointer;
 }
 
 .ReactVirtualized__Table__rowColumn, .ReactVirtualized__Table__headerColumn {
