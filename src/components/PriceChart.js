@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import ReactHighcharts from 'react-highcharts'
 import Highcharts from 'highcharts'
-import DateRangeSelector from './DateRangeSelector'
+// import DateRangeSelector from './DateRangeSelector'
 import { Loader } from 'semantic-ui-react'
 import { lightBlue, darkBlue, darkBg, desktopPadding, mobilePadding } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
@@ -110,10 +110,12 @@ class PriceChart extends React.PureComponent {
     return (
       <div style={{ position: 'relative' }}>
         {isStale ? <Loader active /> : ''}
-        {/*<DateRangeSelector
+        {/*
+        <DateRangeSelector
           baseCurrency={this.props.baseCurrency}
           deviceType={this.props.deviceType}
-        setDateRange={this.props.setDateRange} />*/}
+        setDateRange={this.props.setDateRange} />
+        */}
         <ReactHighcharts config={chartConfig} />
       </div>
     )

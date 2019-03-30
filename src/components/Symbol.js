@@ -22,12 +22,12 @@ class Symbol extends React.PureComponent {
     />
     return (
       <div>
-        <H1 
-          text={this.props.security.name} 
+        <H1
+          text={this.props.security.name}
           image={image}
           content={
             <div
-              style={{ 
+              style={{
                 verticalAlign: 'middle',
                 marginLeft: 15,
                 float: 'right',
@@ -35,7 +35,7 @@ class Symbol extends React.PureComponent {
               }}
               onClick={() => this.props.history.push('/')}
             >
-              <Icon name="window close" size="big"/>
+              <Icon name="window close" size="big" />
             </div>
           }
         />

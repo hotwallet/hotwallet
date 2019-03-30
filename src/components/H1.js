@@ -29,7 +29,7 @@ class H1 extends React.PureComponent {
         {image || ''}
         <h1 style={h1}>{text}</h1>
         {subtitle ? <h5 style={h5}>{subtitle}</h5> : ''}
-        {content ? content : ''}
+        {content || ''}
       </div>
     )
   }

@@ -9,8 +9,8 @@ export const clearPrices = () => ({ type: CLEAR_PRICES })
 
 export const getHistoricalPrices = symbol => (dispatch, getState) => {
   const baseCurrency = getState().user.baseCurrency
-  client.get('/prices', { 
-    baseCurrency, 
+  client.get('/prices', {
+    baseCurrency,
     symbols: symbol,
     startDate: '2010-03-30',
     endDate: '2019-03-30'
