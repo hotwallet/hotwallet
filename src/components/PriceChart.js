@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import ReactHighcharts from 'react-highcharts'
+import ReactHighcharts from 'react-highcharts/ReactHighstock'
 import Highcharts from 'highcharts'
 // import DateRangeSelector from './DateRangeSelector'
 import { Loader } from 'semantic-ui-react'
@@ -15,14 +15,16 @@ Highcharts.setOptions({
 
 const gridLineColor = '#323a42'
 const gridLineWidth = 2
-const lineColor = lightBlue
+const lineColor = 'red'
+const color = 'red'
 const lineWidth = 1.5
 const fiveMinutes = 1000 * 60 * 5
+const upColor = 'green'
 
 class PriceChart extends React.PureComponent {
   componentDidMount() {
     const { lastRefresh, chartData, symbol } = this.props
-    this.props.getHistoricalPrices(symbol)
+    this.props.getOHLC(symbol)
     const age = Date.now() - lastRefresh
     const isStale = (age > fiveMinutes)
     if (!chartData || !chartData.length || isStale) {
@@ -31,9 +33,15 @@ class PriceChart extends React.PureComponent {
   }
 
   render() {
-    const { lastRefresh, historicalPrices, isMobile, isTablet } = this.props
-    const chartData = historicalPrices.map(entry => {
-      return [(new Date(entry.date)).getTime(), entry.price]
+    const { lastRefresh, ohlc, isMobile, isTablet } = this.props
+    const chartData = ohlc.map(entry => {
+      return [
+        (new Date(entry.date)).getTime(), // date
+        entry.open, // open
+        entry.high, // high
+        entry.low, // low
+        entry.close // close
+      ]
     })
     const age = Date.now() - lastRefresh
     const isStale = (age > fiveMinutes)
@@ -49,7 +57,7 @@ class PriceChart extends React.PureComponent {
           desktopPadding,
           desktopPadding
         ],
-        height: isMobile ? 150 : 300
+        height: isMobile ? 200 : 400
       },
       title: {
         text: null
@@ -68,14 +76,13 @@ class PriceChart extends React.PureComponent {
         lineWidth: 0,
         gridLineWidth,
         gridLineColor,
-        min: 0
-        // minRange: 100
+        floor: 0
       },
       legend: {
         enabled: false
       },
       plotOptions: {
-        area: {
+        candlestick: {
           fillColor: {
             linearGradient: {
               x1: 0,
@@ -93,6 +100,9 @@ class PriceChart extends React.PureComponent {
           },
           lineWidth,
           lineColor,
+          upLineColor: upColor,
+          upColor,
+          color,
           states: {
             hover: {
               lineWidth
@@ -102,9 +112,9 @@ class PriceChart extends React.PureComponent {
         }
       },
       series: [{
-        type: 'area',
-        name: 'Portfolio value',
-        data: data
+        type: 'candlestick',
+        name: 'Price history',
+        data
       }]
     }
     return (
@@ -126,7 +136,7 @@ const mapStateToProps = state => ({
   isMobile: state.ephemeral.isMobile,
   deviceType: state.ephemeral.deviceType,
   isTablet: state.ephemeral.isTablet,
-  historicalPrices: state.historicalPrices,
+  ohlc: state.ohlc,
   lastRefresh: state.portfolio.lastRefresh,
   hasNoTransactions: !Object.keys(state.transactions.byId).length,
   baseCurrency: state.user.baseCurrency,

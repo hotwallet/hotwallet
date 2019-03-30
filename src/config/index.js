@@ -1,7 +1,7 @@
 export const appName = 'HotWallet'
 
 export const serverUrl = 'https://api.hotwallet.com'
-// export const serverUrl = 'http://localhost:3000'
+// export const serverUrl = 'http://localhost:3001'
 
 export const ga = {
   trackingID: 'UA-44029858-8'

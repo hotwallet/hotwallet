@@ -2,8 +2,8 @@ import { combineReducers } from 'redux'
 import apps from './apps'
 import binance from './binance'
 import ephemeral from './ephemeral'
-import historicalPrices from './historicalPrices'
 import ledger from './ledger'
+import ohlc from './ohlc'
 import portfolio from './portfolio'
 import prices from './prices'
 import securities from './securities'
@@ -15,8 +15,8 @@ export default combineReducers({
   apps,
   binance,
   ephemeral,
-  historicalPrices,
   ledger,
+  ohlc,
   portfolio,
   prices,
   securities,
