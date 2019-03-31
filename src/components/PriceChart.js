@@ -2,8 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import ReactHighcharts from 'react-highcharts/ReactHighstock'
 import Highcharts from 'highcharts'
-// import DateRangeSelector from './DateRangeSelector'
-import { Loader } from 'semantic-ui-react'
 import { lightBlue, darkBlue, darkBg, desktopPadding, mobilePadding } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
 import { getSymbolsWithTransactions } from '../selectors/transactions'
@@ -33,7 +31,7 @@ class PriceChart extends React.PureComponent {
   }
 
   render() {
-    const { lastRefresh, ohlc, isMobile, isTablet } = this.props
+    const { ohlc, isMobile, isTablet } = this.props
     const ohlcData = ohlc.map(entry => {
       return [
         (new Date(entry.date)).getTime(),
@@ -142,7 +140,7 @@ class PriceChart extends React.PureComponent {
           data: volumeData,
           yAxis: 1,
           color: '#888'
-        }, 
+        },
         {
           type: 'candlestick',
           name: 'Price history',
