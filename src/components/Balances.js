@@ -145,7 +145,6 @@ class Symbol extends React.PureComponent {
   }
 
   close = () => {
-    this.props.onClose()
     this.setState({ inputHasFocus: false })
   }
 

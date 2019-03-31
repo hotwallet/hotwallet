@@ -1,4 +1,5 @@
 import client from '../lib/hotwalletClient'
+import moment from 'moment'
 
 export const SET_PRICES = 'SET_PRICES'
 export const CLEAR_PRICES = 'CLEAR_PRICES'
@@ -12,8 +13,8 @@ export const getOHLC = symbol => (dispatch, getState) => {
   client.get('/ohlc', {
     baseCurrency,
     symbol,
-    startDate: '2010-03-30',
-    endDate: '2019-03-30'
+    startDate: '2013-04-01',
+    endDate: moment().format('YYYY-MM-DD')
   })
     .then(data => {
       dispatch({

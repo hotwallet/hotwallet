@@ -14,7 +14,7 @@ Highcharts.setOptions({
 })
 
 const gridLineColor = '#323a42'
-const gridLineWidth = 2
+const gridLineWidth = 1
 const lineColor = 'red'
 const color = 'red'
 const lineWidth = 1.5
@@ -34,18 +34,21 @@ class PriceChart extends React.PureComponent {
 
   render() {
     const { lastRefresh, ohlc, isMobile, isTablet } = this.props
-    const chartData = ohlc.map(entry => {
+    const ohlcData = ohlc.map(entry => {
       return [
-        (new Date(entry.date)).getTime(), // date
-        entry.open, // open
-        entry.high, // high
-        entry.low, // low
-        entry.close // close
+        (new Date(entry.date)).getTime(),
+        entry.open,
+        entry.high,
+        entry.low,
+        entry.close
       ]
     })
-    const age = Date.now() - lastRefresh
-    const isStale = (age > fiveMinutes)
-    const data = isStale ? [] : chartData
+    const volumeData = ohlc.map(entry => {
+      return [
+        (new Date(entry.date)).getTime(),
+        Math.floor(entry.volume)
+      ]
+    })
     const chartConfig = {
       chart: {
         // zoomType: 'x',
@@ -71,15 +74,36 @@ class PriceChart extends React.PureComponent {
         maxPadding: 0,
         tickLength: 0
       },
-      yAxis: {
-        title: false,
-        lineWidth: 0,
-        gridLineWidth,
-        gridLineColor,
-        floor: 0
-      },
+      yAxis: [
+        {
+          title: false,
+          lineWidth: 0,
+          gridLineWidth,
+          gridLineColor,
+          floor: 0,
+          height: '80%'
+        },
+        {
+          title: false,
+          gridLineWidth: 0,
+          height: '20%',
+          top: '80%',
+          labels: { enabled: false }
+        }
+      ],
       legend: {
         enabled: false
+      },
+      rangeSelector: {
+        enabled: false
+      },
+      scrollbar: {
+        enabled: false
+      },
+      navigator: {
+        outlineColor: '#ccc',
+        maskFill: 'rgba(90,90,90,0.4)',
+        margin: 10
       },
       plotOptions: {
         candlestick: {
@@ -111,21 +135,24 @@ class PriceChart extends React.PureComponent {
           threshold: null
         }
       },
-      series: [{
-        type: 'candlestick',
-        name: 'Price history',
-        data
-      }]
+      series: [
+        {
+          type: 'column',
+          name: 'Volume',
+          data: volumeData,
+          yAxis: 1,
+          color: '#888'
+        }, 
+        {
+          type: 'candlestick',
+          name: 'Price history',
+          data: ohlcData,
+          yAxis: 0
+        }
+      ]
     }
     return (
       <div style={{ position: 'relative' }}>
-        {isStale ? <Loader active /> : ''}
-        {/*
-        <DateRangeSelector
-          baseCurrency={this.props.baseCurrency}
-          deviceType={this.props.deviceType}
-        setDateRange={this.props.setDateRange} />
-        */}
         <ReactHighcharts config={chartConfig} />
       </div>
     )

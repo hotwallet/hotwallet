@@ -14,7 +14,7 @@ Highcharts.setOptions({
 })
 
 const gridLineColor = '#323a42'
-const gridLineWidth = 2
+const gridLineWidth = 1
 const lineColor = lightBlue
 const lineWidth = 1.5
 const fiveMinutes = 1000 * 60 * 5
