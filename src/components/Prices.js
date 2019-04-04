@@ -16,28 +16,13 @@ import './Prices.css'
 import { subscribeSymbol } from '../lib/subscribe'
 
 const PriceCell = subscribeSymbol(({ security, delta24h, isMobile }) => {
-  // const updated = moment(security.lastUpdated).fromNow()
+  blurStalePrices()
   return (
     <React.Fragment>
-      <div>{formatFiat(security.price, security.baseCurrency)}</div>
-      {/*
-      <Popup
-        trigger={<span>{formatFiat(security.price, security.baseCurrency)}</span>}
-        content={updated}
-        inverted
-        hideOnScroll
-        position="bottom right"
-        style={{
-          opacity: 0.7,
-          fontSize: 10,
-          padding: '5px 10px'
-        }}
-        on="hover"
-        onOpen={(event, data) => {
-          // TODO: render the content on hover so the time fromNow updates
-        }}
-      />
-      */}
+      <div
+        className="price"
+        data-last-updated={security.lastUpdated}
+      >{formatFiat(security.price, security.baseCurrency)}</div>
       {isMobile && (
         <div style={{
           ...delta24h.style,
@@ -71,6 +56,15 @@ const SupplyCell = subscribeSymbol(({ security, price }) => (
 const MarketCapCell = subscribeSymbol(({ security }) => (
   <div>{shortenLargeNumber(security.marketCap, security.baseCurrency)}</div>
 ))
+
+const blurStalePrices = () => {
+  const tenMinutesMs = 1000 * 60 * 10
+  document.querySelectorAll('.price').forEach(el => {
+    const lastUpdated = el.getAttribute('data-last-updated')
+    const isStale = !lastUpdated || Date.now() - (new Date(lastUpdated)).getTime() > tenMinutesMs
+    if (isStale) el.style.filter = 'blur(0.1rem)'
+  })
+}
 
 class Prices extends React.PureComponent {
   constructor(props) {

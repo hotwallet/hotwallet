@@ -34,7 +34,7 @@ export default class SocketClient {
     const state = store.getState()
     const baseCurrency = state.user.baseCurrency
     if (security.baseCurrency === baseCurrency) {
-      security.lastUpdated = new Date()
+      security.lastUpdated = (new Date()).toISOString()
       const normalizedSecurity = normalize(security, schema.security)
       store.dispatch(updateSecurity(normalizedSecurity))
     }

@@ -9,6 +9,13 @@ export const SECURITIES_FETCH_FAILURE = 'SECURITIES_FETCH_FAILURE'
 export const SECURITIES_UPDATE = 'SECURITIES_UPDATE'
 export const SECURITIES_BALANCES_ONLY = 'SECURITIES_BALANCES_ONLY'
 
+function populateLastUpdated(securities) {
+  return securities.map(security => ({
+    ...security,
+    lastUpdated: (new Date()).toISOString()
+  }))
+}
+
 const fetchSecuritiesDebounced = debounce((dispatch, getState) => {
   dispatch({
     type: SECURITIES_FETCH
@@ -16,10 +23,11 @@ const fetchSecuritiesDebounced = debounce((dispatch, getState) => {
 
   const baseCurrency = getState().user.baseCurrency
   client.get('/securities', { baseCurrency, limit: 2000 })
-    .then(response => {
+    .then(securities => {
+      const populatedSecurities = populateLastUpdated(securities)
       dispatch({
         type: SECURITIES_FETCH_SUCCESS,
-        response: normalize(response, schema.arrayOfSecurities)
+        response: normalize(populatedSecurities, schema.arrayOfSecurities)
       })
     })
     .catch(error => {
