@@ -1,6 +1,7 @@
 export default class WalletService {
-  constructor({ db }) {
+  constructor({ db, accountService }) {
     this.db = db
+    this.accountService = accountService
   }
 
   async addWallet({ symbol, address = null, xpub = null, isManual = false, name = null }) {
@@ -17,13 +18,14 @@ export default class WalletService {
     })
   }
 
-  getWallets({ symbol }) {
+  async getWallets({ symbol }) {
+    const accountId = await this.accountService.getPrimaryAccount()
     return this.db.wallets.find({
-      selector: { symbol }
+      selector: { accountId, symbol }
     })
   }
 
-  setWalletName({ symbol, name }) {
+  setWalletName({ walletId, name }) {
 
   }
 

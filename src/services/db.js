@@ -15,9 +15,9 @@ db.assets.createIndex({ index: { fields: ['symbol'] } })
 
 db.prices.createIndex({ index: { fields: ['symbol', 'date'] } })
 
-db.transactions.createIndex({ index: { fields: ['walletId'] } })
+db.transactions.createIndex({ index: { fields: ['walletId', 'symbol', 'date'] } })
 
-db.wallets.createIndex({ index: { fields: ['symbol', 'accountId'] } })
+db.wallets.createIndex({ index: { fields: ['accountId', 'symbol'] } })
 
 export default db
 

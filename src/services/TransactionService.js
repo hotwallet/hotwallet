@@ -15,8 +15,13 @@ export default class TransactionService {
 
   }
 
-  getBalance({ accountId, walletId, symbol }) {
-    return this.db.transactions.find()
+  async getBalance({ walletId, symbol }) {
+    const latestTx = await this.db.transactions.find({
+      selector: { walletId, symbol, date: { $exists: true } },
+      sort: [{ date: 'desc' }],
+      limit: 1
+    })
+    return latestTx.balance
   }
 
   getTransactions(accountId, walletId) {
