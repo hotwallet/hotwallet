@@ -1,6 +1,6 @@
 import React from 'react'
 import H1 from './H1'
-import { withAccountUpdates } from '../services/db'
+import { withAccountUpdates } from '../db'
 import { accountService } from '../services'
 
 function Settings({ _id }) {

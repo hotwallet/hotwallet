@@ -1,4 +1,4 @@
-import db from './db'
+import db from '../db'
 import AccountService from './AccountService'
 import AssetService from './AssetService'
 import TransactionService from './TransactionService'
