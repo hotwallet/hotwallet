@@ -1,7 +1,7 @@
-const defaultSettings = {
-  showBlankBalances: true,
-  portfolioChartPeriod: '1 year'
-}
+// const defaultSettings = {
+//   showBlankBalances: true,
+//   portfolioChartPeriod: '1 year'
+// }
 
 const include_docs = true
 

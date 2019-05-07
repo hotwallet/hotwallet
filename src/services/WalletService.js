@@ -7,7 +7,7 @@ export default class WalletService {
   async addWallet({ symbol, address = null, xpub = null, isManual = false, name = null }) {
     const asset = await this.db.assets.get(symbol)
     if (!asset) throw new Error('Invalid symbol')
-    const wallets = await this.getWallets({ symbol })
+    // const wallets = await this.getWallets({ symbol })
     // TODO: validate unique address and xpub
     return this.db.wallets.post({
       symbol,
