@@ -1,17 +1,23 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import H1 from './H1'
+import { withAccountUpdates } from '../services/db'
+import { accountService } from '../services'
 
-class Settings extends React.PureComponent {
-  render() {
-    return (
-      <div>
-        <H1 text="Settings" />
-      </div>
-    )
-  }
+function Settings({ _id }) {
+  return <>
+    <H1 text="Settings" />
+    <div style={{ padding: 25 }}>
+      Account ID: {_id}
+    </div>
+  </>
 }
 
-const mapStateToProps = state => ({})
+async function getData() {
+  return accountService.getPrimaryAccount()
+}
 
-export default connect(mapStateToProps)(Settings)
+function shouldUpdate(change) {
+  return change.affects({ isPrimary: true })
+}
+
+export default withAccountUpdates(getData, shouldUpdate)(Settings)

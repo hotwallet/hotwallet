@@ -1,7 +1,7 @@
 const fs = require('fs')
 
 // get the webpack config file
-const filename = `${__dirname}/node_modules/react-scripts/config/webpack.config.prod.js`
+const filename = `${__dirname}/node_modules/react-scripts/config/webpack.config.js`
 let code = fs.readFileSync(filename, 'utf8')
 
 // don't mangle some bitcooinjs class names

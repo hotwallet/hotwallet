@@ -16,6 +16,7 @@ import 'semantic-ui-css/semantic.min.css'
 import { sidebarWidth, border, appMaxWidth } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
 import withTracker from './withTracker'
+import { assetService } from '../services'
 
 export const contentMinHeight = 600
 
@@ -33,6 +34,8 @@ class App extends React.Component {
 
     this.props.fetchBinanceBalances()
     this.props.fetchWalletBalances()
+
+    assetService.importAssets().catch(console.log)
   }
 
   throttleWindowChange = () => {
@@ -74,7 +77,7 @@ class App extends React.Component {
                 <Route exact path="/ledger" component={withTracker(Ledger)} />
                 <Route exact path="/trezor" component={withTracker(Trezor)} />
                 <Route exact path="/binance" component={withTracker(Binance)} />
-                <Route exact path="/settings" component={withTracker(Settings)} />
+                <Route exact path="/settings" component={(Settings)} />
                 <Route exact path="/apps" component={withTracker(ExternalApps)} />
                 <Route exact path="/apps/:appId" component={withTracker(Iframe)} />
               </div>
