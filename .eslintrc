@@ -4,6 +4,8 @@
   "parser": "babel-eslint",
   "rules": {
     "jsx-quotes": ["error", "prefer-double"],
+    "no-unused-vars": 1,
+    "camelcase": 1,
     "space-before-function-paren": ["error", {"anonymous": "always", "named": "never", "asyncArrow": "always"}]
   },
   "env": {

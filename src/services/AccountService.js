@@ -6,7 +6,7 @@ const defaultSettings = {
 const include_docs = true
 
 export default class AccountService {
-  constructor ({ db }) {
+  constructor({ db }) {
     this.db = db
   }
 
@@ -51,6 +51,6 @@ export default class AccountService {
   }
 
   decrypt() {
-    
+
   }
 }

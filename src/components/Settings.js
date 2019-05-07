@@ -5,7 +5,7 @@ import { accountService } from '../services'
 
 function Settings({ _id }) {
   return <>
-    <H1 text="Settings" />  
+    <H1 text="Settings" />
     <div style={{ padding: 25 }}>
       Account ID: {_id}
     </div>

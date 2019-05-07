@@ -1,7 +1,7 @@
 import hwClient from '../lib/hotwalletClient'
 
 export default class AssetService {
-  constructor ({ db, accountService }) {
+  constructor({ db, accountService }) {
     this.db = db
     this.accountService = accountService
   }
@@ -24,12 +24,12 @@ export default class AssetService {
   async importAssets() {
     const primaryAccount = await this.accountService.getPrimaryAccount()
     const { baseCurrency } = primaryAccount
-    const assets = (await hwClient.get('/securities', { 
-      baseCurrency, 
-      limit: 2000 
+    const assets = (await hwClient.get('/securities', {
+      baseCurrency,
+      limit: 2000
     })).map(asset => ({
       _id: asset.symbol,
-      ...asset,
+      ...asset
     }))
     return this.db.assets.bulkDocs(assets)
   }

@@ -1,5 +1,5 @@
 export default class WalletService {
-  constructor ({ db }) {
+  constructor({ db }) {
     this.db = db
   }
 
@@ -24,11 +24,11 @@ export default class WalletService {
   }
 
   setWalletName({ symbol, name }) {
-    return 
+
   }
 
   setWalletSyncTime({ walletId }) {
-    
+
   }
 
   removeWallet(walletId) {

@@ -1,5 +1,5 @@
 export default class TransactionService {
-  constructor ({ db }) {
+  constructor({ db }) {
     this.db = db
   }
 
@@ -20,6 +20,6 @@ export default class TransactionService {
   }
 
   getTransactions(accountId, walletId) {
-    
+
   }
 }
