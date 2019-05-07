@@ -1,4 +1,5 @@
 import React from 'react'
+import URL from 'url'
 import { connect } from 'react-redux'
 import { Route, BrowserRouter, HashRouter } from 'react-router-dom'
 import Portfolio from './Portfolio'
@@ -27,7 +28,40 @@ const routeStyle = {
 }
 
 class App extends React.Component {
+  handleWindowMessage = event => {
+    if (event.data && event.data.action) {
+      const actionFunctionName = event.data.action
+      let params
+      try {
+        params = event.data.payload ? JSON.parse(event.data.payload) : null
+      } catch (err) {
+        console.error(`Invalid action: ${actionFunctionName}('${event.data.payload}')`)
+        return
+      }
+      if (!this.props[actionFunctionName]) {
+        console.error(`Invalid action '${actionFunctionName}'`)
+        return
+      }
+      const { hostname } = URL.parse(event.origin)
+      const ok = window.confirm(`Allow ${hostname} to call ${actionFunctionName}?`)
+      if (!ok) return
+      const response = this.props[actionFunctionName](params)
+      // TODO: ability to call async functions
+      window.parent.postMessage({
+        rpcId: event.data.rpcId,
+        response
+      }, '*')
+    }
+  }
+
+  addListenerOnce() {
+    if (this.listener) return
+    this.listener = true
+    window.addEventListener('message', this.handleWindowMessage, false)
+  }
+
   componentDidMount() {
+    this.addListenerOnce()
     this.throttleWindowChange()
     this.resizeTimer = null
     window.addEventListener('resize', this.throttleWindowChange)
