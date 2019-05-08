@@ -15,7 +15,7 @@ class Settings extends React.PureComponent {
           <NetWorthChart />
         </div>
         <PricesFilters />
-        <PricesContainer />
+        <PricesContainer history={this.props.history} />
       </div>
     )
   }
@@ -25,6 +25,8 @@ const chartsStyle = {
   borderBottom: border
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = (state, ownProps) => ({
+  history: ownProps.history
+})
 
 export default connect(mapStateToProps)(Settings)

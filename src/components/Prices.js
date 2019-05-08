@@ -16,28 +16,13 @@ import './Prices.css'
 import { subscribeSymbol } from '../lib/subscribe'
 
 const PriceCell = subscribeSymbol(({ security, delta24h, isMobile }) => {
-  // const updated = moment(security.lastUpdated).fromNow()
+  blurStalePrices()
   return (
     <React.Fragment>
-      <div>{formatFiat(security.price, security.baseCurrency)}</div>
-      {/*
-      <Popup
-        trigger={<span>{formatFiat(security.price, security.baseCurrency)}</span>}
-        content={updated}
-        inverted
-        hideOnScroll
-        position="bottom right"
-        style={{
-          opacity: 0.7,
-          fontSize: 10,
-          padding: '5px 10px'
-        }}
-        on="hover"
-        onOpen={(event, data) => {
-          // TODO: render the content on hover so the time fromNow updates
-        }}
-      />
-      */}
+      <div
+        className="price"
+        data-last-updated={security.lastUpdated}
+      >{formatFiat(security.price, security.baseCurrency)}</div>
       {isMobile && (
         <div style={{
           ...delta24h.style,
@@ -71,6 +56,15 @@ const SupplyCell = subscribeSymbol(({ security, price }) => (
 const MarketCapCell = subscribeSymbol(({ security }) => (
   <div>{shortenLargeNumber(security.marketCap, security.baseCurrency)}</div>
 ))
+
+const blurStalePrices = () => {
+  const tenMinutesMs = 1000 * 60 * 10
+  document.querySelectorAll('.price').forEach(el => {
+    const lastUpdated = el.getAttribute('data-last-updated')
+    const isStale = !lastUpdated || Date.now() - (new Date(lastUpdated)).getTime() > tenMinutesMs
+    if (isStale) el.style.filter = 'blur(0.1rem)'
+  })
+}
 
 class Prices extends React.PureComponent {
   constructor(props) {
@@ -143,10 +137,9 @@ class Prices extends React.PureComponent {
     }
 
     const balanceStyle = {
-      cursor: 'pointer',
       width: isMobile ? '75px' : '100px',
       padding: '0.5em 1em',
-      border: '2px solid rgb(73, 82, 90)',
+      border: '2px solid rgb(58, 67, 75)',
       textAlign: 'center',
       margin: '0px auto'
     }
@@ -189,8 +182,13 @@ class Prices extends React.PureComponent {
                     headerHeight={50}
                     rowHeight={60}
                     scrollTop={scrollTop}
-                    tabIndex={null}>
-
+                    tabIndex={null}
+                    onRowClick={({ rowData: security }) => {
+                      const symbol = security.symbol
+                      // TODO: save current scroll position
+                      this.props.history.push(`/symbols/${symbol}`)
+                    }}
+                  >
                     <Column
                       flexGrow={isMobile ? 1 : 3}
                       label="Symbol"
@@ -200,10 +198,7 @@ class Prices extends React.PureComponent {
                       className="allow-overflow"
                       cellRenderer={
                         ({ rowData: security, rowIndex }) => (
-                          <a
-                            style={{ color: '#fff' }}
-                            href={`https://coinmarketcap.com/currencies/${security.slug}/`}
-                          >
+                          <div>
                             <span style={rankStyle}>{security.rank}</span>
                             <Image
                               src={this.getIcon(security.symbol)}
@@ -214,7 +209,7 @@ class Prices extends React.PureComponent {
                               height={isMobile ? 16 : 32}
                             />
                             <span style={symbolStyle}>{security.symbol}</span>
-                          </a>
+                          </div>
                         )
                       }
                     />
@@ -291,11 +286,12 @@ class Prices extends React.PureComponent {
                       cellRenderer={
                         ({ rowData: security }) => (
                           <div
+                            className="balance"
                             onClick={() => {
-                              this.openSecurityModal({
-                                security: security,
-                                iconSrc: this.getIcon(security.symbol)
-                              })
+                              // this.openSecurityModal({
+                              //   security: security,
+                              //   iconSrc: this.getIcon(security.symbol)
+                              // })
                             }}
                             style={balanceStyle}>
                             {(security.balance >= 0) ? formatBalance(security.balance) : '\u00A0'}
@@ -383,7 +379,8 @@ Prices.propTypes = {
   failureMessage: PropTypes.string,
   isMobile: PropTypes.bool,
   isDesktop: PropTypes.bool,
-  setLastVisibleRow: PropTypes.func.isRequired
+  setLastVisibleRow: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
 }
 
 export default Prices

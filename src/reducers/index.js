@@ -3,6 +3,7 @@ import apps from './apps'
 import binance from './binance'
 import ephemeral from './ephemeral'
 import ledger from './ledger'
+import ohlc from './ohlc'
 import portfolio from './portfolio'
 import prices from './prices'
 import securities from './securities'
@@ -15,6 +16,7 @@ export default combineReducers({
   binance,
   ephemeral,
   ledger,
+  ohlc,
   portfolio,
   prices,
   securities,

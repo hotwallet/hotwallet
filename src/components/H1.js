@@ -5,15 +5,18 @@ import { mobilePadding, desktopPadding, border } from '../lib/styles'
 
 class H1 extends React.PureComponent {
   render() {
-    const { isMobile, text, subtitle } = this.props
+    const { isMobile, text, subtitle, image, content } = this.props
     const div = {
       padding: isMobile ? mobilePadding : desktopPadding,
+      paddingRight: 15,
       borderBottom: border
     }
     const h1 = {
       fontSize: 21,
       margin: 0,
-      fontWeight: 100
+      fontWeight: 100,
+      display: 'inline',
+      verticalAlign: 'middle'
     }
     const h5 = {
       fontSize: 13,
@@ -23,8 +26,10 @@ class H1 extends React.PureComponent {
     }
     return (
       <div style={div}>
+        {image || ''}
         <h1 style={h1}>{text}</h1>
         {subtitle ? <h5 style={h5}>{subtitle}</h5> : ''}
+        {content || ''}
       </div>
     )
   }
@@ -32,7 +37,8 @@ class H1 extends React.PureComponent {
 
 H1.propTypes = {
   text: PropTypes.string.isRequired,
-  subtitle: PropTypes.string
+  subtitle: PropTypes.string,
+  content: PropTypes.object
 }
 
 const mapStateToProps = state => ({

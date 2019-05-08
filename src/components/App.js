@@ -7,6 +7,7 @@ import Trezor from './Trezor'
 import Binance from './Binance'
 import Settings from './Settings'
 import Iframe from './Iframe'
+import Symbol from './Symbol'
 import ExternalApps from './ExternalApps'
 import Header from './Header'
 import Footer from './Footer'
@@ -80,6 +81,7 @@ class App extends React.Component {
                 <Route exact path="/settings" component={(Settings)} />
                 <Route exact path="/apps" component={withTracker(ExternalApps)} />
                 <Route exact path="/apps/:appId" component={withTracker(Iframe)} />
+                <Route exact path="/symbols/:symbol" component={withTracker(Symbol)} />
               </div>
               <Footer />
             </main>

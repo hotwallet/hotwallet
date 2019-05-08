@@ -1,9 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import ReactHighcharts from 'react-highcharts'
+import ReactHighcharts from 'react-highcharts/ReactHighstock'
 import Highcharts from 'highcharts'
-import DateRangeSelector from './DateRangeSelector'
-import { Loader } from 'semantic-ui-react'
 import { lightBlue, darkBlue, darkBg, desktopPadding, mobilePadding } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
 import { getSymbolsWithTransactions } from '../selectors/transactions'
@@ -15,13 +13,16 @@ Highcharts.setOptions({
 
 const gridLineColor = '#323a42'
 const gridLineWidth = 1
-const lineColor = lightBlue
+const lineColor = 'red'
+const color = 'red'
 const lineWidth = 1.5
 const fiveMinutes = 1000 * 60 * 5
+const upColor = 'green'
 
-class NetWorthChart extends React.PureComponent {
+class PriceChart extends React.PureComponent {
   componentDidMount() {
-    const { lastRefresh, chartData } = this.props
+    const { lastRefresh, chartData, symbol } = this.props
+    this.props.getOHLC(symbol)
     const age = Date.now() - lastRefresh
     const isStale = (age > fiveMinutes)
     if (!chartData || !chartData.length || isStale) {
@@ -30,10 +31,22 @@ class NetWorthChart extends React.PureComponent {
   }
 
   render() {
-    const { lastRefresh, chartData, isMobile, isTablet } = this.props
-    const age = Date.now() - lastRefresh
-    const isStale = (age > fiveMinutes)
-    const data = isStale ? [] : chartData
+    const { ohlc, isMobile, isTablet } = this.props
+    const ohlcData = ohlc.map(entry => {
+      return [
+        (new Date(entry.date)).getTime(),
+        entry.open,
+        entry.high,
+        entry.low,
+        entry.close
+      ]
+    })
+    const volumeData = ohlc.map(entry => {
+      return [
+        (new Date(entry.date)).getTime(),
+        Math.floor(entry.volume)
+      ]
+    })
     const chartConfig = {
       chart: {
         // zoomType: 'x',
@@ -45,7 +58,7 @@ class NetWorthChart extends React.PureComponent {
           desktopPadding,
           desktopPadding
         ],
-        height: isMobile ? 150 : 300
+        height: isMobile ? 200 : 400
       },
       title: {
         text: null
@@ -59,19 +72,39 @@ class NetWorthChart extends React.PureComponent {
         maxPadding: 0,
         tickLength: 0
       },
-      yAxis: {
-        title: false,
-        lineWidth: 0,
-        gridLineWidth,
-        gridLineColor,
-        min: 0,
-        minRange: 100
-      },
+      yAxis: [
+        {
+          title: false,
+          lineWidth: 0,
+          gridLineWidth,
+          gridLineColor,
+          floor: 0,
+          height: '80%'
+        },
+        {
+          title: false,
+          gridLineWidth: 0,
+          height: '20%',
+          top: '80%',
+          labels: { enabled: false }
+        }
+      ],
       legend: {
         enabled: false
       },
+      rangeSelector: {
+        enabled: false
+      },
+      scrollbar: {
+        enabled: false
+      },
+      navigator: {
+        outlineColor: '#ccc',
+        maskFill: 'rgba(90,90,90,0.4)',
+        margin: 10
+      },
       plotOptions: {
-        area: {
+        candlestick: {
           fillColor: {
             linearGradient: {
               x1: 0,
@@ -89,6 +122,9 @@ class NetWorthChart extends React.PureComponent {
           },
           lineWidth,
           lineColor,
+          upLineColor: upColor,
+          upColor,
+          color,
           states: {
             hover: {
               lineWidth
@@ -97,31 +133,24 @@ class NetWorthChart extends React.PureComponent {
           threshold: null
         }
       },
-      series: [{
-        type: 'area',
-        name: 'Portfolio value',
-        data: data
-      }]
+      series: [
+        {
+          type: 'column',
+          name: 'Volume',
+          data: volumeData,
+          yAxis: 1,
+          color: '#888'
+        },
+        {
+          type: 'candlestick',
+          name: 'Price history',
+          data: ohlcData,
+          yAxis: 0
+        }
+      ]
     }
     return (
       <div style={{ position: 'relative' }}>
-        {this.props.hasNoTransactions ? (
-          <div style={{
-            position: 'absolute',
-            top: '47%',
-            marginTop: '-0.25em',
-            paddingLeft: '1em',
-            width: '100%',
-            textAlign: 'center',
-            fontSize: 20,
-            zIndex: 200,
-            padding: '0 100px'
-          }}>Add a wallet to get started</div>) : null}
-        {isStale ? <Loader active /> : ''}
-        <DateRangeSelector
-          baseCurrency={this.props.baseCurrency}
-          deviceType={this.props.deviceType}
-          setDateRange={this.props.setDateRange} />
         <ReactHighcharts config={chartConfig} />
       </div>
     )
@@ -132,11 +161,11 @@ const mapStateToProps = state => ({
   isMobile: state.ephemeral.isMobile,
   deviceType: state.ephemeral.deviceType,
   isTablet: state.ephemeral.isTablet,
-  chartData: state.portfolio.chartData,
+  ohlc: state.ohlc,
   lastRefresh: state.portfolio.lastRefresh,
   hasNoTransactions: !Object.keys(state.transactions.byId).length,
   baseCurrency: state.user.baseCurrency,
   symbols: getSymbolsWithTransactions(state)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(subscribeSymbols(NetWorthChart))
+export default connect(mapStateToProps, mapDispatchToProps)(subscribeSymbols(PriceChart))

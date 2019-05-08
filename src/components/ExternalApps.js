@@ -100,7 +100,7 @@ class ExternalApps extends React.PureComponent {
             <Table.Header>
               <Table.Row style={headerStyle}>
                 <Table.HeaderCell style={cellStyle}>App</Table.HeaderCell>
-                <Table.HeaderCell style={cellStyle}>Shortcut</Table.HeaderCell>
+                <Table.HeaderCell style={cellStyle}>Installed</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>

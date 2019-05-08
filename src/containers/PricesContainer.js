@@ -26,21 +26,23 @@ class PricesContainer extends React.Component {
       isMobile: this.props.isMobile,
       isDesktop: this.props.isDesktop,
       baseCurrency: this.props.baseCurrency,
-      setLastVisibleRow: this.props.setLastVisibleRow
+      setLastVisibleRow: this.props.setLastVisibleRow,
+      history: this.props.history
     })
   }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state, ownProps) => {
   return ({
     // updatedAt: state.securities.metadata.updatedAt,
     baseCurrency: state.user.baseCurrency,
-    securities: getVisibleSecurities(state, props),
+    securities: getVisibleSecurities(state, ownProps),
     symbolOffset: state.ephemeral.rowSlice[0] || 0,
     isFetching: state.securities.metadata.isFetching,
     failureMessage: state.securities.metadata.failureMessage,
     isMobile: state.ephemeral.isMobile,
-    isDesktop: state.ephemeral.isDesktop
+    isDesktop: state.ephemeral.isDesktop,
+    history: ownProps.history
   })
 }
 
