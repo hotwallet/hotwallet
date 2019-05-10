@@ -1,27 +1,36 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { mapDispatchToProps } from '../actions'
 import CurrencySelector from '../components/CurrencySelector'
+import { accountService } from '../services'
+import { withAccountUpdates } from '../db'
 
-const supportedCurrencies = [
+const currencies = [
   'USD', 'EUR', 'AUD', 'BRL', 'CAD', 'CHF', 'CLP', 'CNY', 'CZK', 'DKK',
   'GBP', 'HKD', 'HUF', 'IDR', 'ILS', 'INR', 'JPY', 'KRW', 'MXN',
   'MYR', 'NOK', 'NZD', 'PHP', 'PKR', 'PLN', 'RUB', 'SEK', 'SGD', 'THB',
   'TRY', 'TWD', 'ZAR'
 ]
 
-class CurrencyContainer extends React.Component {
-  render() {
-    return React.createElement(CurrencySelector, {
-      baseCurrency: this.props.baseCurrency,
-      setBaseCurrency: this.props.setBaseCurrency,
-      currencies: supportedCurrencies
-    })
-  }
+function setBaseCurrency(baseCurrency) {
+  return accountService.updateAccount({ baseCurrency })
 }
 
-const mapStateToProps = (state, props) => ({
-  baseCurrency: state.user.baseCurrency
-})
+function CurrencyContainer(props) {
+  const { baseCurrency } = props
+  if (!baseCurrency) return <i />
+  return React.createElement(CurrencySelector, {
+    baseCurrency,
+    setBaseCurrency,
+    currencies
+  })
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(CurrencyContainer)
+function getData(props) {
+  return accountService.getPrimaryAccount()
+}
+
+function shouldUpdate(change, props) {
+  const { baseCurrency } = props
+  return change.affects({ baseCurrency })
+}
+
+export default withAccountUpdates(getData, shouldUpdate)(CurrencyContainer)

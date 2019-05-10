@@ -10,7 +10,7 @@
     "moment": "^2.21.0",
     "normalizr": "^3.2.4",
     "pouchdb": "^7.0.0",
-    "pouchdb-connect": "^1.1.0",
+    "pouchdb-connect": "^1.1.2",
     "pouchdb-find": "^7.0.0",
     "prop-types": "^15.6.1",
     "re-reselect": "^1.0.1",

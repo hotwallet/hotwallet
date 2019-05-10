@@ -8882,10 +8882,10 @@ pouchdb-collections@7.0.0:
   resolved "https://registry.yarnpkg.com/pouchdb-collections/-/pouchdb-collections-7.0.0.tgz#fd1f632337dc6301b0ff8649732ca79204e41780"
   integrity sha512-DaoUr/vU24Q3gM6ghj0va9j/oBanPwkbhkvnqSyC3Dm5dgf5pculNxueLF9PKMo3ycApoWzHMh6N2N8KJbDU2Q==
 
-pouchdb-connect@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/pouchdb-connect/-/pouchdb-connect-1.1.0.tgz#863b7904e018a4ddc4d450c527b3c0e671e9b945"
-  integrity sha512-37EEhroA6RRDRr1j2D0i6fzjXSdmL3FxZM/kT/4bcTS681KIZkjkoezm0vxILX9tRreVnfhULsytt/30xuNDdQ==
+pouchdb-connect@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/pouchdb-connect/-/pouchdb-connect-1.1.2.tgz#b01b1dad5d3e9b89a105df6d2e61d0aacf36d6d5"
+  integrity sha512-7PVVHDtTBgxuz6oDMh0avQohElnkKuVSOAHSmYum80hYjMrK6o0L2W1llAkz5U4fcYb3tn3Hx3iABXjoUmIC6A==
 
 pouchdb-errors@7.0.0:
   version "7.0.0"

@@ -17,6 +17,11 @@ export default class AccountService {
     return primaryAccount || this.createAccount({ isPrimary: true })
   }
 
+  async updateAccount(data) {
+    const account = await this.getPrimaryAccount()
+    return this.db.accounts.put({ ...account, ...data })
+  }
+
   setPrimaryAccount(accountId) {
 
   }
@@ -40,10 +45,6 @@ export default class AccountService {
 
   generateMnemonic() {
     return 'correct horse battery staple'
-  }
-
-  decryptMnemonic() {
-
   }
 
   encrypt() {
