@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { border } from '../lib/styles'
 import PricesContainer from '../containers/PricesContainer'
 import NetWorthChart from './NetWorthChart'
@@ -25,6 +24,4 @@ const chartsStyle = {
   borderBottom: border
 }
 
-const mapStateToProps = state => ({})
-
-export default connect(mapStateToProps)(Settings)
+export default Settings

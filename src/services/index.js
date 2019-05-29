@@ -5,6 +5,6 @@ import TransactionService from './TransactionService'
 import WalletService from './WalletService'
 
 export const accountService = new AccountService({ db })
-export const assetService = new AssetService({ db, accountService })
-export const transactionService = new TransactionService({ db })
 export const walletService = new WalletService({ db, accountService })
+export const transactionService = new TransactionService({ db, walletService })
+export const assetService = new AssetService({ db, accountService, transactionService, walletService })

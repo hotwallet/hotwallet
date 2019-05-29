@@ -1,13 +1,12 @@
 import hwClient from '../lib/hotwalletClient'
+import Promise from 'bluebird'
 
 export default class AssetService {
-  constructor({ db, accountService }) {
+  constructor({ db, accountService, transactionService, walletService }) {
     this.db = db
     this.accountService = accountService
-  }
-
-  getAssets(query) {
-    return this.db.assets.find(query)
+    this.txService = transactionService
+    this.walletService = walletService
   }
 
   getAsset(symbol) {
@@ -21,6 +20,9 @@ export default class AssetService {
     })
   }
 
+  // hmm..
+  // - only import missing assets added after certain date?
+  // - don't erase the balance when importing?
   async importAssets() {
     const primaryAccount = await this.accountService.getPrimaryAccount()
     const { baseCurrency } = primaryAccount
@@ -32,5 +34,26 @@ export default class AssetService {
       ...asset
     }))
     return this.db.assets.bulkDocs(assets)
+  }
+
+  async getAssets() {
+    const primaryAccount = await this.accountService.getPrimaryAccount()
+    const { showBlankBalances } = primaryAccount
+    return this.db.assets.find({
+      selector: {
+        marketCap: { $gt: 0 }
+      },
+      sort: [{ marketCap: 'desc' }]
+    })
+      .then(res => res.docs)
+      .then(async assets => {
+        const allWallets = await this.walletService.getWallets()
+        return Promise.map(assets, async asset => {
+          const { symbol } = asset
+          const wallets = allWallets.filter(w => w.symbol === symbol)
+          const balance = await this.txService.getTotalBalance({ symbol, wallets })
+          return Object.assign(asset, { balance })
+        }, { concurrency: 10 })
+      })
   }
 }

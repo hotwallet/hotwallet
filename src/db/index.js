@@ -1,6 +1,7 @@
 import PouchDB from 'pouchdb'
 import PouchDBFind from 'pouchdb-find'
-import connect from 'pouchdb-connect'
+import connect from './pouchdb-connect'
+
 PouchDB.plugin(PouchDBFind)
 
 const db = {
@@ -11,7 +12,8 @@ const db = {
   wallets: new PouchDB('wallets')
 }
 
-db.assets.createIndex({ index: { fields: ['symbol'] } })
+// db.assets.createIndex({ index: { fields: ['symbol'] } })
+db.assets.createIndex({ index: { fields: ['marketCap'] } })
 
 db.prices.createIndex({ index: { fields: ['symbol', 'date'] } })
 
@@ -21,4 +23,6 @@ db.wallets.createIndex({ index: { fields: ['accountId', 'symbol'] } })
 
 export default db
 
-export const withAccountUpdates = connect(db.accounts)
+export const connectAccounts = connect(db.accounts)
+export const connectAssets = connect(db.assets)
+export const connectPrices = connect(db.prices)

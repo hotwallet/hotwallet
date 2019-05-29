@@ -88,9 +88,7 @@ class Prices extends React.PureComponent {
     })
   }
 
-  getRow = data => {
-    return this.props.securities[data.index]
-  }
+  getRow = data => this.props.securities[data.index]
 
   closeSecurityModal = () => {
     this.setState({ isSecurityModalOpen: false })
@@ -110,10 +108,8 @@ class Prices extends React.PureComponent {
   }
 
   render() {
-    if (this.props.failureMessage) {
-      return (
-        <div>Failed to fetch symbols:  {this.props.failureMessage} </div>
-      )
+    if (!this.props.securities) {
+      return <i />
     }
     const isMobile = this.props.isMobile
     const isDesktop = this.props.isDesktop
@@ -373,17 +369,17 @@ class Prices extends React.PureComponent {
   }
 }
 
-Prices.propTypes = {
-  addManualTransaction: PropTypes.func.isRequired,
-  removeManualTransactions: PropTypes.func.isRequired,
-  baseCurrency: PropTypes.string.isRequired,
-  securities: PropTypes.array.isRequired,
-  symbolOffset: PropTypes.number.isRequired,
-  isFetching: PropTypes.bool,
-  failureMessage: PropTypes.string,
-  isMobile: PropTypes.bool,
-  isDesktop: PropTypes.bool,
-  setLastVisibleRow: PropTypes.func.isRequired
-}
+// Prices.propTypes = {
+//   addManualTransaction: PropTypes.func.isRequired,
+//   removeManualTransactions: PropTypes.func.isRequired,
+//   baseCurrency: PropTypes.string.isRequired,
+//   securities: PropTypes.array.isRequired,
+//   symbolOffset: PropTypes.number.isRequired,
+//   isFetching: PropTypes.bool,
+//   failureMessage: PropTypes.string,
+//   isMobile: PropTypes.bool,
+//   isDesktop: PropTypes.bool,
+//   setLastVisibleRow: PropTypes.func.isRequired
+// }
 
 export default Prices

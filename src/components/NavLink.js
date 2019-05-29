@@ -1,9 +1,9 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import { Popup } from 'semantic-ui-react'
 import { PropTypes } from 'prop-types'
 import getPathName from '../lib/getPathName'
+import { compose, withTheme } from '../contexts'
 
 class NavLink extends React.PureComponent {
   constructor(props) {
@@ -79,8 +79,8 @@ NavLink.propTypes = {
   location: PropTypes.object.isRequired
 }
 
-const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile
-})
-
-export default withRouter(connect(mapStateToProps)(NavLink))
+// export default withRouter(connect(mapStateToProps)(NavLink))
+export default compose(
+  withTheme,
+  withRouter,
+)(NavLink)

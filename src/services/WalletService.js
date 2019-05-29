@@ -18,11 +18,12 @@ export default class WalletService {
     })
   }
 
-  async getWallets({ symbol }) {
+  async getWallets({ symbol } = {}) {
     const accountId = await this.accountService.getPrimaryAccount()
-    return this.db.wallets.find({
+    const results = await this.db.wallets.find({
       selector: { accountId, symbol }
     })
+    return results.docs
   }
 
   setWalletName({ walletId, name }) {
@@ -36,5 +37,10 @@ export default class WalletService {
   removeWallet(walletId) {
     // delete transactions
     // delete wallet
+  }
+
+  // see actions/wallet.js fetchWalletBalances
+  async updateWalletBalances() {
+
   }
 }

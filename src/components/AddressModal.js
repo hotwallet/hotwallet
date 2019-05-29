@@ -1,9 +1,8 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { mapDispatchToProps } from '../actions'
 import { Modal, Button, Input, Image } from 'semantic-ui-react'
 import { lightBg, borderColor } from '../lib/styles'
 import { PropTypes } from 'prop-types'
+import { walletService } from '../services'
 
 const buttonStyle = {
   marginBottom: 20
@@ -32,7 +31,7 @@ class AddressModal extends React.PureComponent {
     this.state = {}
   }
 
-  connectWallet = () => {
+  connectWallet = async () => {
     const newWallet = {
       symbol: this.props.security.addressType
     }
@@ -43,9 +42,9 @@ class AddressModal extends React.PureComponent {
     } else {
       newWallet.address = inputAddress
     }
-    this.props.addWallet(newWallet)
+    await walletService.addWallet(newWallet)
     this.props.openAddressModal({ isOpen: false })
-    this.props.fetchWalletBalances()
+    await walletService.updateWalletBalances()
   }
 
   render() {
@@ -114,8 +113,4 @@ AddressModal.propTypes = {
   })
 }
 
-const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddressModal)
+export default AddressModal

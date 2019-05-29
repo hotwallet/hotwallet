@@ -8,6 +8,7 @@ const include_docs = true
 export default class AccountService {
   constructor({ db }) {
     this.db = db
+    this.primaryAccount = null
   }
 
   async getPrimaryAccount() {

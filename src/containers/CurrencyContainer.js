@@ -1,7 +1,7 @@
 import React from 'react'
 import CurrencySelector from '../components/CurrencySelector'
 import { accountService } from '../services'
-import { withAccountUpdates } from '../db'
+import { connectAccounts } from '../db'
 
 const currencies = [
   'USD', 'EUR', 'AUD', 'BRL', 'CAD', 'CHF', 'CLP', 'CNY', 'CZK', 'DKK',
@@ -24,13 +24,13 @@ function CurrencyContainer(props) {
   })
 }
 
-function getData(props) {
-  return accountService.getPrimaryAccount()
+function withBaseCurrency(component) {
+  const getData = () => accountService.getPrimaryAccount()
+  const shouldUpdate = (change, props) => {
+    const { baseCurrency } = props
+    return change.affects({ baseCurrency })
+  }
+  return connectAccounts(getData, shouldUpdate)(component)
 }
 
-function shouldUpdate(change, props) {
-  const { baseCurrency } = props
-  return change.affects({ baseCurrency })
-}
-
-export default withAccountUpdates(getData, shouldUpdate)(CurrencyContainer)
+export default withBaseCurrency(CurrencyContainer)

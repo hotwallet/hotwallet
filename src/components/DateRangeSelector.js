@@ -1,7 +1,10 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { lightBg, lightBlue, padding } from '../lib/styles'
 import { PropTypes } from 'prop-types'
+import { connectAccounts } from '../db'
+import { accountService } from '../services'
+import { compose, withTheme } from '../contexts'
+
 
 export const dateRanges = [
   {
@@ -45,6 +48,7 @@ const selected = {
 
 class DateRangeSelector extends React.PureComponent {
   componentDidMount() {
+    if (!this.props.range) return
     if (!this.props.range.label) {
       const defaultRange = dateRanges.find(r => r.isDefault)
       this.props.setDateRange(defaultRange)
@@ -52,6 +56,7 @@ class DateRangeSelector extends React.PureComponent {
   }
 
   isSelected(range) {
+    if (!this.props.range) return false
     const label = this.props.range.label
     if (!label && range.isDefault) return true
     return (range.label === label)
@@ -92,8 +97,20 @@ DateRangeSelector.propTypes = {
   setDateRange: PropTypes.func.isRequired
 }
 
-const mapStateToProps = state => ({
-  range: state.portfolio.range
-})
+async function getData() {
+  return await {    
+    range: (await accountService.getPrimaryAccount()).portfolioChartDateRange,
+    setDateRange: range => accountService.updateAccount({
+      portofolioChartDateRange: range
+    })
+  }
+}
 
-export default connect(mapStateToProps)(DateRangeSelector)
+function shouldUpdate(change) {
+  return change.affects({  })
+}
+
+export default compose(
+  withTheme,
+  connectAccounts(getData, shouldUpdate)
+)(DateRangeSelector)
