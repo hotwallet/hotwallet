@@ -5,7 +5,6 @@ import { connectAccounts } from '../db'
 import { accountService } from '../services'
 import { compose, withTheme } from '../contexts'
 
-
 export const dateRanges = [
   {
     isDefault: true,
@@ -98,8 +97,8 @@ DateRangeSelector.propTypes = {
 }
 
 async function getData() {
-  return await {    
-    range: (await accountService.getPrimaryAccount()).portfolioChartDateRange,
+  return {
+    range: (accountService.getPrimaryAccount()).portfolioChartDateRange,
     setDateRange: range => accountService.updateAccount({
       portofolioChartDateRange: range
     })
@@ -107,7 +106,7 @@ async function getData() {
 }
 
 function shouldUpdate(change) {
-  return change.affects({  })
+  return true
 }
 
 export default compose(

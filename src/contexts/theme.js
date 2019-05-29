@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from 'react'
 
 const defaultValue = {}
 
@@ -16,15 +16,14 @@ export function withTheme(Component) {
 
 export class ThemeProvider extends React.Component {
   constructor() {
-     super()
-     this.state = defaultValue
+    super()
+    this.state = defaultValue
   }
 
   componentDidMount() {
     this.throttleWindowChange()
     this.resizeTimer = null
     window.addEventListener('resize', this.throttleWindowChange)
-
   }
 
   throttleWindowChange = () => {

@@ -82,5 +82,5 @@ NavLink.propTypes = {
 // export default withRouter(connect(mapStateToProps)(NavLink))
 export default compose(
   withTheme,
-  withRouter,
+  withRouter
 )(NavLink)

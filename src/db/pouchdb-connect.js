@@ -12,10 +12,10 @@ export default function connect(db) {
         componentDidMount() {
           Promise.resolve().then(() => getData(this.props)).then(data => this.setState(data))
           changes.on('change', async change => {
-            const { doc } = change 
+            const { doc } = change
             change.isInsert = doc._rev.substring(0, 2) === '1-'
             if (!change.isInsert) {
-              const revs = await db.get(doc._id, { 
+              const revs = await db.get(doc._id, {
                 revs_info: true,
                 revs: true
               })

@@ -36,7 +36,7 @@ class PricesContainer extends React.Component {
 }
 
 const withPrimaryAccount = connectAccounts(
-  () => ({ primaryAccount: accountService.getPrimaryAccount() }), 
+  () => ({ primaryAccount: accountService.getPrimaryAccount() }),
   (change, props) => change.affects({ isPrimary: true })
 )
 
@@ -61,7 +61,6 @@ export default compose(
   withAssets,
   withTheme
 )(PricesContainer)
-
 
 // const mapStateToProps = (state, props) => {
 //   return ({
