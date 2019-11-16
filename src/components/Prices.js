@@ -14,6 +14,7 @@ import {
 } from '../lib/formatNumber'
 import './Prices.css'
 import { subscribeSymbol } from '../lib/subscribe'
+import { withTheme } from '../contexts/theme'
 
 const PriceCell = subscribeSymbol(({ security, delta24h, isMobile }) => {
   // const updated = moment(security.lastUpdated).fromNow()
@@ -386,4 +387,4 @@ Prices.propTypes = {
   setLastVisibleRow: PropTypes.func.isRequired
 }
 
-export default Prices
+export default withTheme(Prices)
