@@ -2,12 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import ReactHighcharts from 'react-highcharts'
 import Highcharts from 'highcharts'
-import DateRangeSelector from './DateRangeSelector'
+import DateRangeSelector from '../DateRangeSelector'
 import { Loader } from 'semantic-ui-react'
-import { lightBlue, darkBlue, darkBg, desktopPadding, mobilePadding } from '../lib/styles'
-import { mapDispatchToProps } from '../actions'
-import { getSymbolsWithTransactions } from '../selectors/transactions'
-import { subscribeSymbols } from '../lib/subscribe'
+import { lightBlue, darkBlue, darkBg, desktopPadding, mobilePadding } from '../../lib/styles'
+import { mapDispatchToProps } from '../../actions'
+import { getSymbolsWithTransactions } from '../../selectors/transactions'
+import { subscribeSymbols } from '../../lib/subscribe'
 
 Highcharts.setOptions({
   global: { useUTC: false }

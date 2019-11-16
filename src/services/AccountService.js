@@ -1,41 +1,39 @@
-// const defaultSettings = {
-//   showBlankBalances: true,
-//   portfolioChartPeriod: '1 year'
-// }
-
-const include_docs = true
+import uuid from 'uuid'
 
 export default class AccountService {
-  constructor({ db }) {
-    this.db = db
+  constructor({ state }) {
+    this.state = state
   }
 
-  async getPrimaryAccount() {
-    const { rows } = await this.db.accounts.allDocs({ include_docs })
-    const accounts = rows.map(row => row.doc)
-    const primaryAccount = accounts.find(account => account.isPrimary)
-    return primaryAccount || this.createAccount({ isPrimary: true })
+  getPrimaryAccount() {
+    const accounts = this.state.get('accounts')
+    const primaryAccountId = Object.keys(accounts).find(id => accounts[id].isPrimary)
+    return accounts[primaryAccountId]
   }
 
   setPrimaryAccount(accountId) {
-
+    const accounts = this.state.get('accounts')
+    Object.keys(accounts).forEach(id => {
+      this.state.set(`accounts.${id}.isPrimary`, id === accountId)
+    })
   }
 
   getAccountValue() {
-    return this.db.transactions
+
   }
 
   getAccountValueHistory() {
 
   }
 
-  async createAccount({ isPrimary }) {
+  createAccount() {
     const mnemonic = this.generateMnemonic()
-    return this.db.accounts.post({
+    const accountId = uuid()
+    this.state.set(`accounts.${accountId}`, {
       baseCurrency: 'USD',
-      mnemonic, // TODO: encrypt
-      isPrimary
+      mnemonic // TODO: encrypt
     })
+    this.setPrimaryAccount(accountId)
   }
 
   generateMnemonic() {

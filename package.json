@@ -7,11 +7,9 @@
     "highcharts": "^6.0.7",
     "idiot": "^2.0.1",
     "ledger-sdk": "^2.1.0",
+    "lodash.flowright": "^3.5.0",
     "moment": "^2.21.0",
     "normalizr": "^3.2.4",
-    "pouchdb": "^7.0.0",
-    "pouchdb-connect": "^1.1.0",
-    "pouchdb-find": "^7.0.0",
     "prop-types": "^15.6.1",
     "re-reselect": "^1.0.1",
     "react": "^16.8.6",
@@ -21,6 +19,7 @@
     "react-redux": "^5.0.6",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
+    "react-state-eventer": "^1.0.2",
     "react-virtualized": "^9.19.1",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
@@ -28,7 +27,8 @@
     "sanitize.css": "^5.0.0",
     "semantic-ui-css": "^2.3.0",
     "semantic-ui-react": "^0.82.5",
-    "socket.io-client": "^2.0.4"
+    "socket.io-client": "^2.0.4",
+    "state-eventer": "^1.2.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -43,6 +43,8 @@
     "ios": "npm run build:cordova && cd cordova && cordova prepare && cordova build ios && cordova run ios"
   },
   "devDependencies": {
+    "@babel/helper-create-regexp-features-plugin": "^7.7.2",
+    "babel-plugin-dynamic-import-node": "^2.3.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "eslint-config-standard": "^12.0.0",
     "eslint-config-standard-jsx": "^6.0.2",

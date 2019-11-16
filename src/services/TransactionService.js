@@ -1,6 +1,6 @@
 export default class TransactionService {
-  constructor({ db }) {
-    this.db = db
+  constructor({ state }) {
+    this.state = state
   }
 
   addTransaction() {
@@ -15,13 +15,8 @@ export default class TransactionService {
 
   }
 
-  async getBalance({ walletId, symbol }) {
-    const latestTx = await this.db.transactions.find({
-      selector: { walletId, symbol, date: { $exists: true } },
-      sort: [{ date: 'desc' }],
-      limit: 1
-    })
-    return latestTx.balance
+  getBalance({ walletId, symbol }) {
+    // get lastest transaction for the given symbol
   }
 
   getTransactions(accountId, walletId) {

@@ -1,6 +1,6 @@
 import io from 'socket.io-client'
 import * as config from '../config'
-import store from '../store'
+import store from '../reduxStore'
 import { updateSecurity } from '../actions/securities'
 import * as schema from '../actions/schema'
 import { normalize } from 'normalizr'
