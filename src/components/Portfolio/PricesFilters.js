@@ -2,8 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { Checkbox, Input, Grid } from 'semantic-ui-react'
-import { mapDispatchToProps } from '../actions'
-import { desktopPadding, mobilePadding } from '../lib/styles'
+import { mapDispatchToProps } from '../../actions'
+import { desktopPadding, mobilePadding } from '../../lib/styles'
 
 class PricesFilters extends React.PureComponent {
   constructor(props) {

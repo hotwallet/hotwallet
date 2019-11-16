@@ -1,24 +1,13 @@
 import hwClient from '../lib/hotwalletClient'
 
 export default class AssetService {
-  constructor({ db, accountService }) {
-    this.db = db
+  constructor({ state, accountService }) {
+    this.state = state
     this.accountService = accountService
   }
 
-  getAssets(query) {
-    return this.db.assets.find(query)
-  }
-
-  getAsset(symbol) {
-    return this.db.assets.get(symbol)
-  }
-
   getPriceHistory(symbol) {
-    return this.db.prices.find({
-      selector: { symbol, date: { $exists: true } },
-      sort: ['date']
-    })
+
   }
 
   async importAssets() {
@@ -31,6 +20,6 @@ export default class AssetService {
       _id: asset.symbol,
       ...asset
     }))
-    return this.db.assets.bulkDocs(assets)
+    // TODO save to state
   }
 }

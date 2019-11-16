@@ -17,6 +17,7 @@ import { sidebarWidth, border, appMaxWidth } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
 import withTracker from './withTracker'
 import { assetService } from '../services'
+import { ThemeProvider } from '../contexts/theme'
 
 export const contentMinHeight = 600
 
@@ -28,34 +29,9 @@ const routeStyle = {
 
 class App extends React.Component {
   componentDidMount() {
-    this.throttleWindowChange()
-    this.resizeTimer = null
-    window.addEventListener('resize', this.throttleWindowChange)
-
     this.props.fetchBinanceBalances()
     this.props.fetchWalletBalances()
-
     assetService.importAssets().catch(console.log)
-  }
-
-  throttleWindowChange = () => {
-    clearTimeout(this.resizeTimer)
-    this.resizeTimer = setTimeout(() => this.onResize(), 100)
-  }
-
-  onResize() {
-    const width = document.body.clientWidth
-    const isMobile = (width <= 765)
-    const isTablet = (width > 765 && width < 1165)
-    const isDesktop = (width >= 1165)
-    const device = {
-      isMobile,
-      isTablet,
-      isDesktop,
-      width,
-      deviceType: isMobile ? 'mobile' : isTablet ? 'tablet' : 'desktop'
-    }
-    this.props.setDevice(device)
   }
 
   render() {
@@ -67,7 +43,7 @@ class App extends React.Component {
     }
     return (
       <Router>
-        <div>
+        <ThemeProvider>
           <Header />
           <div style={{ borderBottom: border }}>
             {isMobile ? null : <SideNav />}
@@ -84,7 +60,7 @@ class App extends React.Component {
               <Footer />
             </main>
           </div>
-        </div>
+        </ThemeProvider>
       </Router>
     )
   }

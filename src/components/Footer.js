@@ -1,8 +1,8 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
 import { border, mobilePadding, desktopPadding } from '../lib/styles'
 import packageJson from '../../package.json'
+import { withTheme } from '../contexts/theme'
 
 class Footer extends React.PureComponent {
   render() {
@@ -57,8 +57,4 @@ class Footer extends React.PureComponent {
   }
 }
 
-const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile
-})
-
-export default connect(mapStateToProps)(Footer)
+export default withTheme(Footer)
