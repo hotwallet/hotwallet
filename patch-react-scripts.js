@@ -6,7 +6,7 @@ let code = fs.readFileSync(filename, 'utf8')
 
 // don't mangle some bitcooinjs class names
 const searchValue = `mangle: {
-            safari10: true,`
+              safari10: true,`
 const replaceValue = `mangle: {
             reserved: [
               'Buffer',

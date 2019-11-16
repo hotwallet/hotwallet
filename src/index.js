@@ -5,11 +5,14 @@ import store from './reduxStore'
 import App from './components/App'
 import 'sanitize.css/sanitize.css'
 import './index.css'
+import { ThemeProvider } from './contexts/theme'
 
 const startApp = () =>
   render(
     <Provider store={store}>
-      <App />
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
     </Provider>,
     document.querySelector('#root')
   )

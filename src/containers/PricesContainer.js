@@ -4,6 +4,7 @@ import { mapDispatchToProps } from '../actions'
 import { getVisibleSecurities } from '../selectors/securities'
 import moment from 'moment'
 import Prices from '../components/Prices'
+import { withTheme, compose } from '../contexts'
 
 class PricesContainer extends React.Component {
   componentDidMount() {
@@ -44,4 +45,7 @@ const mapStateToProps = (state, props) => {
   })
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PricesContainer)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withTheme
+)(PricesContainer)

@@ -119,7 +119,7 @@ const mapStateToProps = state => ({
 })
 
 export default compose(
-  withTheme,
   withRouter,
-  connect(mapStateToProps)
+  connect(mapStateToProps),
+  withTheme
 )(SideNav)

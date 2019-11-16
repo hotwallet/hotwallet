@@ -17,7 +17,7 @@ import { sidebarWidth, border, appMaxWidth } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
 import withTracker from './withTracker'
 import { assetService } from '../services'
-import { ThemeProvider } from '../contexts/theme'
+import { withTheme, compose } from '../contexts'
 
 export const contentMinHeight = 600
 
@@ -43,7 +43,7 @@ class App extends React.Component {
     }
     return (
       <Router>
-        <ThemeProvider>
+        <>
           <Header />
           <div style={{ borderBottom: border }}>
             {isMobile ? null : <SideNav />}
@@ -60,15 +60,17 @@ class App extends React.Component {
               <Footer />
             </main>
           </div>
-        </ThemeProvider>
+        </>
       </Router>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile,
   lastBinanceSync: state.binance.lastSync
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default compose(
+  withTheme,
+  connect(mapStateToProps, mapDispatchToProps)
+)(App)
