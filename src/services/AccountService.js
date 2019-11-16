@@ -1,5 +1,4 @@
 import uuid from 'uuid'
-import { Object } from 'core-js'
 
 export default class AccountService {
   constructor({ state }) {

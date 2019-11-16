@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/helper-create-regexp-features-plugin": "^7.7.2",
-    "babel-plugin-dynamic-import-node": "^2.3.0",
     "big.js": "^5.1.2",
     "highcharts": "^6.0.7",
     "idiot": "^2.0.1",
@@ -45,6 +43,8 @@
     "ios": "npm run build:cordova && cd cordova && cordova prepare && cordova build ios && cordova run ios"
   },
   "devDependencies": {
+    "@babel/helper-create-regexp-features-plugin": "^7.7.2",
+    "babel-plugin-dynamic-import-node": "^2.3.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "eslint-config-standard": "^12.0.0",
     "eslint-config-standard-jsx": "^6.0.2",
