@@ -53,7 +53,6 @@ export default class WalletService {
     return this.state.get(`wallets.${symbol}.${address}`)
   }
 
-
   getWallets({ symbol }) {
     // const accountId = this.accountService.getPrimaryAccount()
     return this.state.get('wallets')
