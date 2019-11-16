@@ -20,7 +20,7 @@ export default class AccountService {
   }
 
   getAccountValue() {
-  
+
   }
 
   getAccountValueHistory() {
