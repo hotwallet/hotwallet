@@ -1,4 +1,4 @@
-import hwClient from '../lib/hotwalletClient'
+// import hwClient from '../lib/hotwalletClient'
 
 export default class AssetService {
   constructor({ state, accountService }) {
