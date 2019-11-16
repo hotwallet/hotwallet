@@ -5,18 +5,18 @@ export default class WalletService {
   }
 
   addWallet({ symbol, address = null, xpub = null, isManual = false, name = null }) {
-    const wallet = {
-      symbol,
-      address,
-      xpub,
-      isManual,
-      name
-    }
+    // const wallet = {
+    //   symbol,
+    //   address,
+    //   xpub,
+    //   isManual,
+    //   name
+    // }
     // todo: add wallet
   }
 
   getWallets({ symbol }) {
-    const accountId = this.accountService.getPrimaryAccount()
+    // const accountId = this.accountService.getPrimaryAccount()
     return this.state.get('wallets')
   }
 
