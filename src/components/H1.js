@@ -1,7 +1,7 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { mobilePadding, desktopPadding, border } from '../lib/styles'
+import { withTheme } from '../contexts'
 
 class H1 extends React.PureComponent {
   render() {
@@ -35,8 +35,4 @@ H1.propTypes = {
   subtitle: PropTypes.string
 }
 
-const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile
-})
-
-export default connect(mapStateToProps)(H1)
+export default withTheme(H1)

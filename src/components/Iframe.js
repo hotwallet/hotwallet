@@ -1,7 +1,5 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { contentMinHeight } from './App'
-import { mapDispatchToProps } from '../actions'
 import { Icon } from 'semantic-ui-react'
 import { darkBg } from '../lib/styles'
 
@@ -90,6 +88,4 @@ class Iframe extends React.PureComponent {
   }
 }
 
-const mapStateToProps = state => ({})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Iframe)
+export default Iframe

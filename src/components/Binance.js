@@ -7,6 +7,7 @@ import { borderColor, mobilePadding, desktopPadding } from '../lib/styles'
 import { appName } from '../config'
 import { createApiKeyUrl } from '../actions/binance'
 import moment from 'moment'
+import { withTheme, compose } from '../contexts'
 
 const buttonStyle = {
   marginBottom: 20
@@ -224,10 +225,12 @@ class Binance extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile,
   apiKey: state.binance.apiKey,
   errorMessage: state.binance.errorMessage,
   lastUpdated: state.binance.lastSync
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Binance)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withTheme
+)(Binance)

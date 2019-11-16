@@ -7,6 +7,7 @@ import { Icon, Image } from 'semantic-ui-react'
 import { sidebarWidth, darkBlue } from '../lib/styles'
 import { allApps } from '../reducers/apps'
 import getPathName from '../lib/getPathName'
+import { withTheme, compose } from '../contexts'
 
 const portfolioNavItem = { icon: 'pie chart', uri: '/', name: 'Portfolio' }
 
@@ -114,8 +115,11 @@ SideNav.propTypes = {
 const getEnabledApps = apps => allApps.filter(app => apps.enabled.includes(app.id))
 
 const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile,
   enabledApps: getEnabledApps(state.apps)
 })
 
-export default withRouter(connect(mapStateToProps)(SideNav))
+export default compose(
+  withTheme,
+  withRouter,
+  connect(mapStateToProps)
+)(SideNav)

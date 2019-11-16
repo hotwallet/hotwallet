@@ -8,6 +8,7 @@ import { mobilePadding, desktopPadding } from '../lib/styles'
 import { getTrezorWallets } from '../selectors/transactions'
 import { getSecurity } from '../selectors/securities'
 import { supportedSymbols } from '../actions/trezor'
+import { withTheme, compose } from '../contexts'
 
 const rowStyle = {}
 
@@ -158,11 +159,13 @@ class Trezor extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile,
   wallets: getTrezorWallets(state),
   trezorSecurities: supportedSymbols
     .map(symbol => getSecurity(state, symbol))
     .sort((a, b) => a.name > b.name ? 1 : -1)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Trezor)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withTheme
+)(Trezor)

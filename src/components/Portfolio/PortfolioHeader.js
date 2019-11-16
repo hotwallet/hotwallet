@@ -4,6 +4,7 @@ import { mobilePadding, desktopPadding, border, smallFontSize } from '../../lib/
 import { formatFiat, formatPercentChange } from '../../lib/formatNumber'
 import { getSecurities } from '../../selectors/securities'
 import { getBalancesBySymbol } from '../../selectors/transactions'
+import { withTheme, compose } from '../../contexts'
 
 class PortfolioHeader extends React.PureComponent {
   getTotalValue() {
@@ -86,11 +87,13 @@ class PortfolioHeader extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile,
   balancesBySymbol: getBalancesBySymbol(state),
   securities: getSecurities(state),
   baseCurrency: state.user.baseCurrency,
   chartData: state.portfolio.chartData
 })
 
-export default connect(mapStateToProps)(PortfolioHeader)
+export default compose(
+  connect(mapStateToProps),
+  withTheme
+)(PortfolioHeader)

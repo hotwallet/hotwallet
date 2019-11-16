@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Checkbox, Input, Grid } from 'semantic-ui-react'
 import { mapDispatchToProps } from '../../actions'
 import { desktopPadding, mobilePadding } from '../../lib/styles'
+import { withTheme, compose } from '../../contexts'
 
 class PricesFilters extends React.PureComponent {
   constructor(props) {
@@ -127,9 +128,10 @@ class PricesFilters extends React.PureComponent {
 
 const mapStateToProps = state => ({
   balancesOnly: state.securities.metadata.balancesOnly,
-  query: state.ephemeral.filterSymbolsQuery,
-  isMobile: state.ephemeral.isMobile,
-  isTablet: state.ephemeral.isTablet
+  query: state.ephemeral.filterSymbolsQuery
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(PricesFilters)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withTheme
+)(PricesFilters)

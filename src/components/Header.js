@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import { Icon, Image } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
@@ -8,6 +7,7 @@ import CurrencyContainer from '../containers/CurrencyContainer'
 import MobileMenu from './MobileMenu'
 import SettingsMenu from './SettingsMenu'
 import getPathName from '../lib/getPathName'
+import { withTheme, compose } from '../contexts'
 
 class Header extends React.PureComponent {
   state = {
@@ -113,8 +113,7 @@ const headerStyle = {
   textTransform: 'uppercase'
 }
 
-const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile
-})
-
-export default withRouter(connect(mapStateToProps)(Header))
+export default compose(
+  withRouter,
+  withTheme
+)(Header)

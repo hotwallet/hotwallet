@@ -6,6 +6,7 @@ import { mobilePadding, desktopPadding } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
 import { Button, Table, Image, Icon, Message, Input } from 'semantic-ui-react'
 import { getLedgerWallets } from '../selectors/transactions'
+import { withTheme, compose } from '../contexts'
 
 const rowStyle = {}
 
@@ -186,9 +187,11 @@ class Ledger extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile,
   status: state.ledger.data || {},
   wallets: getLedgerWallets(state)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Ledger)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withTheme
+)(Ledger)

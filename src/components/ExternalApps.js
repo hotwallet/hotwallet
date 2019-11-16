@@ -6,6 +6,7 @@ import H1 from './H1'
 import { mobilePadding, desktopPadding } from '../lib/styles'
 import { mapDispatchToProps } from '../actions'
 import { allApps } from '../reducers/apps'
+import { withTheme, compose } from '../contexts'
 
 const rowStyle = {}
 
@@ -114,9 +115,11 @@ class ExternalApps extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile,
   allApps,
   enabledAppIds: state.apps.enabled
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExternalApps)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withTheme
+)(ExternalApps)

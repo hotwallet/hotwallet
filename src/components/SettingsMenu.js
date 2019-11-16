@@ -4,6 +4,7 @@ import { PropTypes } from 'prop-types'
 import { Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { darkBg } from '../lib/styles'
+import { withTheme, compose } from '../contexts'
 
 const overlayStyle = {
   position: 'absolute',
@@ -147,8 +148,10 @@ SettingsMenu.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile,
   windowWidth: window.innerWidth
 })
 
-export default connect(mapStateToProps)(SettingsMenu)
+export default compose(
+  connect(mapStateToProps),
+  withTheme
+)(SettingsMenu)

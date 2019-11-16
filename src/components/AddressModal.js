@@ -1,9 +1,8 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { mapDispatchToProps } from '../actions'
 import { Modal, Button, Input, Image } from 'semantic-ui-react'
 import { lightBg, borderColor } from '../lib/styles'
 import { PropTypes } from 'prop-types'
+import { withTheme } from '../contexts'
 
 const buttonStyle = {
   marginBottom: 20
@@ -114,8 +113,4 @@ AddressModal.propTypes = {
   })
 }
 
-const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddressModal)
+export default withTheme(AddressModal)

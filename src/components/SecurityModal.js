@@ -9,6 +9,7 @@ import PricesInputQty from './PricesInputQty'
 import ImportWalletButton from './ImportWalletButton'
 import { binanceSymbols } from '../config'
 import { getLedgerSymbols } from '../actions/ledger'
+import { withTheme, compose } from '../contexts'
 
 const ledgerSymbols = getLedgerSymbols()
 const trezorSymbols = ['BTC']
@@ -308,10 +309,12 @@ SecurityModal.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile,
   binanceApiKey: state.binance.apiKey,
   transactionsBySymbol: state.transactions.bySymbol,
   wallets: state.wallets
 })
 
-export default connect(mapStateToProps)(SecurityModal)
+export default compose(
+  connect(mapStateToProps),
+  withTheme
+)(SecurityModal)

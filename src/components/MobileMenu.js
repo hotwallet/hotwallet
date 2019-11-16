@@ -1,8 +1,8 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import SideNav from './SideNav'
 import { darkBg } from '../lib/styles'
+import { withTheme } from '../contexts'
 
 const overlayStyle = {
   position: 'absolute',
@@ -89,8 +89,4 @@ MobileMenu.propTypes = {
   closeMenu: PropTypes.func.isRequired
 }
 
-const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile
-})
-
-export default connect(mapStateToProps)(MobileMenu)
+export default withTheme(MobileMenu)

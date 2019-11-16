@@ -8,6 +8,7 @@ import { lightBlue, darkBlue, darkBg, desktopPadding, mobilePadding } from '../.
 import { mapDispatchToProps } from '../../actions'
 import { getSymbolsWithTransactions } from '../../selectors/transactions'
 import { subscribeSymbols } from '../../lib/subscribe'
+import { withTheme, compose } from '../../contexts'
 
 Highcharts.setOptions({
   global: { useUTC: false }
@@ -129,9 +130,6 @@ class NetWorthChart extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  isMobile: state.ephemeral.isMobile,
-  deviceType: state.ephemeral.deviceType,
-  isTablet: state.ephemeral.isTablet,
   chartData: state.portfolio.chartData,
   lastRefresh: state.portfolio.lastRefresh,
   hasNoTransactions: !Object.keys(state.transactions.byId).length,
@@ -139,4 +137,8 @@ const mapStateToProps = state => ({
   symbols: getSymbolsWithTransactions(state)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(subscribeSymbols(NetWorthChart))
+export default compose(
+  withTheme,
+  connect(mapStateToProps, mapDispatchToProps),
+  subscribeSymbols
+)(NetWorthChart)
