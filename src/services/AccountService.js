@@ -20,7 +20,7 @@ export default class AccountService {
   }
 
   getAccountValue() {
-    
+  
   }
 
   getAccountValueHistory() {
@@ -32,7 +32,7 @@ export default class AccountService {
     const accountId = uuid()
     this.state.set(`accounts.${accountId}`, {
       baseCurrency: 'USD',
-      mnemonic, // TODO: encrypt
+      mnemonic // TODO: encrypt
     })
     this.setPrimaryAccount(accountId)
   }

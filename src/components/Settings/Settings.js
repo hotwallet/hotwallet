@@ -11,10 +11,7 @@ export default function Settings({ accounts, createAccount, deviceWidth }) {
     </div>
     <button onClick={createAccount}>Create Account</button>
     <div style={{ padding: 25 }}>
-      width: {deviceWidth} 
+      width: {deviceWidth}
     </div>
   </>
 }
-
-
-

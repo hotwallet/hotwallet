@@ -1,7 +1,7 @@
 import React from 'react'
 import Settings from './Settings'
 import { accountService } from '../../services'
-import { withState } from '../../ventiStore' 
+import { withState } from '../../ventiStore'
 import { compose, withTheme } from '../../contexts'
 
 const createAccount = () => accountService.createAccount()
