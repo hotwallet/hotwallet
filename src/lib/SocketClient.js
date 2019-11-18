@@ -1,6 +1,7 @@
 import io from 'socket.io-client'
 import * as config from '../config'
 import store from '../reduxStore'
+import { assetService } from '../services'
 import { updateSecurity } from '../actions/securities'
 import * as schema from '../actions/schema'
 import { normalize } from 'normalizr'
@@ -27,17 +28,20 @@ export default class SocketClient {
       this.syncSubscriptions()
     })
 
-    this.socket.on('security', this.dispatchSecurity)
+    this.socket.on('security', this.onSecurity)
   }
 
-  dispatchSecurity(security) {
-    const state = store.getState()
-    const baseCurrency = state.user.baseCurrency
-    if (security.baseCurrency === baseCurrency) {
-      security.lastUpdated = new Date()
-      const normalizedSecurity = normalize(security, schema.security)
-      store.dispatch(updateSecurity(normalizedSecurity))
-    }
+  onSecurity(security) {
+    const reduxState = store.getState()
+    const baseCurrency = reduxState.user.baseCurrency
+    if (security.baseCurrency !== baseCurrency) return
+    security.lastUpdated = new Date()
+    // update venti state
+    const { symbol }  = security
+    assetService.update(symbol, security)
+    // update redux store
+    const normalizedSecurity = normalize(security, schema.security)
+    store.dispatch(updateSecurity(normalizedSecurity))
   }
 
   subscribe(symbol) {

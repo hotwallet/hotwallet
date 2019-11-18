@@ -66,11 +66,7 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  lastBinanceSync: state.binance.lastSync
-})
-
 export default compose(
   withTheme,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(null, mapDispatchToProps)
 )(App)

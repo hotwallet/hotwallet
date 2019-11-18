@@ -5,6 +5,8 @@ import { getVisibleSecurities } from '../selectors/securities'
 import moment from 'moment'
 import Prices from '../components/Prices'
 import { withTheme, compose } from '../contexts'
+import { withState } from '../ventiStore'
+import api from '../api'
 
 class PricesContainer extends React.Component {
   componentDidMount() {
@@ -39,13 +41,16 @@ const mapStateToProps = (state, props) => {
     securities: getVisibleSecurities(state, props),
     symbolOffset: state.ephemeral.rowSlice[0] || 0,
     isFetching: state.securities.metadata.isFetching,
-    failureMessage: state.securities.metadata.failureMessage,
-    isMobile: state.ephemeral.isMobile,
-    isDesktop: state.ephemeral.isDesktop
+    failureMessage: state.securities.metadata.failureMessage
   })
 }
 
+const getProps = (state, props) => ({
+  // securities: api(state).getAssets()
+})
+
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withTheme
+  withTheme,
+  withState(getProps)
 )(PricesContainer)
