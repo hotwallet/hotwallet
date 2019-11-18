@@ -6,7 +6,7 @@ import moment from 'moment'
 import Prices from '../components/Prices'
 import { withTheme, compose } from '../contexts'
 import { withState } from '../ventiStore'
-import api from '../api'
+// import api from '../api'
 
 class PricesContainer extends React.Component {
   componentDidMount() {

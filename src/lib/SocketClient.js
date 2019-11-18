@@ -37,7 +37,7 @@ export default class SocketClient {
     if (security.baseCurrency !== baseCurrency) return
     security.lastUpdated = new Date()
     // update venti state
-    const { symbol }  = security
+    const { symbol } = security
     assetService.update(symbol, security)
     // update redux store
     const normalizedSecurity = normalize(security, schema.security)
