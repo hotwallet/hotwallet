@@ -2,26 +2,23 @@ import React from 'react'
 import { Button } from 'semantic-ui-react'
 import { PropTypes } from 'prop-types'
 
-class ImportWalletButton extends React.PureComponent {
-  onClick = () => {
-    this.props.onClick(this.props.security.symbol)
+export default function ImportWalletButton({ onClick, security, style }) {
+  const onButtonClick = () => {
+    onClick(security.symbol)
   }
 
-  render() {
-    const security = this.props.security
-    return (
-      <Button
-        key="import-wallet"
-        color="black"
-        fluid
-        style={this.props.style}
-        onClick={this.onClick}
-      >
-        {security.addressType} Address
-        {security.hasHD ? ' or HD Wallet' : ''}
-      </Button>
-    )
-  }
+  return (
+    <Button
+      key="import-wallet"
+      color="black"
+      fluid
+      style={style}
+      onClick={onButtonClick}
+    >
+      {security.addressType} Address
+      {security.hasHD ? ' or HD Wallet' : ''}
+    </Button>
+  )
 }
 
 ImportWalletButton.propTypes = {
@@ -33,5 +30,3 @@ ImportWalletButton.propTypes = {
     hasHD: PropTypes.bool
   })
 }
-
-export default ImportWalletButton

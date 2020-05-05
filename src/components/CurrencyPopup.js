@@ -3,33 +3,36 @@ import { darkBg } from '../lib/styles'
 import CurrencyButton from './CurrencyButton'
 import { PropTypes } from 'prop-types'
 
-class CurrencyPopup extends React.PureComponent {
-  render() {
-    const baseCurrency = this.props.baseCurrency
-    const currencies = this.props.currencies.filter(c => c !== baseCurrency)
-    currencies.unshift(baseCurrency)
-    const style = {
-      ...popupStyle,
-      display: this.props.active ? 'block' : 'none'
-    }
-    return (
-      <div>
-        <div style={style}>
-          {currencies.map(currency =>
-            <div key={currency}>
-              <CurrencyButton
-                currency={currency}
-                onClick={() => {
-                  this.props.setBaseCurrency(currency)
-                  if (this.props.onClick) this.props.onClick()
-                }}
-              />
-            </div>
-          )}
-        </div>
-      </div>
-    )
+export default function CurrencyPopup({
+  baseCurrency,
+  setBaseCurrency,
+  currencies,
+  onClick,
+  active
+}) {
+  const currencies1 = currencies.filter((c) => c !== baseCurrency)
+  currencies1.unshift(baseCurrency)
+  const style = {
+    ...popupStyle,
+    display: active ? 'block' : 'none'
   }
+  return (
+    <div>
+      <div style={style}>
+        {currencies1.map((currency) => (
+          <div key={currency}>
+            <CurrencyButton
+              currency={currency}
+              onClick={() => {
+                setBaseCurrency(currency)
+                if (onClick) onClick()
+              }}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 CurrencyPopup.propTypes = {
@@ -47,5 +50,3 @@ const popupStyle = {
   marginLeft: -8,
   marginTop: -8
 }
-
-export default CurrencyPopup
