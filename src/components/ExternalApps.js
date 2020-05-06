@@ -22,15 +22,15 @@ const cellStyle = {
   verticalAlign: 'top'
 }
 
-class ExternalApps extends React.PureComponent {
-  toggleApp = event => {
+function ExternalApps({ addApp, removeApp, enabledAppIds, isMobile }) {
+  const toggleApp = event => {
     const el = event.target
     const id = el.parentNode.getAttribute('data-id') || el.getAttribute('data-id')
     const isEnabled = !el.parentNode.classList.value.includes('checked')
-    return isEnabled ? this.props.addApp(id) : this.props.removeApp(id)
+    return isEnabled ? addApp(id) : removeApp(id)
   }
 
-  getIcon(app) {
+  const getIcon = (app) => {
     // const iconStyle = {
     //   width: 24,
     //   display: 'inline-block',
@@ -50,21 +50,21 @@ class ExternalApps extends React.PureComponent {
     // )
   }
 
-  getLink(appId) {
+  const getLink = (appId) => {
     const prefix = 'hotwallet-app-'
     return appId.includes(prefix)
       ? `/apps/${appId.replace('hotwallet-app-', '')}`
       : `/${appId}`
   }
 
-  getRows() {
+  const getRows = () => {
     return allApps.map(app => (
       <Table.Row key={app.id}>
         <Table.Cell style={cellStyle}>
-          {this.getIcon(app)}
+          {getIcon(app)}
           <Link
             style={{ color: '#eee', fontSize: 16 }}
-            to={this.getLink(app.id)}
+            to={getLink(app.id)}
           >{app.name}</Link>
         </Table.Cell>
         <Table.Cell style={{ ...cellStyle, width: 32 }} textAlign="right">
@@ -73,45 +73,43 @@ class ExternalApps extends React.PureComponent {
             toggle
             data-id={app.id}
             data-name={app.name}
-            onClick={this.toggleApp}
-            checked={this.props.enabledAppIds.includes(app.id)}
+            onClick={toggleApp}
+            checked={enabledAppIds.includes(app.id)}
           />
         </Table.Cell>
       </Table.Row>
     ))
   }
 
-  render() {
-    return (
-      <div>
-        <H1 text="Manage Apps" />
-        <div
-          style={{
-            padding: this.props.isMobile ? mobilePadding : desktopPadding,
-            paddingRight: 0
-          }}
+  return (
+    <div>
+      <H1 text="Manage Apps" />
+      <div
+        style={{
+          padding: isMobile ? mobilePadding : desktopPadding,
+          paddingRight: 0
+        }}
+      >
+        <Input inverted icon="search" placeholder="Search..." />
+        <Table
+          basic="very"
+          celled
+          compact="very"
+          unstackable
         >
-          <Input inverted icon="search" placeholder="Search..." />
-          <Table
-            basic="very"
-            celled
-            compact="very"
-            unstackable
-          >
-            <Table.Header>
-              <Table.Row style={headerStyle}>
-                <Table.HeaderCell style={cellStyle}>App</Table.HeaderCell>
-                <Table.HeaderCell style={cellStyle}>Shortcut</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {this.getRows()}
-            </Table.Body>
-          </Table>
-        </div>
+          <Table.Header>
+            <Table.Row style={headerStyle}>
+              <Table.HeaderCell style={cellStyle}>App</Table.HeaderCell>
+              <Table.HeaderCell style={cellStyle}>Shortcut</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {getRows()}
+          </Table.Body>
+        </Table>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 const mapStateToProps = state => ({

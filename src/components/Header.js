@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { Icon, Image } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
@@ -9,22 +9,19 @@ import SettingsMenu from './SettingsMenu'
 import getPathName from '../lib/getPathName'
 import { withTheme, compose } from '../contexts'
 
-class Header extends React.PureComponent {
-  state = {
-    menuVisible: false,
-    settingsMenuVisible: false
-  }
+function Header({ isMobile, location }) {
+  const [menuVisible, setMenuVisible] = useState(false)
+  const [settingsMenuVisible, setSettingsMenuVisible] = useState(false)
 
-  openMenu = () => this.setState({ menuVisible: true })
+  const openMenu = () => setMenuVisible(true)
 
-  closeMenu = () => this.setState({ menuVisible: false })
+  const closeMenu = () => setMenuVisible(false)
 
-  openSettingsMenu = () => this.setState({ settingsMenuVisible: true })
+  const openSettingsMenu = () => setSettingsMenuVisible(true)
 
-  closeSettingsMenu = () => this.setState({ settingsMenuVisible: false })
+  const closeSettingsMenu = () => setSettingsMenuVisible(false)
 
-  renderHamburger() {
-    const isMobile = this.props.isMobile
+  const renderHamburger = () => {
     const logoStyle = {
       width: isMobile ? 50 : sidebarWidth,
       display: 'inline-block',
@@ -39,13 +36,13 @@ class Header extends React.PureComponent {
         />
       </Link>
     }
-    if (getPathName(this.props.location) === '/') {
+    if (getPathName(location) === '/') {
       return <Icon
         name="bars"
         size="large"
         inverted
         style={logoStyle}
-        onClick={this.openMenu}
+        onClick={openMenu}
       />
     }
     return <Link to="/">
@@ -58,44 +55,41 @@ class Header extends React.PureComponent {
     </Link>
   }
 
-  render() {
-    const isMobile = this.props.isMobile
-    return (
-      <div style={{ maxWidth: isMobile ? '100%' : appMaxWidth + sidebarWidth }}>
-        {isMobile ? (
-          <MobileMenu
-            visible={this.state.menuVisible}
-            closeMenu={this.closeMenu}
-          />
-        ) : ''}
-        <SettingsMenu
-          maxWidth={appMaxWidth + sidebarWidth}
-          visible={this.state.settingsMenuVisible}
-          closeMenu={this.closeSettingsMenu}
+  return (
+    <div style={{ maxWidth: isMobile ? '100%' : appMaxWidth + sidebarWidth }}>
+      {isMobile ? (
+        <MobileMenu
+          visible={menuVisible}
+          closeMenu={closeMenu}
         />
-        <header style={headerStyle}>
-          {this.renderHamburger()}
-          <div style={currencySelectorStyle}>
-            <CurrencyContainer />
-          </div>
-          <div
-            style={{
-              float: 'right',
-              margin: '7px 20px',
-              cursor: 'pointer'
-            }}
-            onClick={this.openSettingsMenu}
-          >
-            <Icon
-              name="setting"
-              size="large"
-              inverted
-            />
-          </div>
-        </header>
-      </div>
-    )
-  }
+      ) : ''}
+      <SettingsMenu
+        maxWidth={appMaxWidth + sidebarWidth}
+        visible={settingsMenuVisible}
+        closeMenu={closeSettingsMenu}
+      />
+      <header style={headerStyle}>
+        {renderHamburger()}
+        <div style={currencySelectorStyle}>
+          <CurrencyContainer />
+        </div>
+        <div
+          style={{
+            float: 'right',
+            margin: '7px 20px',
+            cursor: 'pointer'
+          }}
+          onClick={openSettingsMenu}
+        >
+          <Icon
+            name="setting"
+            size="large"
+            inverted
+          />
+        </div>
+      </header>
+    </div>
+  )
 }
 
 Header.propTypes = {

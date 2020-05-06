@@ -1,68 +1,51 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { Popup } from 'semantic-ui-react'
 import { PropTypes } from 'prop-types'
 import getPathName from '../lib/getPathName'
 import { withTheme, compose } from '../contexts'
 
-class NavLink extends React.PureComponent {
-  constructor(props) {
-    super(props)
-    this.state = {
-      hover: false,
-      showTooltip: false
-    }
+function NavLink({ isMobile, location, to, style, onClick, value, name }) {
+  const [hover, setHover] = useState(false)
+  const [showTooltip, setTooltip] = useState(false)
+
+  let linkStyle = {}
+  const activeStyle = {
+    backgroundColor: isMobile ? null : highlightColor
   }
-
-  render() {
-    const props = this.props
-    const isMobile = props.isMobile
-    let linkStyle = {}
-    const activeStyle = {
-      backgroundColor: isMobile ? null : highlightColor
-    }
-    const normalStyle = {
-      padding: isMobile ? 10 : 15,
-      display: 'block',
-      color: '#fff'
-    }
-    if (this.state.hover) linkStyle = hoverStyle
-    if (getPathName(props.location) === props.to) linkStyle = activeStyle
-    const style = { ...props.style, ...normalStyle, ...linkStyle }
-    const link = (
-      <Link style={style}
-        to={props.to}
-        onClick={() => {
-          if (props.onClick) props.onClick()
-          this.setState({ showTooltip: false })
-        }}
-        onMouseOver={() => this.setState({ hover: true, showTooltip: true })}
-        onMouseOut={() => this.setState({ hover: false, showTooltip: false })}
-      >{props.value}</Link>
-    )
-    if (isMobile) {
-      return link
-    }
-    return (
-      <Popup
-        inverted
-        open={this.state.showTooltip}
-        size="tiny"
-        horizontalOffset={-5}
-        trigger={link}
-        content={props.name}
-        position="right center"
-      />
-    )
+  const normalStyle = {
+    padding: isMobile ? 10 : 15,
+    display: 'block',
+    color: '#fff'
   }
-
-  mouseOver() {
-
+  if (hover) linkStyle = hoverStyle
+  if (getPathName(location) === to) linkStyle = activeStyle
+  const allStyles = { ...style, ...normalStyle, ...linkStyle }
+  const link = (
+    <Link style={allStyles}
+      to={to}
+      onClick={() => {
+        if (onClick) onClick()
+        setTooltip(false)
+      }}
+      onMouseOver={() => setHover(true) & setTooltip(true)}
+      onMouseOut={() => setHover(false) & setTooltip(false)}
+    >{value}</Link>
+  )
+  if (isMobile) {
+    return link
   }
-
-  mouseOut() {
-
-  }
+  return (
+    <Popup
+      inverted
+      open={showTooltip}
+      size="tiny"
+      horizontalOffset={-5}
+      trigger={link}
+      content={name}
+      position="right center"
+    />
+  )
 }
 
 const highlightColor = '#282f36'

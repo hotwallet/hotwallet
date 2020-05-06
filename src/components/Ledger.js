@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import H1 from './H1'
@@ -27,12 +27,19 @@ const cellStyle = {
   verticalAlign: 'top'
 }
 
-class Ledger extends React.PureComponent {
-  componentDidMount() {
-    this.props.startLedger()
-  }
+function Ledger({
+  startLedger,
+  status,
+  deleteWallet,
+  setWalletName,
+  wallets,
+  isMobile
+}) {
+  useEffect(() => {
+    startLedger()
+  }, [])
 
-  renderError(error) {
+  const renderError = (error) => {
     return (
       <Message icon color="black">
         <Icon name="exclamation circle" />
@@ -44,7 +51,7 @@ class Ledger extends React.PureComponent {
     )
   }
 
-  renderInstructions() {
+  const renderInstructions = () => {
     return (
       <Message icon color="black">
         <Icon name="usb" />
@@ -56,13 +63,13 @@ class Ledger extends React.PureComponent {
     )
   }
 
-  renderLedgerStatus() {
-    const { symbol, error } = this.props.status
+  const renderLedgerStatus = () => {
+    const { symbol, error } = status
     if (error) {
-      return this.renderError(error)
+      return renderError(error)
     }
     if (!symbol) {
-      return this.renderInstructions()
+      return renderInstructions()
     }
     return (
       <Message color="black">
@@ -76,24 +83,23 @@ class Ledger extends React.PureComponent {
     )
   }
 
-  onClickDeleteWallet = event => {
+  const onClickDeleteWallet = event => {
     const el = event.target
     const id = el.parentNode.getAttribute('data-id') || el.getAttribute('data-id')
     const name = el.parentNode.getAttribute('data-name') || el.getAttribute('data-name')
     const confirmed = window.confirm(`Delete ${name}?`)
     if (confirmed) {
-      this.props.deleteWallet(id)
+      deleteWallet(id)
     }
   }
 
-  onChangeWalletName = event => {
+  const onChangeWalletName = event => {
     const id = event.target.parentNode.getAttribute('data-walletid')
     const name = event.target.value
-    this.props.setWalletName(id, name)
+    setWalletName(id, name)
   }
 
-  renderTable() {
-    const wallets = this.props.wallets
+  const renderTable = () => {
     return (
       <Table
         basic="very"
@@ -125,7 +131,7 @@ class Ledger extends React.PureComponent {
                       inverted
                       transparent
                       fluid
-                      onChange={this.onChangeWalletName}
+                      onChange={onChangeWalletName}
                     />
                   </div>
                   <div>
@@ -154,7 +160,7 @@ class Ledger extends React.PureComponent {
                     basic
                     color="red"
                     icon="remove"
-                    onClick={this.onClickDeleteWallet}
+                    onClick={onClickDeleteWallet}
                   />
                 </Table.Cell>
               </Table.Row>
@@ -165,25 +171,22 @@ class Ledger extends React.PureComponent {
     )
   }
 
-  render() {
-    const wallets = this.props.wallets
-    return (
-      <div>
-        <H1
-          text="Ledger Connect"
-          subtitle="Bitcoin, Ethereum, Litecoin, and Zcash are currently supported."
-        />
-        <div
-          style={{
-            padding: this.props.isMobile ? mobilePadding : desktopPadding
-          }}
-        >
-          {this.renderLedgerStatus()}
-          {wallets.length ? this.renderTable() : ''}
-        </div>
+  return (
+    <div>
+      <H1
+        text="Ledger Connect"
+        subtitle="Bitcoin, Ethereum, Litecoin, and Zcash are currently supported."
+      />
+      <div
+        style={{
+          padding: isMobile ? mobilePadding : desktopPadding
+        }}
+      >
+        {renderLedgerStatus()}
+        {wallets.length ? renderTable() : ''}
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 const mapStateToProps = state => ({

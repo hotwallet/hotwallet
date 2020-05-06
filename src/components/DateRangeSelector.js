@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { lightBg, lightBlue, padding } from '../lib/styles'
 import { PropTypes } from 'prop-types'
-
 export const dateRanges = [
   {
     isDefault: true,
@@ -22,9 +21,7 @@ export const dateRanges = [
     granularity: 'day'
   }
 ]
-
 const color = 'gray'
-
 const button = {
   display: 'inline-block',
   border: 'none',
@@ -37,53 +34,48 @@ const button = {
   color,
   textTransform: 'uppercase'
 }
-
 const selected = {
   ...button,
   borderBottom: `1px solid ${lightBlue}`
 }
-
-class DateRangeSelector extends React.PureComponent {
-  componentDidMount() {
-    if (!this.props.range.label) {
+function DateRangeSelector({ range, setDateRange, deviceType }) {
+  useEffect(() => {
+    if (!range.label) {
       const defaultRange = dateRanges.find(r => r.isDefault)
-      this.props.setDateRange(defaultRange)
+      setDateRange(defaultRange)
     }
+  }, [])
+
+  const isSelected = (selectedRange) => {
+    const label = range.label
+    if (!label && selectedRange.isDefault) return true
+    return (selectedRange.label === label)
   }
 
-  isSelected(range) {
-    const label = this.props.range.label
-    if (!label && range.isDefault) return true
-    return (range.label === label)
-  }
-
-  handleDateRangeClick(e, range) {
+  const handleDateRangeClick = (e, range) => {
     e.preventDefault()
-    this.props.setDateRange(range)
+    setDateRange(range)
   }
-
-  render() {
-    const boxStyle = {
-      marginTop: 15,
-      marginLeft: padding[this.props.deviceType],
-      fontSize: 11,
-      color
-    }
-    return (
-      <div style={boxStyle}>
-        {dateRanges.map(range => {
-          const buttonStyle = this.isSelected(range) ? selected : button
-          return (
-            <button onClick={e => this.handleDateRangeClick(e, range)}
-              style={buttonStyle}
-              key={range.label}>
-              {range.label}
-            </button>
-          )
-        })}
-      </div>
-    )
+  const boxStyle = {
+    marginTop: 15,
+    marginLeft: padding[deviceType],
+    fontSize: 11,
+    color
   }
+  return (
+    <div style={boxStyle}>
+      {dateRanges.map(range => {
+        const buttonStyle = isSelected(range) ? selected : button
+        return (
+          <button onClick={e => handleDateRangeClick(e, range)}
+            style={buttonStyle}
+            key={range.label}>
+            {range.label}
+          </button>
+        )
+      })}
+    </div>
+  )
 }
 
 DateRangeSelector.propTypes = {

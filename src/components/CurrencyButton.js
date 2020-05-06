@@ -1,37 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Icon } from 'semantic-ui-react'
 import { lightBg } from '../lib/styles'
 import CurrencyIcon from './CurrencyIcon'
 import { PropTypes } from 'prop-types'
 
-class CurrencyButton extends React.PureComponent {
-  constructor(props) {
-    super(props)
-    this.state = {
-      hover: false
-    }
-  }
-  render() {
-    const currency = this.props.currency
-    let style = this.state.hover ? buttonStyleHover : buttonStyle
-    return (
-      <button
-        style={style}
-        onMouseOver={() => this.setState({ hover: true })}
-        onMouseOut={() => this.setState({ hover: false })}
-        onClick={this.props.onClick}
-      >
-        <CurrencyIcon currency={currency} style={{ display: 'inline-block' }} />
-        <Icon
-          name="caret down"
-          style={{
-            display: 'inline-block',
-            visibility: this.props.caret ? 'visible' : 'hidden'
-          }}
-        />
-      </button>
-    )
-  }
+function CurrencyButton({ currency, onClick, caret }) {
+  const [hover, setHover] = useState(false)
+  let style = hover ? buttonStyleHover : buttonStyle
+  return (
+    <button
+      style={style}
+      onMouseOver={() => setHover(true)}
+      onMouseOut={() => setHover(false)}
+      onClick={onClick}
+    >
+      <CurrencyIcon currency={currency} style={{ display: 'inline-block' }} />
+      <Icon
+        name="caret down"
+        style={{
+          display: 'inline-block',
+          visibility: caret ? 'visible' : 'hidden'
+        }}
+      />
+    </button>
+  )
 }
 
 CurrencyButton.propTypes = {

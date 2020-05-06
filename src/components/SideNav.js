@@ -21,25 +21,20 @@ const ulStyle = {
   listStyleType: 'none'
 }
 
-class SideNav extends React.PureComponent {
-  render() {
-    const width = this.props.width || sidebarWidth
-    return (
-      <div>
-        <ul style={{ ...ulStyle, width }}>
-          {this.getNavLinks()}
-        </ul>
-      </div>
-    )
-  }
-
-  getNavLinks() {
-    const isMobile = this.props.isMobile
+function SideNav({
+  width,
+  isMobile,
+  enabledApps,
+  location,
+  opacity,
+  onClick
+}) {
+  const getNavLinks = () => {
     const navItems = [portfolioNavItem]
-      .concat(this.props.enabledApps)
+      .concat(enabledApps)
       .concat([lastNavItem])
     return navItems.map((navItem, i) => {
-      const isActive = getPathName(this.props.location) === navItem.uri
+      const isActive = getPathName(location) === navItem.uri
       const mobileItem = (
         <div style={{ lineHeight: '1.5em' }}>
           {navItem.icon ? (
@@ -83,7 +78,7 @@ class SideNav extends React.PureComponent {
       const delay = i * 0.05 + 0.075
       const transparent = 'rgba(0,0,0,0)'
       const style = {
-        opacity: this.props.opacity || 1,
+        opacity: opacity || 1,
         padding: 0,
         transition: 'opacity .5s',
         transitionDelay: `${delay}s`,
@@ -94,7 +89,7 @@ class SideNav extends React.PureComponent {
         <li key={i} style={style}>
           {navItem.uri === '/apps' ? <hr /> : ''}
           <NavLink
-            onClick={this.props.onClick}
+            onClick={onClick}
             to={navItem.uri}
             name={navItem.name}
             value={value}
@@ -103,6 +98,15 @@ class SideNav extends React.PureComponent {
       )
     })
   }
+
+  const sideNavWidth = width || sidebarWidth
+  return (
+    <div>
+      <ul style={{ ...ulStyle, sideNavWidth }}>
+        {getNavLinks()}
+      </ul>
+    </div>
+  )
 }
 
 SideNav.propTypes = {

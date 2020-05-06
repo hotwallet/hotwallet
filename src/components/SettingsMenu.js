@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { Icon } from 'semantic-ui-react'
@@ -49,35 +49,37 @@ const navItems = [
   }
 ]
 
-class SettingsMenu extends React.PureComponent {
-  state = { isHover: false }
+function SettingsMenu({ closeMenu, onClickOverlay, maxWidth, visible, windowWidth }) {
+  const [, setHover] = useState(false)
+  const [startX, setStartX] = useState(0)
+  const [startY, setStartY] = useState(0)
 
-  onClickOverlay = () => {
-    this.props.closeMenu()
+  const onClickOverlaySettingsMenu = () => {
+    closeMenu()
   }
 
-  onMouseEnter = () => {
-    this.setState({ isHover: true })
+  const onMouseEnter = () => {
+    setHover(true)
   }
 
-  onTouchStart = e => {
-    this.startX = e.touches[0].pageX
-    this.startY = e.touches[0].pageY
+  const onTouchStart = e => {
+    setStartX(e.touches[0].pageX)
+    setStartY(e.touches[0].pageY)
   }
 
-  onTouchMove = e => {
-    const x = this.startX - e.touches[0].pageX
-    const y = this.startY - e.touches[0].pageY
+  const onTouchMove = e => {
+    const x = startX - e.touches[0].pageX
+    const y = startY - e.touches[0].pageY
     const isRightSwipe = x < 0 && Math.abs(x) > Math.abs(y)
     if (!isRightSwipe) return
-    this.props.closeMenu()
+    closeMenu()
   }
 
-  onMouseLeave = () => {
-    this.setState({ isHover: false })
+  const onMouseLeave = () => {
+    setHover(false)
   }
 
-  getNavLinks() {
+  const getNavLinks = () => {
     return navItems.map((navItem, i) => {
       const item = (
         <div>
@@ -102,44 +104,40 @@ class SettingsMenu extends React.PureComponent {
           key={i}
           style={style}
           href={navItem.uri}
-          onClick={this.props.onClickOverlay}
+          onClick={onClickOverlay}
         >{item}</a>
       ) : (
         <Link
           key={i}
           style={style}
           to={navItem.uri}
-          onClick={this.props.onClickOverlay}
+          onClick={onClickOverlay}
         >{item}</Link>
       )
     })
   }
 
-  render() {
-    const maxWidth = this.props.maxWidth
-    const isVisible = this.props.visible
-    const height = isVisible ? menuStyle.height : 0
-    const width = isVisible ? menuStyle.width : 0
-    const top = isVisible ? 0 : -2000
-    const right = this.props.windowWidth > maxWidth ? this.props.windowWidth - maxWidth : 0
-    return (
+  const height = visible ? menuStyle.height : 0
+  const width = visible ? menuStyle.width : 0
+  const top = visible ? 0 : -2000
+  const right = windowWidth > maxWidth ? windowWidth - maxWidth : 0
+  return (
+    <div
+      style={{ ...overlayStyle, top, right }}
+      onClick={onClickOverlaySettingsMenu}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+    >
       <div
-        style={{ ...overlayStyle, top, right }}
-        onClick={this.onClickOverlay}
-        onTouchStart={this.onTouchStart}
-        onTouchMove={this.onTouchMove}
+        id="settings-menu"
+        style={{ ...menuStyle, width, height }}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
       >
-        <div
-          id="settings-menu"
-          style={{ ...menuStyle, width, height }}
-          onMouseEnter={this.onMouseEnter}
-          onMouseLeave={this.onMouseLeave}
-        >
-          {this.getNavLinks()}
-        </div>
+        {getNavLinks()}
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 SettingsMenu.propTypes = {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Route, BrowserRouter, HashRouter } from 'react-router-dom'
 import Portfolio from './Portfolio'
@@ -27,43 +27,39 @@ const routeStyle = {
   minHeight: contentMinHeight
 }
 
-class App extends React.Component {
-  componentDidMount() {
-    this.props.fetchBinanceBalances()
-    this.props.fetchWalletBalances()
+function App({ fetchBinanceBalances, fetchWalletBalances, isMobile }) {
+  useEffect(() => {
+    fetchBinanceBalances()
+    fetchWalletBalances()
     assetService.importAssets().catch(console.log)
+  }, [])
+  const mainStyle = {
+    marginLeft: isMobile ? 0 : sidebarWidth,
+    maxWidth: appMaxWidth,
+    borderLeft: isMobile ? 'none' : border
   }
-
-  render() {
-    const isMobile = this.props.isMobile
-    const mainStyle = {
-      marginLeft: isMobile ? 0 : sidebarWidth,
-      maxWidth: appMaxWidth,
-      borderLeft: isMobile ? 'none' : border
-    }
-    return (
-      <Router>
-        <>
-          <Header />
-          <div style={{ borderBottom: border }}>
-            {isMobile ? null : <SideNav />}
-            <main style={mainStyle}>
-              <div style={routeStyle}>
-                <Route exact path="/" component={withTracker(Portfolio)} />
-                <Route exact path="/ledger" component={withTracker(Ledger)} />
-                <Route exact path="/trezor" component={withTracker(Trezor)} />
-                <Route exact path="/binance" component={withTracker(Binance)} />
-                <Route exact path="/settings" component={(Settings)} />
-                <Route exact path="/apps" component={withTracker(ExternalApps)} />
-                <Route exact path="/apps/:appId" component={withTracker(Iframe)} />
-              </div>
-              <Footer />
-            </main>
-          </div>
-        </>
-      </Router>
-    )
-  }
+  return (
+    <Router>
+      <>
+        <Header />
+        <div style={{ borderBottom: border }}>
+          {isMobile ? null : <SideNav />}
+          <main style={mainStyle}>
+            <div style={routeStyle}>
+              <Route exact path="/" component={withTracker(Portfolio)} />
+              <Route exact path="/ledger" component={withTracker(Ledger)} />
+              <Route exact path="/trezor" component={withTracker(Trezor)} />
+              <Route exact path="/binance" component={withTracker(Binance)} />
+              <Route exact path="/settings" component={(Settings)} />
+              <Route exact path="/apps" component={withTracker(ExternalApps)} />
+              <Route exact path="/apps/:appId" component={withTracker(Iframe)} />
+            </div>
+            <Footer />
+          </main>
+        </div>
+      </>
+    </Router>
+  )
 }
 
 export default compose(

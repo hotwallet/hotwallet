@@ -29,24 +29,30 @@ const cellStyle = {
   verticalAlign: 'top'
 }
 
-class Trezor extends React.PureComponent {
-  onClickDeleteWallet = event => {
+function Trezor({
+  deleteWallet,
+  setWalletName,
+  wallets,
+  getTrezorAccountInfo,
+  isMobile,
+  trezorSecurities
+}) {
+  const onClickDeleteWallet = event => {
     const id = event.target.parentNode.getAttribute('data-id')
     const name = event.target.parentNode.getAttribute('data-name')
     const confirmed = window.confirm(`Delete ${name}?`)
     if (confirmed) {
-      this.props.deleteWallet(id)
+      deleteWallet(id)
     }
   }
 
-  onChangeWalletName = event => {
+  const onChangeWalletName = event => {
     const id = event.target.parentNode.getAttribute('data-walletid')
     const name = event.target.value
-    this.props.setWalletName(id, name)
+    setWalletName(id, name)
   }
 
-  renderTable() {
-    const wallets = this.props.wallets
+  const renderTable = () => {
     return (
       <Table
         basic="very"
@@ -78,7 +84,7 @@ class Trezor extends React.PureComponent {
                       inverted
                       transparent
                       fluid
-                      onChange={this.onChangeWalletName}
+                      onChange={onChangeWalletName}
                     />
                   </div>
                   <div>
@@ -107,7 +113,7 @@ class Trezor extends React.PureComponent {
                     basic
                     color="red"
                     icon="remove"
-                    onClick={this.onClickDeleteWallet}
+                    onClick={onClickDeleteWallet}
                   />
                 </Table.Cell>
               </Table.Row>
@@ -118,44 +124,41 @@ class Trezor extends React.PureComponent {
     )
   }
 
-  getAccount = security => () => this.props.getTrezorAccountInfo(security)
+  const getAccount = security => () => getTrezorAccountInfo(security)
 
-  render() {
-    const wallets = this.props.wallets
-    return (
-      <div>
-        <H1 text="Trezor Connect" />
-        <div
-          style={{
-            padding: this.props.isMobile ? mobilePadding : desktopPadding
-          }}
+  return (
+    <div>
+      <H1 text="Trezor Connect" />
+      <div
+        style={{
+          padding: isMobile ? mobilePadding : desktopPadding
+        }}
+      >
+        <Dropdown
+          text="Add Trezor Wallet"
+          icon="plus"
+          floating
+          labeled
+          button
+          className="icon"
         >
-          <Dropdown
-            text="Add Trezor Wallet"
-            icon="plus"
-            floating
-            labeled
-            button
-            className="icon"
-          >
-            <Dropdown.Menu>
-              <Dropdown.Header content="Choose type of wallet" />
-              {this.props.trezorSecurities.map(security =>
-                <Dropdown.Item
-                  key={security.symbol}
-                  text={security.name}
-                  value={security.symbol}
-                  color="black"
-                  onClick={this.getAccount(security)}
-                />)}
-            </Dropdown.Menu>
-          </Dropdown>
+          <Dropdown.Menu>
+            <Dropdown.Header content="Choose type of wallet" />
+            {trezorSecurities.map(security =>
+              <Dropdown.Item
+                key={security.symbol}
+                text={security.name}
+                value={security.symbol}
+                color="black"
+                onClick={getAccount(security)}
+              />)}
+          </Dropdown.Menu>
+        </Dropdown>
 
-          {wallets.length ? this.renderTable() : ''}
-        </div>
+        {wallets.length ? renderTable() : ''}
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 const mapStateToProps = state => ({

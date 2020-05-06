@@ -1,17 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import isNumeric from '../lib/isNumeric'
 import PropTypes from 'prop-types'
 import { Input } from 'semantic-ui-react'
 
-class PricesInputQty extends React.PureComponent {
-  constructor(props) {
-    super(props)
-    this.state = {
-      hasFocused: false
-    }
-  }
+function PricesInputQty({
+  isMobile,
+  disabled,
+  onFocus,
+  onBlur,
+  setBalance,
+  balance,
+  symbol
+}) {
+  const [hasFocused, setFocus] = useState(false)
 
-  validateValue(e) {
+  const validateValue = (e) => {
     const value = e.target.value
     if (!isNumeric(value) || value < 0) {
       e.target.value = ''
@@ -20,37 +23,34 @@ class PricesInputQty extends React.PureComponent {
     return true
   }
 
-  render() {
-    const isMobile = this.props.isMobile
-    return (
-      <Input
-        fluid
-        inverted
-        ref={ref => {
-          if (ref && !isMobile && !this.state.hasFocused) {
-            // ref.focus()
-            this.setState({ hasFocused: true })
-          }
-        }}
-        disabled={this.props.disabled}
-        min={0}
-        onFocus={e => {
-          e.target.select()
-          this.props.onFocus()
-        }}
-        onBlur={this.props.onBlur}
-        onKeyUp={e => this.validateValue(e)}
-        onChange={e => {
-          this.validateValue(e)
-          this.props.setBalance(e.target.value)
-        }}
-        defaultValue={this.props.balance}
-        type="number"
-        label={{ basic: true, content: this.props.symbol }}
-        labelPosition="right"
-      />
-    )
-  }
+  return (
+    <Input
+      fluid
+      inverted
+      ref={ref => {
+        if (ref && !isMobile && !hasFocused) {
+          // ref.focus()
+          setFocus(true)
+        }
+      }}
+      disabled={disabled}
+      min={0}
+      onFocus={e => {
+        e.target.select()
+        onFocus()
+      }}
+      onBlur={onBlur}
+      onKeyUp={e => validateValue(e)}
+      onChange={e => {
+        validateValue(e)
+        setBalance(e.target.value)
+      }}
+      defaultValue={balance}
+      type="number"
+      label={{ basic: true, content: symbol }}
+      labelPosition="right"
+    />
+  )
 }
 
 PricesInputQty.propTypes = {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { PropTypes } from 'prop-types'
 import SideNav from './SideNav'
 import { darkBg } from '../lib/styles'
@@ -24,64 +24,63 @@ const menuStyle = {
   boxShadow: '8px 8px 8px rgba(0, 0, 0, .2)'
 }
 
-class MobileMenu extends React.PureComponent {
-  state = { isHover: false }
+function MobileMenu({ closeMenu, visible }) {
+  const [isHover, setHover] = useState(false)
+  const [startX, setStartX] = useState(0)
+  const [startY, setStartY] = useState(0)
 
-  onClickOverlay = () => {
-    if (this.state.isHover) return
-    this.props.closeMenu()
+  const onClickOverlay = () => {
+    if (isHover) return
+    closeMenu()
   }
 
-  onMouseEnter = () => {
-    this.setState({ isHover: true })
+  const onMouseEnter = () => {
+    setHover(true)
   }
 
-  onTouchStart = e => {
-    this.startX = e.touches[0].pageX
-    this.startY = e.touches[0].pageY
+  const onTouchStart = e => {
+    setStartX(e.touches[0].pageX)
+    setStartY(e.touches[0].pageY)
   }
 
-  onTouchMove = e => {
-    const x = this.startX - e.touches[0].pageX
-    const y = this.startY - e.touches[0].pageY
+  const onTouchMove = e => {
+    const x = startX - e.touches[0].pageX
+    const y = startY - e.touches[0].pageY
     const isLeftSwipe = x > 0 && x > Math.abs(y)
     if (!isLeftSwipe) return
-    this.props.closeMenu()
+    closeMenu()
   }
 
-  onMouseLeave = () => {
-    this.setState({ isHover: false })
+  const onMouseLeave = () => {
+    setHover(false)
   }
 
-  render() {
-    const isVisible = this.props.visible
-    const height = isVisible ? menuStyle.height : 0
-    const width = isVisible ? menuStyle.width : 0
-    const top = isVisible ? 0 : -2000
-    const left = isVisible ? 0 : -2000
-    const opacity = isVisible ? 1 : 0.01
-    return (
+  const height = visible ? menuStyle.height : 0
+  const width = visible ? menuStyle.width : 0
+  const top = visible ? 0 : -2000
+  const left = visible ? 0 : -2000
+  const opacity = visible ? 1 : 0.01
+  return (
+    <div
+      style={{ ...overlayStyle, top, left }}
+      onClick={onClickOverlay}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+    >
       <div
-        style={{ ...overlayStyle, top, left }}
-        onClick={this.onClickOverlay}
-        onTouchStart={this.onTouchStart}
-        onTouchMove={this.onTouchMove}
+        id="mobile-menu"
+        style={{ ...menuStyle, width, height }}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
       >
-        <div
-          id="mobile-menu"
-          style={{ ...menuStyle, width, height }}
-          onMouseEnter={this.onMouseEnter}
-          onMouseLeave={this.onMouseLeave}
-        >
-          <SideNav
-            onClick={this.props.closeMenu}
-            width="100%"
-            opacity={opacity}
-          />
-        </div>
+        <SideNav
+          onClick={closeMenu}
+          width="100%"
+          opacity={opacity}
+        />
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 MobileMenu.propTypes = {
