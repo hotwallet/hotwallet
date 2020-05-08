@@ -25,7 +25,13 @@ const fieldsetStyle = {
   marginBottom: 20
 }
 
-function AddressModal({ security = {}, addWallet, openAddressModal, fetchWalletBalances, isModalOpen }) {
+function AddressModal({
+  addWallet,
+  fetchWalletBalances,
+  isModalOpen,
+  openAddressModal,
+  security = {}
+}) {
   const [address, setAddress] = useState()
 
   const connectWallet = () => {

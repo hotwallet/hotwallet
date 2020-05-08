@@ -1,6 +1,6 @@
 // based on https://github.com/react-ga/react-ga/issues/122#issuecomment-299692833
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import GoogleAnalytics from 'react-ga'
 import * as config from '../config'
 
@@ -17,9 +17,9 @@ const withTracker = (WrappedComponent, options = {}) => {
     GoogleAnalytics.pageview(page)
   }
 
-  const HOC = class extends React.Component {
-    componentDidMount() {
-      const page = this.props.location.pathname
+  function HOC({ location }) {
+    useEffect(() => {
+      const page = location.pathname
 
       // component may be mounted twice on initial load
       if (page !== lastPage) {
@@ -27,20 +27,11 @@ const withTracker = (WrappedComponent, options = {}) => {
       }
 
       lastPage = page
-    }
+    }, [])
 
-    componentWillReceiveProps(nextProps) {
-      const currentPage = this.props.location.pathname
-      const nextPage = nextProps.location.pathname
+    useEffect(() => trackPage(location.pathname), [location.pathname])
 
-      if (currentPage !== nextPage) {
-        trackPage(nextPage)
-      }
-    }
-
-    render() {
-      return <WrappedComponent {...this.props} />
-    }
+    return <WrappedComponent location={location} />
   }
 
   return HOC

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
@@ -27,43 +27,50 @@ const dividerStyle = {
 
 const isNumber = (n) => !isNaN(parseFloat(n)) && isFinite(n)
 
-class SecurityModal extends React.PureComponent {
-  constructor(props) {
-    super(props)
-    this.state = {
-      manualTxTime: '',
-      inputHasFocus: false
-    }
+function SecurityModal({
+  isModalOpen,
+  security,
+  transactionsBySymbol,
+  wallets,
+  iconSrc,
+  onClose,
+  isMobile,
+  removeManualTransactions,
+  addManualTransaction,
+  openAddressModal,
+  binanceApiKey
+}) {
+  const [manualTxTime, setManualTxTime] = useState('')
+  const [inputHasFocus, setInputHasFocus] = useState(false)
+  const [manualBalance, setManualBalanceState] = useState(null)
+
+  const onOpen = () => {
+
   }
 
-  onOpen = () => {
-
+  const setManualBalance = (manualBalance) => {
+    setManualBalanceState(manualBalance)
   }
 
-  setManualBalance = (manualBalance) => {
-    this.setState({ manualBalance })
-  }
-
-  getImportButtons() {
+  const getImportButtons = () => {
     return [
-      this.getImportWalletButton(),
-      this.getImportBinanceButton(),
-      this.getImportLedgerButton(),
-      this.getImportTrezorButton()
+      getImportWalletButton(),
+      getImportBinanceButton(),
+      getImportLedgerButton(),
+      getImportTrezorButton()
     ].filter(Boolean)
   }
 
-  onClickImportWalletButton = () => {
-    this.close()
-    this.props.openAddressModal({
-      security: this.props.security,
+  const onClickImportWalletButton = () => {
+    close()
+    openAddressModal({
+      security,
       isOpen: true
     })
   }
 
-  getImportBinanceButton() {
-    const { security } = this.props
-    if (this.props.binanceApiKey) return
+  const getImportBinanceButton = () => {
+    if (binanceApiKey) return
     if (!binanceSymbols.includes(security.addressType)) return
     return (
       <Link to="/binance" key="binance">
@@ -79,8 +86,7 @@ class SecurityModal extends React.PureComponent {
     )
   }
 
-  getImportLedgerButton() {
-    const { security } = this.props
+  const getImportLedgerButton = () => {
     if (!ledgerSymbols.includes(security.addressType)) return
     return (
       <Link to="/ledger" key="ledger">
@@ -95,8 +101,7 @@ class SecurityModal extends React.PureComponent {
     )
   }
 
-  getImportTrezorButton() {
-    const { security } = this.props
+  const getImportTrezorButton = () => {
     if (!trezorSymbols.includes(security.addressType)) return
     return (
       <Link to="/trezor" key="trezor">
@@ -111,191 +116,182 @@ class SecurityModal extends React.PureComponent {
     )
   }
 
-  getImportWalletButton() {
-    const { security } = this.props
+  const getImportWalletButton = () => {
     if (!security.addressType) return
     return (
       <ImportWalletButton
         key="import-wallet"
         security={security}
         style={buttonStyle}
-        onClick={this.onClickImportWalletButton}
+        onClick={onClickImportWalletButton}
       />
     )
   }
 
-  save() {
-    if (isNumber(this.state.manualBalance)) {
-      this.props.addManualTransaction({
-        symbol: this.props.security.symbol,
-        balance: this.state.manualBalance,
-        txTime: this.state.manualTxTime
+  const save = () => {
+    if (isNumber(manualBalance)) {
+      addManualTransaction({
+        symbol: security.symbol,
+        balance: manualBalance,
+        txTime: manualTxTime
       })
     }
   }
 
-  onInputFocus = () => {
-    this.setState({ inputHasFocus: true })
+  const onInputFocus = () => {
+    setInputHasFocus(true)
   }
 
-  onInputBlur = () => {
-    // this.setState({ inputHasFocus: false })
+  const onInputBlur = () => {
+    // setInputHasFocus(false)
   }
 
-  onChangeDateInput = (e) => {
-    this.setState({ manualTxTime: new Date(e.target.value).toISOString() })
+  const onChangeDateInput = (e) => {
+    setManualTxTime(new Date(e.target.value).toISOString())
   }
 
-  close = () => {
-    this.props.onClose()
-    this.setState({ inputHasFocus: false })
+  const close = () => {
+    onClose()
+    setInputHasFocus(false)
   }
 
-  render() {
-    const {
-      isModalOpen,
-      security,
-      transactionsBySymbol
-    } = this.props
+  if (!security) {
+    return null
+  }
 
-    if (!security) {
-      return null
-    }
+  const importButtons = getImportButtons()
+  const { symbol } = security
+  const balances = (transactionsBySymbol[symbol] || []).reduce((b, val) => {
+    b[val.walletId] = val.balance
+    return b
+  }, {})
+  const importedWalletIds = Object.keys(balances).filter(k => k !== 'manual')
+  const clearButton = isNumber(balances.manual) && manualBalance === ''
 
-    const importButtons = this.getImportButtons()
-    const { symbol } = security
-    const balances = (transactionsBySymbol[symbol] || []).reduce((b, val) => {
-      b[val.walletId] = val.balance
-      return b
-    }, {})
-    const importedWalletIds = Object.keys(balances).filter(k => k !== 'manual')
-    const clearButton = isNumber(balances.manual) && this.state.manualBalance === ''
+  const getWalletName = walletId => {
+    const wallet = wallets[walletId]
+    if (wallet && wallet.name) return wallet.name
+    if (walletId.includes(':')) return walletId.split(':')[1].substr(0, 10)
+    return walletId
+  }
 
-    const getWalletName = walletId => {
-      const wallet = this.props.wallets[walletId]
-      if (wallet && wallet.name) return wallet.name
-      if (walletId.includes(':')) return walletId.split(':')[1].substr(0, 10)
-      return walletId
-    }
+  return (
+    <Modal
+      closeIcon
+      size="mini"
+      open={isModalOpen}
+      onClose={close}
+      onOpen={onOpen}
+      style={{
+        backgroundColor: lightBg
+      }}
+    >
+      <Modal.Header style={{ color: '#fff' }}>
+        <div>
+          <Image
+            src={iconSrc}
+            inline
+            verticalAlign="middle"
+            style={{ marginRight: 12 }}
+          />
+          <span style={{
+            fontSize: 18,
+            verticalAlign: 'middle',
+            display: 'inline'
+          }}>{security.name}</span>
+        </div>
 
-    return (
-      <Modal
-        closeIcon
-        size="mini"
-        open={isModalOpen}
-        onClose={this.close}
-        onOpen={this.onOpen}
-        style={{
-          backgroundColor: lightBg
-        }}
-      >
-        <Modal.Header style={{ color: '#fff' }}>
-          <div>
-            <Image
-              src={this.props.iconSrc}
-              inline
-              verticalAlign="middle"
-              style={{ marginRight: 12 }}
-            />
-            <span style={{
-              fontSize: 18,
-              verticalAlign: 'middle',
-              display: 'inline'
-            }}>{this.props.security.name}</span>
-          </div>
-
-        </Modal.Header>
-        <Modal.Content style={{ paddingTop: 0 }}>
-          <Table basic="very" celled compact="very">
-            <Table.Body>
-              <Table.Row style={rowStyle} key="manual">
-                <Table.Cell
-                  textAlign="left"
-                  verticalAlign={this.state.inputHasFocus ? 'top' : 'middle'}
-                  style={{
-                    marginTop: this.state.inputHasFocus ? 10 : 0
-                  }}
-                >
-                  Manual Entry
-                </Table.Cell>
-                <Table.Cell width="ten">
-                  <PricesInputQty
-                    setBalance={this.setManualBalance}
-                    isMobile={this.props.isMobile}
-                    symbol={symbol}
-                    balance={balances.manual}
-                    onFocus={this.onInputFocus}
-                    onBlur={this.onInputBlur}
+      </Modal.Header>
+      <Modal.Content style={{ paddingTop: 0 }}>
+        <Table basic="very" celled compact="very">
+          <Table.Body>
+            <Table.Row style={rowStyle} key="manual">
+              <Table.Cell
+                textAlign="left"
+                verticalAlign={inputHasFocus ? 'top' : 'middle'}
+                style={{
+                  marginTop: inputHasFocus ? 10 : 0
+                }}
+              >
+                Manual Entry
+              </Table.Cell>
+              <Table.Cell width="ten">
+                <PricesInputQty
+                  setBalance={setManualBalance}
+                  isMobile={isMobile}
+                  symbol={symbol}
+                  balance={balances.manual}
+                  onFocus={onInputFocus}
+                  onBlur={onInputBlur}
+                />
+                <div style={{
+                  display: inputHasFocus ? 'block' : 'none'
+                }}>
+                  <Divider fitted horizontal style={{ margin: '5px 0', ...dividerStyle }}>as of</Divider>
+                  <Input
+                    fluid
+                    inverted
+                    onFocus={onInputFocus}
+                    onBlur={onInputBlur}
+                    onChange={onChangeDateInput}
+                    type="date"
+                    defaultValue={moment().format('YYYY-MM-DD')}
+                    style={{ marginBottom: 10 }}
                   />
-                  <div style={{
-                    display: this.state.inputHasFocus ? 'block' : 'none'
-                  }}>
-                    <Divider fitted horizontal style={{ margin: '5px 0', ...dividerStyle }}>as of</Divider>
-                    <Input
+                  {!clearButton &&
+                    <Button
+                      color="blue"
                       fluid
-                      inverted
-                      onFocus={this.onInputFocus}
-                      onBlur={this.onInputBlur}
-                      onChange={this.onChangeDateInput}
-                      type="date"
-                      defaultValue={moment().format('YYYY-MM-DD')}
-                      style={{ marginBottom: 10 }}
-                    />
-                    {!clearButton &&
-                      <Button
-                        color="blue"
-                        fluid
-                        style={buttonStyle}
-                        onClick={() => {
-                          this.save()
-                          this.close()
-                        }}
-                      >Save</Button>
-                    }
-                    {clearButton &&
-                      <Button
-                        color="red"
-                        fluid
-                        style={buttonStyle}
-                        onClick={() => {
-                          this.props.removeManualTransactions(this.props.security.symbol)
-                          this.setState({ manualBalance: undefined })
-                          this.close()
-                        }}
-                      >Clear History</Button>
-                    }
-                  </div>
+                      style={buttonStyle}
+                      onClick={() => {
+                        save()
+                        close()
+                      }}
+                    >Save</Button>
+                  }
+                  {clearButton &&
+                    <Button
+                      color="red"
+                      fluid
+                      style={buttonStyle}
+                      onClick={() => {
+                        removeManualTransactions(security.symbol)
+                        setManualBalanceState(undefined)
+                        close()
+                      }}
+                    >Clear History</Button>
+                  }
+                </div>
+              </Table.Cell>
+            </Table.Row>
+
+            {importedWalletIds.map(walletId => (
+              <Table.Row style={rowStyle} key={walletId}>
+                <Table.Cell textAlign="left">
+                  {getWalletName(walletId)}
+                </Table.Cell>
+                <Table.Cell>
+                  <PricesInputQty
+                    symbol={symbol}
+                    disabled
+                    balance={balances[walletId]}
+                  />
                 </Table.Cell>
               </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
 
-              {importedWalletIds.map(walletId => (
-                <Table.Row style={rowStyle} key={walletId}>
-                  <Table.Cell textAlign="left">
-                    {getWalletName(walletId)}
-                  </Table.Cell>
-                  <Table.Cell>
-                    <PricesInputQty
-                      symbol={symbol}
-                      disabled
-                      balance={balances[walletId]}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
+        {importButtons.length ? (
+          <div>
+            <Divider horizontal section style={dividerStyle}>Track Balances</Divider>
+            {importButtons}
+          </div>
+        ) : ''}
 
-          {importButtons.length ? (
-            <div>
-              <Divider horizontal section style={dividerStyle}>Track Balances</Divider>
-              {importButtons}
-            </div>
-          ) : ''}
-
-        </Modal.Content>
-      </Modal>
-    )
-  }
+      </Modal.Content>
+    </Modal>
+  )
 }
 
 SecurityModal.propTypes = {

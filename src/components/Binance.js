@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import H1 from './H1'
 import { mapDispatchToProps } from '../actions'
@@ -34,79 +34,65 @@ const fieldsetStyle = {
   marginBottom: 20
 }
 
-class Binance extends React.PureComponent {
-  constructor(props) {
-    super(props)
-    this.state = {
-      apiKey: '',
-      secretKey: ''
-    }
-  }
+function Binance({
+  setBinanceApiKeys,
+  fetchBinanceBalances,
+  zeroBinanceBalances,
+  isMobile,
+  apiKey,
+  errorMessage,
+  lastUpdated
+}) {
+  const [binanceApiKey, setBinanceApiKey] = useState('')
+  const [secretKey, setSecretKey] = useState('')
 
-  connectBinance = () => {
-    this.props.setBinanceApiKeys({
-      apiKey: this.state.apiKey,
-      secretKey: this.state.secretKey
+  const connectBinance = () => {
+    setBinanceApiKeys({
+      apiKey: binanceApiKey,
+      secretKey: secretKey
     })
-    this.props.fetchBinanceBalances()
+    fetchBinanceBalances()
   }
 
-  disconnectBinance = () => {
+  const disconnectBinance = () => {
     const confirmed = window.confirm('Disconnect and set Binance balances to zero?')
     if (confirmed) {
-      this.props.setBinanceApiKeys({
-        apiKey: '',
+      setBinanceApiKeys({
+        binanceApiKey: '',
         secretKey: ''
       })
-      this.props.zeroBinanceBalances()
+      zeroBinanceBalances()
     }
   }
 
-  render() {
-    const isMobile = this.props.isMobile
-    const content = this.props.apiKey ? this.renderConnected() : this.renderNotConnected()
-    return (
-      <div>
-        <H1 text="Binance Connect" />
-        <div
-          style={{
-            padding: isMobile ? mobilePadding : desktopPadding
-          }}
-        >
-          {content}
-        </div>
-      </div>
-    )
-  }
-
-  renderErrorMessage() {
-    if (!this.props.errorMessage) return
+  const renderErrorMessage = () => {
+    if (!errorMessage) return
     return (
       <Message
         color="black"
         icon="warning circle"
         header="Error connecting to Binance"
-        content={this.props.errorMessage}
+        content={errorMessage}
       />
     )
   }
 
-  renderLastUpdated() {
+  const renderLastUpdated = () => {
     return (
       <Message
         color="black"
         icon="check circle"
         header="Connected"
-        content={`Updated balances ${moment(this.props.lastUpdated).fromNow()}`}
+        content={`Updated balances ${moment(lastUpdated).fromNow()}`}
       />
     )
   }
 
-  renderConnected() {
+  const renderConnected = () => {
     return (
       <div>
-        {this.renderErrorMessage()}
-        {this.renderLastUpdated()}
+        {renderErrorMessage()}
+        {renderLastUpdated()}
         <fieldset style={fieldsetStyle}>
           <label style={labelStyle}>
             API Key
@@ -120,7 +106,7 @@ class Binance extends React.PureComponent {
             style={inputStyle}
             disabled
             className="monospace"
-            value={this.props.apiKey}
+            value={apiKey}
           />
         </fieldset>
         <fieldset style={fieldsetStyle}>
@@ -143,14 +129,14 @@ class Binance extends React.PureComponent {
           <Button
             color="red"
             style={buttonStyle}
-            onClick={this.disconnectBinance}
+            onClick={disconnectBinance}
           >Disconnect</Button>
         </div>
       </div>
     )
   }
 
-  renderNotConnected() {
+  const renderNotConnected = () => {
     return (
       <div className="ui divided stackable two column grid">
         <div className="column">
@@ -166,7 +152,7 @@ class Binance extends React.PureComponent {
               color="#fff"
               style={inputStyle}
               className="monospace"
-              onChange={e => this.setState({ apiKey: e.target.value })}
+              onChange={e => setBinanceApiKey(e.target.value)}
             />
           </fieldset>
           <fieldset style={fieldsetStyle}>
@@ -180,14 +166,14 @@ class Binance extends React.PureComponent {
               color="#fff"
               style={inputStyle}
               className="monospace"
-              onChange={e => this.setState({ secretKey: e.target.value })}
+              onChange={e => setSecretKey(e.target.value)}
             />
           </fieldset>
           <Button
             color="blue"
             fluid
             style={buttonStyle}
-            onClick={this.connectBinance}
+            onClick={connectBinance}
           >Connect</Button>
         </div>
         <div className="column">
@@ -222,6 +208,20 @@ class Binance extends React.PureComponent {
       </div>
     )
   }
+
+  const content = apiKey ? renderConnected() : renderNotConnected()
+  return (
+    <div>
+      <H1 text="Binance Connect" />
+      <div
+        style={{
+          padding: isMobile ? mobilePadding : desktopPadding
+        }}
+      >
+        {content}
+      </div>
+    </div>
+  )
 }
 
 const mapStateToProps = state => ({
