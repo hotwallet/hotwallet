@@ -1,12 +1,11 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Table, Input, Checkbox } from 'semantic-ui-react'
 import H1 from './H1'
 import { mobilePadding, desktopPadding } from '../lib/styles'
-import { mapDispatchToProps } from '../actions'
-import { allApps } from '../reducers/apps'
 import { withTheme, compose } from '../contexts'
+import { useVenti } from 'venti'
+import { addApp, removeApp } from '../ventiStore/apps'
 
 const rowStyle = {}
 
@@ -22,7 +21,11 @@ const cellStyle = {
   verticalAlign: 'top'
 }
 
-function ExternalApps({ addApp, removeApp, enabledAppIds, isMobile }) {
+function ExternalApps({ isMobile }) {
+  const state = useVenti()
+  const sideBarApps = state.get(`sideBarApps`, [])
+  const enabled = state.get(`enabled`, [])
+
   const toggleApp = event => {
     const el = event.target
     const id = el.parentNode.getAttribute('data-id') || el.getAttribute('data-id')
@@ -58,7 +61,7 @@ function ExternalApps({ addApp, removeApp, enabledAppIds, isMobile }) {
   }
 
   const getRows = () => {
-    return allApps.map(app => (
+    return sideBarApps.map(app => (
       <Table.Row key={app.id}>
         <Table.Cell style={cellStyle}>
           {getIcon(app)}
@@ -74,7 +77,7 @@ function ExternalApps({ addApp, removeApp, enabledAppIds, isMobile }) {
             data-id={app.id}
             data-name={app.name}
             onClick={toggleApp}
-            checked={enabledAppIds.includes(app.id)}
+            checked={enabled.includes(app.id)}
           />
         </Table.Cell>
       </Table.Row>
@@ -112,12 +115,6 @@ function ExternalApps({ addApp, removeApp, enabledAppIds, isMobile }) {
   )
 }
 
-const mapStateToProps = state => ({
-  allApps,
-  enabledAppIds: state.apps.enabled
-})
-
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
   withTheme
 )(ExternalApps)

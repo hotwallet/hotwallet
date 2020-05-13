@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux'
-import apps from './apps'
 import binance from './binance'
 import ephemeral from './ephemeral'
 import ledger from './ledger'
@@ -11,7 +10,6 @@ import user from './user'
 import wallets from './wallets'
 
 export default combineReducers({
-  apps,
   binance,
   ephemeral,
   ledger,

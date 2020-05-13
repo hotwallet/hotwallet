@@ -28,7 +28,8 @@
     "semantic-ui-css": "^2.3.0",
     "semantic-ui-react": "^0.82.5",
     "socket.io-client": "^2.0.4",
-    "state-eventer": "^1.2.2"
+    "state-eventer": "^1.2.2",
+    "venti": "^1.4.2"
   },
   "scripts": {
     "start": "react-scripts start",

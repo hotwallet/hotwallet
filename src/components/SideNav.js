@@ -1,13 +1,12 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import NavLink from './NavLink'
 import { withRouter } from 'react-router-dom'
 import { Icon, Image } from 'semantic-ui-react'
 import { sidebarWidth, darkBlue } from '../lib/styles'
-import { allApps } from '../reducers/apps'
 import getPathName from '../lib/getPathName'
 import { withTheme, compose } from '../contexts'
+import { useVenti } from 'venti'
 
 const portfolioNavItem = { icon: 'pie chart', uri: '/', name: 'Portfolio' }
 
@@ -24,11 +23,16 @@ const ulStyle = {
 function SideNav({
   width,
   isMobile,
-  enabledApps,
   location,
   opacity,
   onClick
 }) {
+  const state = useVenti()
+  const sideBarApps = state.get(`sideBarApps`, [])
+  const enabled = state.get(`enabled`, [])
+  const getEnabledApps = () => sideBarApps.filter(app => enabled.includes(app.id))
+  const enabledApps = getEnabledApps(state.apps)
+  console.log('Side bar enabledApps --->>>', enabledApps)
   const getNavLinks = () => {
     const navItems = [portfolioNavItem]
       .concat(enabledApps)
@@ -116,14 +120,7 @@ SideNav.propTypes = {
   location: PropTypes.object.isRequired
 }
 
-const getEnabledApps = apps => allApps.filter(app => apps.enabled.includes(app.id))
-
-const mapStateToProps = state => ({
-  enabledApps: getEnabledApps(state.apps)
-})
-
 export default compose(
   withRouter,
-  connect(mapStateToProps),
   withTheme
 )(SideNav)
