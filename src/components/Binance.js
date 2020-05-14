@@ -5,9 +5,10 @@ import { mapDispatchToProps } from '../actions'
 import { Button, Message, Input } from 'semantic-ui-react'
 import { borderColor, mobilePadding, desktopPadding } from '../lib/styles'
 import { appName } from '../config'
-import { createApiKeyUrl } from '../actions/binance'
 import moment from 'moment'
 import { withTheme, compose } from '../contexts'
+import { useVenti } from 'venti'
+import { setBinanceApiKeys, fetchBinanceBalances, createApiKeyUrl, zeroBinanceBalances } from '../ventiStore/binance'
 
 const buttonStyle = {
   marginBottom: 20
@@ -34,15 +35,12 @@ const fieldsetStyle = {
   marginBottom: 20
 }
 
-function Binance({
-  setBinanceApiKeys,
-  fetchBinanceBalances,
-  zeroBinanceBalances,
-  isMobile,
-  apiKey,
-  errorMessage,
-  lastUpdated
-}) {
+function Binance({ isMobile }) {
+  const state = useVenti()
+  const apiKey = state.get(`apiKey`, '')
+  const binanceErrorMessage = state.get(`binanceErrorMessage`, '')
+  const lastSync = state.get(`lastSync`, '')
+
   const [binanceApiKey, setBinanceApiKey] = useState('')
   const [secretKey, setSecretKey] = useState('')
 
@@ -66,13 +64,13 @@ function Binance({
   }
 
   const renderErrorMessage = () => {
-    if (!errorMessage) return
+    if (!binanceErrorMessage) return
     return (
       <Message
         color="black"
         icon="warning circle"
         header="Error connecting to Binance"
-        content={errorMessage}
+        content={binanceErrorMessage}
       />
     )
   }
@@ -83,7 +81,7 @@ function Binance({
         color="black"
         icon="check circle"
         header="Connected"
-        content={`Updated balances ${moment(lastUpdated).fromNow()}`}
+        content={`Updated balances ${moment(lastSync).fromNow()}`}
       />
     )
   }
@@ -224,13 +222,7 @@ function Binance({
   )
 }
 
-const mapStateToProps = state => ({
-  apiKey: state.binance.apiKey,
-  errorMessage: state.binance.errorMessage,
-  lastUpdated: state.binance.lastSync
-})
-
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(mapDispatchToProps),
   withTheme
 )(Binance)

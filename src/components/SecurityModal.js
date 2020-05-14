@@ -10,6 +10,7 @@ import ImportWalletButton from './ImportWalletButton'
 import { binanceSymbols } from '../config'
 import { getLedgerSymbols } from '../actions/ledger'
 import { withTheme, compose } from '../contexts'
+import { useVenti } from 'venti'
 
 const ledgerSymbols = getLedgerSymbols()
 const trezorSymbols = ['BTC']
@@ -37,9 +38,10 @@ function SecurityModal({
   isMobile,
   removeManualTransactions,
   addManualTransaction,
-  openAddressModal,
-  binanceApiKey
+  openAddressModal
 }) {
+  const state = useVenti()
+  const apiKey = state.get(`apiKey`, '')
   const [manualTxTime, setManualTxTime] = useState('')
   const [inputHasFocus, setInputHasFocus] = useState(false)
   const [manualBalance, setManualBalanceState] = useState(null)
@@ -70,7 +72,7 @@ function SecurityModal({
   }
 
   const getImportBinanceButton = () => {
-    if (binanceApiKey) return
+    if (apiKey) return
     if (!binanceSymbols.includes(security.addressType)) return
     return (
       <Link to="/binance" key="binance">
@@ -305,7 +307,6 @@ SecurityModal.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  binanceApiKey: state.binance.apiKey,
   transactionsBySymbol: state.transactions.bySymbol,
   wallets: state.wallets
 })

@@ -18,6 +18,7 @@ import { mapDispatchToProps } from '../actions'
 import withTracker from './withTracker'
 import { assetService } from '../services'
 import { withTheme, compose } from '../contexts'
+import { fetchBinanceBalances } from '../ventiStore/binance'
 
 export const contentMinHeight = 600
 
@@ -27,7 +28,7 @@ const routeStyle = {
   minHeight: contentMinHeight
 }
 
-function App({ fetchBinanceBalances, fetchWalletBalances, isMobile }) {
+function App({ fetchWalletBalances, isMobile }) {
   useEffect(() => {
     fetchBinanceBalances()
     fetchWalletBalances()
