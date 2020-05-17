@@ -8,7 +8,7 @@ import { lightBg } from '../lib/styles'
 import PricesInputQty from './PricesInputQty'
 import ImportWalletButton from './ImportWalletButton'
 import { binanceSymbols } from '../config'
-import { getLedgerSymbols } from '../actions/ledger'
+import { getLedgerSymbols } from '../ventiStore/ledger'
 import { withTheme, compose } from '../contexts'
 import { useVenti } from 'venti'
 
@@ -41,7 +41,7 @@ function SecurityModal({
   openAddressModal
 }) {
   const state = useVenti()
-  const apiKey = state.get(`apiKey`, '')
+  const apiKey = state.get(`binance.apiKey`, '')
   const [manualTxTime, setManualTxTime] = useState('')
   const [inputHasFocus, setInputHasFocus] = useState(false)
   const [manualBalance, setManualBalanceState] = useState(null)

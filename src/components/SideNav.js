@@ -28,8 +28,8 @@ function SideNav({
   onClick
 }) {
   const state = useVenti()
-  const sideBarApps = state.get(`sideBarApps`, [])
-  const enabled = state.get(`enabled`, [])
+  const sideBarApps = state.get(`apps.sideBarApps`, [])
+  const enabled = state.get(`apps.enabled`, [])
   const getEnabledApps = () => sideBarApps.filter(app => enabled.includes(app.id))
   const enabledApps = getEnabledApps(state.apps)
   console.log('Side bar enabledApps --->>>', enabledApps)

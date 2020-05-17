@@ -37,9 +37,9 @@ const fieldsetStyle = {
 
 function Binance({ isMobile }) {
   const state = useVenti()
-  const apiKey = state.get(`apiKey`, '')
-  const binanceErrorMessage = state.get(`binanceErrorMessage`, '')
-  const lastSync = state.get(`lastSync`, '')
+  const apiKey = state.get(`binance.apiKey`, '')
+  const binanceErrorMessage = state.get(`binance.binanceErrorMessage`, '')
+  const lastSync = state.get(`binance.lastSync`, '')
 
   const [binanceApiKey, setBinanceApiKey] = useState('')
   const [secretKey, setSecretKey] = useState('')

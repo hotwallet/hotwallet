@@ -3,7 +3,7 @@ import { addImportedTransaction } from '../actions/transactions'
 import { getBalanceForSymbol, getBalancesForWallet } from '../selectors/transactions'
 import { state } from 'venti'
 
-export default state.set({
+export default state.set('binance', {
   apiKey: '',
   secretKey: '',
   lastSync: null,
@@ -17,25 +17,25 @@ export const createApiKeyUrl = 'https://www.binance.com/userCenter/createApi.htm
 export const setBinanceApiKeys = (keys) => {
   console.log('setBinanceApiKeys, keys.apiKey --->>>', keys.apiKey)
   console.log('setBinanceApiKeys, app to add --->>>', keys.secretKey)
-  state.set('apiKey', keys.apiKey)
-  state.set('secretKey', keys.secretKey)
+  state.set('binance.apiKey', keys.apiKey)
+  state.set('binance.secretKey', keys.secretKey)
 }
 
 const setLastSync = () => {
-  const lastSync = state.get(`lastSync`, [])
+  const lastSync = state.get(`binance.lastSync`, [])
   console.log('setLastSync, lastSync --->>>', lastSync)
-  state.set('lastSync', Date.now())
+  state.set('binance.lastSync', Date.now())
 }
 
 const setBinanceErrorMessage = (errorMessage) => {
-  const binanceErrorMessage = state.get(`binanceErrorMessage`, [])
+  const binanceErrorMessage = state.get(`binance.binanceErrorMessage`, [])
   console.log('setBinanceErrorMessage, binanceErrorMessage --->>>', binanceErrorMessage)
-  state.set('binanceErrorMessage', errorMessage)
+  state.set('binance.binanceErrorMessage', errorMessage)
 }
 
 export const fetchBinanceBalances = () => (dispatch) => {
-  const apiKey = state.get(`apiKey`, '')
-  const secretKey = state.get(`secretKey`, '')
+  const apiKey = state.get(`binance.apiKey`, '')
+  const secretKey = state.get(`binance.secretKey`, '')
   console.log('apiKey', apiKey)
   console.log('secretKey', secretKey)
   if (!apiKey || !secretKey) return

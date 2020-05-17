@@ -2,10 +2,10 @@ import React from 'react'
 import { darkBg } from '../lib/styles'
 import CurrencyButton from './CurrencyButton'
 import { PropTypes } from 'prop-types'
+import { setBaseCurrency } from '../ventiStore/user'
 
 export default function CurrencyPopup({
   baseCurrency,
-  setBaseCurrency,
   currencies,
   onClick,
   active
@@ -37,7 +37,6 @@ export default function CurrencyPopup({
 
 CurrencyPopup.propTypes = {
   baseCurrency: PropTypes.string.isRequired,
-  setBaseCurrency: PropTypes.func.isRequired,
   currencies: PropTypes.array.isRequired,
   onClick: PropTypes.func
 }

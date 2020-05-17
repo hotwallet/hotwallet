@@ -3,9 +3,10 @@ import * as config from '../config'
 import store from '../reduxStore'
 import { assetService } from '../services'
 import { updateSecurity } from '../actions/securities'
-import * as schema from '../actions/schema'
+import * as schema from '../ventiStore/schema'
 import { normalize } from 'normalizr'
 import _ from 'lodash'
+import { state } from 'venti'
 
 export default class SocketClient {
   constructor() {
@@ -32,8 +33,7 @@ export default class SocketClient {
   }
 
   onSecurity(security) {
-    const reduxState = store.getState()
-    const baseCurrency = reduxState.user.baseCurrency
+    const baseCurrency = state.get('user.baseCurrency', {})
     if (security.baseCurrency !== baseCurrency) return
     security.lastUpdated = new Date()
     // update venti state
@@ -72,7 +72,7 @@ export default class SocketClient {
       return setTimeout(() => this.syncSubscriptions(), 1000)
     }
 
-    const currentBaseCurrency = store.getState().user.baseCurrency
+    const currentBaseCurrency = state.get('user.baseCurrency', {})
 
     if (currentBaseCurrency !== this.subscribedBaseCurrency) {
       let previouslySubscribed = this.subscribed.slice()

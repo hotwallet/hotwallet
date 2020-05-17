@@ -1,13 +1,17 @@
 import LedgerSDK from 'ledger-sdk'
-import { addWallet, fetchWalletBalances } from './wallets'
+import { addWallet, fetchWalletBalances } from '../actions/wallets'
 import { getSecurity } from '../selectors/securities'
 
-export const SET_LEDGER_DATA = 'SET_LEDGER_DATA'
+import { state as ventiState } from 'venti'
 
-export const setLedgerData = data => ({
-  type: SET_LEDGER_DATA,
-  data
+export default ventiState.set('ledger', {
+  data: null
 })
+
+export const setLedgerData = data => {
+  console.log('setLedgerData, data --->>>', data)
+  ventiState.set('ledger.data', data)
+}
 
 export const getLedgerSymbols = () => {
   return LedgerSDK.prototype.getSupportedSymbols()
@@ -18,11 +22,11 @@ export const startLedger = () => (dispatch, getState) => {
   const state = getState()
 
   // reset to disconnected status on start
-  dispatch(setLedgerData(null))
+  setLedgerData(null)
 
   ledger.on('open', data => {
     const security = getSecurity(state, data.symbol)
-    dispatch(setLedgerData(data))
+    setLedgerData(data)
 
     const wallets = []
 
@@ -83,9 +87,9 @@ export const startLedger = () => (dispatch, getState) => {
     }
   })
 
-  ledger.on('close', () => dispatch(setLedgerData(null)))
+  ledger.on('close', () => setLedgerData(null))
 
   ledger.on('disconnect', () => console.log('disconnect'))
 
-  ledger.start().catch(error => dispatch(setLedgerData({ error })))
+  ledger.start().catch(error => setLedgerData({ error }))
 }

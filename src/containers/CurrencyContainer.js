@@ -1,7 +1,7 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { mapDispatchToProps } from '../actions'
 import CurrencySelector from '../components/CurrencySelector'
+import { setBaseCurrency } from '../ventiStore/user'
+import { useVenti } from 'venti'
 
 const supportedCurrencies = [
   'USD', 'EUR', 'AUD', 'BRL', 'CAD', 'CHF', 'CLP', 'CNY', 'CZK', 'DKK',
@@ -10,18 +10,12 @@ const supportedCurrencies = [
   'TRY', 'TWD', 'ZAR'
 ]
 
-class CurrencyContainer extends React.Component {
-  render() {
-    return React.createElement(CurrencySelector, {
-      baseCurrency: this.props.baseCurrency,
-      setBaseCurrency: this.props.setBaseCurrency,
-      currencies: supportedCurrencies
-    })
-  }
+export default function CurrencyContainer() {
+  const state = useVenti()
+  const baseCurrency = state.get(`user.baseCurrency`, '')
+  return React.createElement(CurrencySelector, {
+    baseCurrency,
+    setBaseCurrency,
+    currencies: supportedCurrencies
+  })
 }
-
-const mapStateToProps = (state, props) => ({
-  baseCurrency: state.user.baseCurrency
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(CurrencyContainer)

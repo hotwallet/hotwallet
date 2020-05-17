@@ -10,14 +10,16 @@ import { formatFiat, formatPercentChange } from '../../lib/formatNumber'
 import { getSecurities } from '../../selectors/securities'
 import { getBalancesBySymbol } from '../../selectors/transactions'
 import { withTheme, compose } from '../../contexts'
+import { useVenti } from 'venti'
 
 function PortfolioHeader({
   balancesBySymbol,
   securities,
-  baseCurrency,
   chartData,
   isMobile
 }) {
+  const state = useVenti()
+  const baseCurrency = state.get(`user.baseCurrency`, '')
   const getTotalValue = () => {
     return Object.keys(balancesBySymbol).reduce((total, symbol) => {
       const security =
@@ -91,7 +93,6 @@ function PortfolioHeader({
 const mapStateToProps = (state) => ({
   balancesBySymbol: getBalancesBySymbol(state),
   securities: getSecurities(state),
-  baseCurrency: state.user.baseCurrency,
   chartData: state.portfolio.chartData
 })
 

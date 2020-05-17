@@ -1,7 +1,8 @@
 import client from '../lib/hotwalletClient'
 import { normalize } from 'normalizr'
-import * as schema from './schema'
+import * as schema from '../ventiStore/schema'
 import debounce from 'lodash/debounce'
+import { state } from 'venti'
 
 export const SECURITIES_FETCH = 'SECURITIES_FETCH'
 export const SECURITIES_FETCH_SUCCESS = 'SECURITIES_FETCH_SUCCESS'
@@ -14,7 +15,7 @@ const fetchSecuritiesDebounced = debounce((dispatch, getState) => {
     type: SECURITIES_FETCH
   })
 
-  const baseCurrency = getState().user.baseCurrency
+  const baseCurrency = state.get('user.baseCurrency', {})
   client.get('/securities', { baseCurrency, limit: 2000 })
     .then(response => {
       dispatch({

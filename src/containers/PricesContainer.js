@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { mapDispatchToProps } from '../actions'
 import { getVisibleSecurities } from '../selectors/securities'
@@ -7,37 +7,49 @@ import Prices from '../components/Prices'
 import { withTheme, compose } from '../contexts'
 import { withState } from '../ventiStore'
 // import api from '../api'
+import { useVenti } from 'venti'
 
-class PricesContainer extends React.Component {
-  componentDidMount() {
+function PricesContainer({
+  addManualTransaction,
+  removeManualTransactions,
+  securities,
+  symbolOffset,
+  isFetching,
+  failureMessage,
+  isMobile,
+  isDesktop,
+  setLastVisibleRow,
+  updatedAt,
+  fetchSecurities
+}) {
+  useEffect(() => {
     // fetch all prices if they haven't been updated in the past hour
-    const updatedAt = this.props.updatedAt
     const diff = moment().diff(updatedAt, 'hours')
-    if (!updatedAt || diff > 1 || this.props.failureMessage) {
-      this.props.fetchSecurities()
+    if (!updatedAt || diff > 1 || failureMessage) {
+      fetchSecurities()
     }
-  }
+  }, [])
 
-  render() {
-    return React.createElement(Prices, {
-      addManualTransaction: this.props.addManualTransaction,
-      removeManualTransactions: this.props.removeManualTransactions,
-      securities: this.props.securities,
-      symbolOffset: this.props.symbolOffset,
-      isFetching: this.props.isFetching,
-      failureMessage: this.props.failureMessage,
-      isMobile: this.props.isMobile,
-      isDesktop: this.props.isDesktop,
-      baseCurrency: this.props.baseCurrency,
-      setLastVisibleRow: this.props.setLastVisibleRow
-    })
-  }
+  const state = useVenti()
+  const baseCurrency = state.get(`user.baseCurrency`, '')
+
+  return React.createElement(Prices, {
+    addManualTransaction,
+    removeManualTransactions,
+    securities,
+    symbolOffset,
+    isFetching,
+    failureMessage,
+    isMobile,
+    isDesktop,
+    baseCurrency,
+    setLastVisibleRow
+  })
 }
 
 const mapStateToProps = (state, props) => {
   return ({
     // updatedAt: state.securities.metadata.updatedAt,
-    baseCurrency: state.user.baseCurrency,
     securities: getVisibleSecurities(state, props),
     symbolOffset: state.ephemeral.rowSlice[0] || 0,
     isFetching: state.securities.metadata.isFetching,

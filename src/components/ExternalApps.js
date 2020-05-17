@@ -23,8 +23,9 @@ const cellStyle = {
 
 function ExternalApps({ isMobile }) {
   const state = useVenti()
-  const sideBarApps = state.get(`sideBarApps`, [])
-  const enabled = state.get(`enabled`, [])
+  const sideBarApps = state.get(`apps.sideBarApps`, [])
+  const enabled = state.get(`apps.enabled`, [])
+  console.log('state', state)
 
   const toggleApp = event => {
     const el = event.target

@@ -3,7 +3,8 @@ import _get from 'lodash/get'
 import debounce from 'lodash/debounce'
 import { getDailyBalances } from '../selectors/transactions'
 import client from '../lib/hotwalletClient'
-import { setPrices } from './prices'
+import { setPrices } from '../ventiStore/prices'
+import { state as ventiState } from 'venti'
 
 export const PORTFOLIO_SET_DATE_RANGE = 'PORTFOLIO_SET_DATE_RANGE'
 export const SET_CHART_DATA = 'SET_CHART_DATA'
@@ -26,7 +27,7 @@ export const setDateRange = range => (dispatch, getState) => {
 
 const runRefreshChart = (dispatch, getState) => {
   const state = getState()
-  const baseCurrency = state.user.baseCurrency
+  const baseCurrency = ventiState.get('user.baseCurrency', {})
 
   // get the daily balances for date range
   const dailyBalances = getDailyBalances(state)
@@ -37,7 +38,8 @@ const runRefreshChart = (dispatch, getState) => {
   const [qty, unit] = state.portfolio.range.label.split(' ')
   const start = moment().subtract(qty, unit)
   const chartDates = []
-  const existingPrices = getState().prices
+  const prices = ventiState.get('prices.prices', {})
+  const existingPrices = prices
   const DATE_FORMAT = 'YYYY-MM-DD'
   const pricesQuery = { baseCurrency, symbols: [] }
   for (let m = moment(start); m.format(DATE_FORMAT) <= moment().format(DATE_FORMAT); m.add(1, 'days')) {
@@ -58,11 +60,11 @@ const runRefreshChart = (dispatch, getState) => {
       if (!pricesQuery.symbols.length) return
       pricesQuery.symbols = pricesQuery.symbols.join(',')
       return client.get('/prices', pricesQuery)
-        .then(prices => dispatch(setPrices(prices)))
+        .then(prices => (setPrices(prices)))
     })
     // format chart data
     .then(() => {
-      const prices = getState().prices
+      const prices = ventiState.get('prices.prices', {})
       const chartData = []
       chartDates.forEach(date => {
         const totalValue = symbols.reduce((total, symbol) => {

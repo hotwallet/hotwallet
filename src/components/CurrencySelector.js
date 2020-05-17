@@ -3,8 +3,9 @@ import '../lib/currency-flags.min.css'
 import CurrencyButton from './CurrencyButton'
 import CurrencyPopup from './CurrencyPopup'
 import PropTypes from 'prop-types'
+import { setBaseCurrency } from '../ventiStore/user'
 
-function CurrencySelector({ currencies, baseCurrency, setBaseCurrency }) {
+function CurrencySelector({ currencies, baseCurrency }) {
   const [active, setActive] = useState(false)
 
   return (
@@ -27,7 +28,6 @@ function CurrencySelector({ currencies, baseCurrency, setBaseCurrency }) {
 
 CurrencySelector.propTypes = {
   baseCurrency: PropTypes.string.isRequired,
-  setBaseCurrency: PropTypes.func.isRequired,
   currencies: PropTypes.array.isRequired
 }
 

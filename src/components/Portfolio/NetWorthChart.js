@@ -9,6 +9,7 @@ import { mapDispatchToProps } from '../../actions'
 import { getSymbolsWithTransactions } from '../../selectors/transactions'
 import { subscribeSymbols } from '../../lib/subscribe'
 import { withTheme, compose } from '../../contexts'
+import { useVenti } from 'venti'
 
 Highcharts.setOptions({
   global: { useUTC: false }
@@ -27,10 +28,11 @@ function NetWorthChart({
   isTablet,
   hasNoTransactions,
   refreshChart,
-  baseCurrency,
   deviceType,
   setDateRange
 }) {
+  const state = useVenti()
+  const baseCurrency = state.get(`user.baseCurrency`, '')
   useEffect(() => {
     const age = Date.now() - lastRefresh
     const isStale = (age > fiveMinutes)
@@ -138,7 +140,6 @@ const mapStateToProps = state => ({
   chartData: state.portfolio.chartData,
   lastRefresh: state.portfolio.lastRefresh,
   hasNoTransactions: !Object.keys(state.transactions.byId).length,
-  baseCurrency: state.user.baseCurrency,
   symbols: getSymbolsWithTransactions(state)
 })
 
