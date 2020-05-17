@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
 import moment from 'moment'
 import H1 from './H1'
 import { mobilePadding, desktopPadding } from '../lib/styles'
-import { mapDispatchToProps } from '../actions'
 import { Button, Table, Image, Icon, Message, Input } from 'semantic-ui-react'
-import { getLedgerWallets } from '../selectors/transactions'
+import { getLedgerWallets } from '../ventiSelectors/transactions'
 import { withTheme, compose } from '../contexts'
+import { useVenti } from 'venti'
+
+import { startLedger } from '../ventiStore/ledger'
+import { deleteWallet, setWalletName } from '../ventiStore/wallets'
 
 const rowStyle = {}
 
@@ -28,13 +30,11 @@ const cellStyle = {
 }
 
 function Ledger({
-  startLedger,
-  status,
-  deleteWallet,
-  setWalletName,
-  wallets,
   isMobile
 }) {
+  const state = useVenti()
+  const status = state.get('ledger.data')
+  const wallets = getLedgerWallets()
   useEffect(() => {
     startLedger()
   }, [])
@@ -189,12 +189,6 @@ function Ledger({
   )
 }
 
-const mapStateToProps = state => ({
-  status: state.ledger.data || {},
-  wallets: getLedgerWallets(state)
-})
-
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
   withTheme
 )(Ledger)

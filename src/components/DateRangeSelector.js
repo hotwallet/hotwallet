@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
 import { lightBg, lightBlue, padding } from '../lib/styles'
 import { PropTypes } from 'prop-types'
+import { useVenti } from 'venti'
+import { setDateRange } from '../ventiStore/portfolio'
+
 export const dateRanges = [
   {
     isDefault: true,
@@ -38,7 +40,9 @@ const selected = {
   ...button,
   borderBottom: `1px solid ${lightBlue}`
 }
-function DateRangeSelector({ range, setDateRange, deviceType }) {
+function DateRangeSelector({ deviceType }) {
+  const state = useVenti()
+  const range = state.get('portfolio.range', {})
   useEffect(() => {
     if (!range.label) {
       const defaultRange = dateRanges.find(r => r.isDefault)
@@ -79,13 +83,7 @@ function DateRangeSelector({ range, setDateRange, deviceType }) {
 }
 
 DateRangeSelector.propTypes = {
-  range: PropTypes.object.isRequired,
-  deviceType: PropTypes.string,
-  setDateRange: PropTypes.func.isRequired
+  deviceType: PropTypes.string
 }
 
-const mapStateToProps = state => ({
-  range: state.portfolio.range
-})
-
-export default connect(mapStateToProps)(DateRangeSelector)
+export default DateRangeSelector

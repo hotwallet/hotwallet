@@ -70,11 +70,11 @@ export const addToOneToManyMapping = (map, entities, byProp) => {
   for (let entity of entities) {
     if (newMap[entity[byProp]] !== undefined) {
       if (!newMap[entity[byProp]].includes(entity)) {
-        newMap[entity[byProp]] = [ ...newMap[entity[byProp]], entity ]
+        newMap[entity[byProp]] = [...newMap[entity[byProp]], entity]
         changed = true
       }
     } else {
-      newMap[entity[byProp]] = [ entity ]
+      newMap[entity[byProp]] = [entity]
       changed = true
     }
   }

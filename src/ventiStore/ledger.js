@@ -1,31 +1,30 @@
 import LedgerSDK from 'ledger-sdk'
-import { addWallet, fetchWalletBalances } from '../actions/wallets'
-import { getSecurity } from '../selectors/securities'
+import { addWallet, fetchWalletBalances } from './wallets'
+import { getSecurity } from '../ventiSelectors/securities'
 
-import { state as ventiState } from 'venti'
+import { state } from 'venti'
 
-export default ventiState.set('ledger', {
+export default state.set('ledger', {
   data: null
 })
 
 export const setLedgerData = data => {
   console.log('setLedgerData, data --->>>', data)
-  ventiState.set('ledger.data', data)
+  state.set('ledger.data', data)
 }
 
 export const getLedgerSymbols = () => {
   return LedgerSDK.prototype.getSupportedSymbols()
 }
 
-export const startLedger = () => (dispatch, getState) => {
+export const startLedger = () => {
   const ledger = new LedgerSDK()
-  const state = getState()
 
   // reset to disconnected status on start
   setLedgerData(null)
 
   ledger.on('open', data => {
-    const security = getSecurity(state, data.symbol)
+    const security = getSecurity(data.symbol)
     setLedgerData(data)
 
     const wallets = []
@@ -70,7 +69,7 @@ export const startLedger = () => (dispatch, getState) => {
 
     let newWallets = 0
     wallets.forEach(wallet => {
-      const alreadyExists = Object.keys(state.wallets).find(walletId => {
+      const alreadyExists = Object.keys(state.get('wallets', {})).find(walletId => {
         let exists = false
         if (walletId === `${wallet.symbol}:${wallet.xpub}`) exists = true
         if (walletId === `${wallet.symbol}:${wallet.address}`) exists = true
@@ -78,12 +77,12 @@ export const startLedger = () => (dispatch, getState) => {
       })
       if (!alreadyExists) {
         newWallets += 1
-        dispatch(addWallet(wallet))
+        addWallet(wallet)
       }
     })
 
     if (newWallets > 0) {
-      fetchWalletBalances()(dispatch, getState)
+      fetchWalletBalances()
     }
   })
 

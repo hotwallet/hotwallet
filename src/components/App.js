@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
 import { Route, BrowserRouter, HashRouter } from 'react-router-dom'
 import Portfolio from './Portfolio'
 import Ledger from './Ledger'
@@ -14,11 +13,11 @@ import SideNav from './SideNav'
 import '../lib/addToHomeScreen'
 import 'semantic-ui-css/semantic.min.css'
 import { sidebarWidth, border, appMaxWidth } from '../lib/styles'
-import { mapDispatchToProps } from '../actions'
 import withTracker from './withTracker'
 import { assetService } from '../services'
 import { withTheme, compose } from '../contexts'
 import { fetchBinanceBalances } from '../ventiStore/binance'
+import { fetchWalletBalances } from '../ventiStore/wallets'
 
 export const contentMinHeight = 600
 
@@ -28,7 +27,7 @@ const routeStyle = {
   minHeight: contentMinHeight
 }
 
-function App({ fetchWalletBalances, isMobile }) {
+function App({ isMobile }) {
   useEffect(() => {
     fetchBinanceBalances()
     fetchWalletBalances()
@@ -64,6 +63,5 @@ function App({ fetchWalletBalances, isMobile }) {
 }
 
 export default compose(
-  withTheme,
-  connect(null, mapDispatchToProps)
+  withTheme
 )(App)

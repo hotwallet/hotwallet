@@ -1,6 +1,6 @@
-import { fetchSecurities } from '../actions/securities'
+import { fetchSecurities } from './securities'
 import { clearPrices } from './prices'
-import { refreshChart } from '../actions/portfolio'
+import { refreshChart } from './portfolio'
 import client from '../lib/hotwalletClient'
 import { state } from 'venti'
 

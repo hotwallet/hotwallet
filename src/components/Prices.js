@@ -18,9 +18,10 @@ import { withTheme } from '../contexts/theme'
 
 const PriceCell = subscribeSymbol(({ security, delta24h, isMobile }) => {
   // const updated = moment(security.lastUpdated).fromNow()
+  const formatted = formatFiat(security.price, security.baseCurrency)
   return (
     <React.Fragment>
-      <div>{formatFiat(security.price, security.baseCurrency)}</div>
+      <div>{formatted}</div>
       {/*
       <Popup
         trigger={<span>{formatFiat(security.price, security.baseCurrency)}</span>}

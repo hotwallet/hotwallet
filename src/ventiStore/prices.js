@@ -1,8 +1,7 @@
-import { getPriceKey } from '../actions/portfolio'
+import { getPriceKey } from './portfolio'
 import { state } from 'venti'
 
 export default state.set('prices', {
-  prices: {}
 })
 
 export const setPrices = prices => {
@@ -12,9 +11,9 @@ export const setPrices = prices => {
     prices[getPriceKey({ symbol, baseCurrency, date })] = price
     return prices
   }, {})
-  state.set('prices.prices', newPrices)
+  state.set('prices', newPrices)
 }
 
 export const clearPrices = () => {
-  state.set('prices.prices', {})
+  state.set('prices', {})
 }

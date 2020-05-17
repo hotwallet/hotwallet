@@ -1,5 +1,4 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React, { useState } from 'react'
 import {
   mobilePadding,
   desktopPadding,
@@ -7,19 +6,19 @@ import {
   smallFontSize
 } from '../../lib/styles'
 import { formatFiat, formatPercentChange } from '../../lib/formatNumber'
-import { getSecurities } from '../../selectors/securities'
-import { getBalancesBySymbol } from '../../selectors/transactions'
+import { getSecurities } from '../../ventiSelectors/securities'
+import { getBalancesBySymbol } from '../../ventiSelectors/transactions'
 import { withTheme, compose } from '../../contexts'
 import { useVenti } from 'venti'
 
 function PortfolioHeader({
-  balancesBySymbol,
-  securities,
-  chartData,
   isMobile
 }) {
   const state = useVenti()
-  const baseCurrency = state.get(`user.baseCurrency`, '')
+  const [balancesBySymbol] = useState(getBalancesBySymbol())
+  const [securities] = useState(getSecurities())
+  const [chartData] = useState(state.get('portfolio.chartData', {}))
+  const baseCurrency = state.get(`user.baseCurrency`, 'USD')
   const getTotalValue = () => {
     return Object.keys(balancesBySymbol).reduce((total, symbol) => {
       const security =
@@ -90,10 +89,4 @@ function PortfolioHeader({
   )
 }
 
-const mapStateToProps = (state) => ({
-  balancesBySymbol: getBalancesBySymbol(state),
-  securities: getSecurities(state),
-  chartData: state.portfolio.chartData
-})
-
-export default compose(connect(mapStateToProps), withTheme)(PortfolioHeader)
+export default compose(withTheme)(PortfolioHeader)

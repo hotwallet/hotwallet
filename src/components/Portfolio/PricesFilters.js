@@ -1,22 +1,24 @@
 import React, { useState, useRef } from 'react'
 import ReactDOM from 'react-dom'
-import { connect } from 'react-redux'
 import { Checkbox, Input, Grid } from 'semantic-ui-react'
-import { mapDispatchToProps } from '../../actions'
 import { desktopPadding, mobilePadding } from '../../lib/styles'
 import { withTheme, compose } from '../../contexts'
+import { useVenti } from 'venti'
+
+import { filterSymbols } from '../../ventiStore/ephemeral'
+import { showBalancesOnly } from '../../ventiStore/securities'
 
 function PricesFilters({
   isMobile,
-  isTablet,
-  filterSymbols,
-  showBalancesOnly,
-  balancesOnly,
-  query
+  isTablet
 }) {
+  const state = useVenti()
+  const balancesOnly = state.get('securities.metadata.balancesOnly')
+  const query = state.get('ephemeral.filterSymbolsQuery')
   const [value, setValue] = useState('')
   const [hasInput, setInput] = useState('')
   const input = useRef(null)
+  console.log('state', state)
 
   const onToggle = (e, toggle) => {
     input.current.inputRef.value = ''
@@ -84,7 +86,6 @@ function PricesFilters({
                 width: isMobile ? 150 : null
               }}
               ref={input}
-              defaultValue={query}
               inverted
               placeholder="Find symbol"
               onChange={onChange}
@@ -122,12 +123,6 @@ function PricesFilters({
   )
 }
 
-const mapStateToProps = state => ({
-  balancesOnly: state.securities.metadata.balancesOnly,
-  query: state.ephemeral.filterSymbolsQuery
-})
-
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
   withTheme
 )(PricesFilters)

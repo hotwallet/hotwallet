@@ -1,6 +1,6 @@
 import BinanceClient from '../lib/BinanceClient'
-import { addImportedTransaction } from '../actions/transactions'
-import { getBalanceForSymbol, getBalancesForWallet } from '../selectors/transactions'
+import { addImportedTransaction } from './transactions'
+import { getBalanceForSymbol, getBalancesForWallet } from '../ventiSelectors/transactions'
 import { state } from 'venti'
 
 export default state.set('binance', {
@@ -33,7 +33,7 @@ const setBinanceErrorMessage = (errorMessage) => {
   state.set('binance.binanceErrorMessage', errorMessage)
 }
 
-export const fetchBinanceBalances = () => (dispatch) => {
+export const fetchBinanceBalances = () => {
   const apiKey = state.get(`binance.apiKey`, '')
   const secretKey = state.get(`binance.secretKey`, '')
   console.log('apiKey', apiKey)
@@ -57,7 +57,7 @@ export const fetchBinanceBalances = () => (dispatch) => {
             symbol,
             balance: newBalance,
             walletId: 'Binance'
-          })(dispatch)
+          })
         }
       })
     })
@@ -66,7 +66,7 @@ export const fetchBinanceBalances = () => (dispatch) => {
     })
 }
 
-export const zeroBinanceBalances = () => (dispatch) => {
+export const zeroBinanceBalances = () => {
   const walletId = 'Binance'
   const balances = getBalancesForWallet(state, walletId)
   Object.keys(balances).forEach(symbol => {
@@ -76,6 +76,6 @@ export const zeroBinanceBalances = () => (dispatch) => {
       symbol,
       balance: 0,
       walletId
-    })(dispatch)
+    })
   })
 }

@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
 import H1 from './H1'
-import { mapDispatchToProps } from '../actions'
 import { Button, Message, Input } from 'semantic-ui-react'
 import { borderColor, mobilePadding, desktopPadding } from '../lib/styles'
 import { appName } from '../config'
@@ -223,6 +221,5 @@ function Binance({ isMobile }) {
 }
 
 export default compose(
-  connect(mapDispatchToProps),
   withTheme
 )(Binance)

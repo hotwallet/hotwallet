@@ -10,13 +10,13 @@ export function subscribeSymbol(WrappedComponent) {
 
     componentDidUpdate(prevProps) {
       if (prevProps.symbol !== this.props.symbol) {
-        this.unsubscribe()
+        this.unsubscribe && this.unsubscribe()
         this.subscribe()
       }
     }
 
     componentWillUnmount() {
-      this.unsubscribe()
+      this.unsubscribe && this.unsubscribe()
     }
 
     subscribe() {
@@ -41,13 +41,13 @@ export function subscribeSymbols(WrappedComponent) {
 
     componentDidUpdate(prevProps) {
       if (prevProps.symbols !== this.props.symbols && !isEqual(prevProps.symbols, this.props.symbols)) {
-        this.unsubscribe()
+        this.unsubscribe && this.unsubscribe()
         this.subscribe()
       }
     }
 
     componentWillUnmount() {
-      this.unsubscribe()
+      this.unsubscribe && this.unsubscribe()
     }
 
     subscribe() {
@@ -61,5 +61,14 @@ export function subscribeSymbols(WrappedComponent) {
     render() {
       return <WrappedComponent {...this.props} />
     }
+  }
+}
+
+export function symbolsFromStore(getSymbols) {
+  if (!getSymbols) throw Error('Symbols getter should be provided')
+  return WrappedComponent => {
+    const symbols = getSymbols()
+    console.log('Loaded symbols', symbols)
+    return props => (<WrappedComponent {...{ ...props, symbols }} />)
   }
 }

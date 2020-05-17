@@ -13,7 +13,7 @@ function ypubToXpub(ypub) {
   return b58.encode(data)
 }
 
-export const getTrezorAccountInfo = security => (dispatch, getState) => {
+export const getTrezorAccountInfo = security => {
   const { symbol } = security
   Promise.resolve()
     .then(() => {
@@ -60,8 +60,8 @@ export const getTrezorAccountInfo = security => (dispatch, getState) => {
         const isYpub = payload.xpub[0] === 'y'
         wallet.xpub = isYpub ? ypubToXpub(payload.xpub) : payload.xpub
       }
-      dispatch(addWallet(wallet))
-      fetchWalletBalances()(dispatch, getState)
+      addWallet(wallet)
+      fetchWalletBalances()
     })
 }
 

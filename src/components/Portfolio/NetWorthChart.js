@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
 import ReactHighcharts from 'react-highcharts'
 import Highcharts from 'highcharts'
 import DateRangeSelector from '../DateRangeSelector'
 import { Loader } from 'semantic-ui-react'
 import { lightBlue, darkBlue, darkBg, desktopPadding, mobilePadding } from '../../lib/styles'
-import { mapDispatchToProps } from '../../actions'
-import { getSymbolsWithTransactions } from '../../selectors/transactions'
-import { subscribeSymbols } from '../../lib/subscribe'
+import { getSymbolsWithTransactions } from '../../ventiSelectors/transactions'
+import { setDateRange, refreshChart } from '../../ventiStore/portfolio'
+import { subscribeSymbols, symbolsFromStore } from '../../lib/subscribe'
 import { withTheme, compose } from '../../contexts'
 import { useVenti } from 'venti'
 
@@ -22,17 +21,15 @@ const lineWidth = 1.5
 const fiveMinutes = 1000 * 60 * 5
 
 function NetWorthChart({
-  lastRefresh,
-  chartData,
   isMobile,
   isTablet,
-  hasNoTransactions,
-  refreshChart,
-  deviceType,
-  setDateRange
+  deviceType
 }) {
   const state = useVenti()
-  const baseCurrency = state.get(`user.baseCurrency`, '')
+  const chartData = state.get('portfolio.chartData')
+  const lastRefresh = state.get('portfolio.lastRefresh')
+  const hasNoTransactions = !Object.keys(state.get('transactions.byId', {})).length
+  const baseCurrency = state.get(`user.baseCurrency`, 'USD')
   useEffect(() => {
     const age = Date.now() - lastRefresh
     const isStale = (age > fiveMinutes)
@@ -136,15 +133,8 @@ function NetWorthChart({
   )
 }
 
-const mapStateToProps = state => ({
-  chartData: state.portfolio.chartData,
-  lastRefresh: state.portfolio.lastRefresh,
-  hasNoTransactions: !Object.keys(state.transactions.byId).length,
-  symbols: getSymbolsWithTransactions(state)
-})
-
 export default compose(
   withTheme,
-  connect(mapStateToProps, mapDispatchToProps),
+  symbolsFromStore(getSymbolsWithTransactions),
   subscribeSymbols
 )(NetWorthChart)

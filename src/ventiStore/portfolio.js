@@ -1,13 +1,19 @@
 import moment from 'moment'
 import _get from 'lodash/get'
 import debounce from 'lodash/debounce'
-import { getDailyBalances } from '../selectors/transactions'
+import { getDailyBalances } from '../ventiSelectors/transactions'
 import client from '../lib/hotwalletClient'
-import { setPrices } from '../ventiStore/prices'
-import { state as ventiState } from 'venti'
+import { setPrices } from './prices'
+import { state } from 'venti'
 
-export const PORTFOLIO_SET_DATE_RANGE = 'PORTFOLIO_SET_DATE_RANGE'
-export const SET_CHART_DATA = 'SET_CHART_DATA'
+import { dateRanges } from '../components/DateRangeSelector'
+
+const initialState = {
+  range: dateRanges.find((dateRange) => !!dateRange.isDefault),
+  chartData: []
+}
+
+export default state.set('portfolio', initialState)
 
 export const getPriceKey = ({ symbol, baseCurrency, date }) => {
   const pair = `${symbol}${baseCurrency}`
@@ -15,30 +21,29 @@ export const getPriceKey = ({ symbol, baseCurrency, date }) => {
   return `${pair}${numericDate}`
 }
 
-export const setChartData = chartData => ({ type: SET_CHART_DATA, chartData })
-
-export const setDateRange = range => (dispatch, getState) => {
-  dispatch({
-    type: PORTFOLIO_SET_DATE_RANGE,
-    range
-  })
-  refreshChart()(dispatch, getState)
+export const setChartData = chartData => {
+  state.set('portfolio.chartData', chartData)
+  state.set('portfolio.lastRefresh', Date.now())
 }
 
-const runRefreshChart = (dispatch, getState) => {
-  const state = getState()
-  const baseCurrency = ventiState.get('user.baseCurrency', {})
+export const setDateRange = range => {
+  state.set('portfolio.range', range)
+  refreshChart()
+}
+
+const runRefreshChart = () => {
+  const baseCurrency = state.get('user.baseCurrency', 'USD')
 
   // get the daily balances for date range
-  const dailyBalances = getDailyBalances(state)
+  const dailyBalances = getDailyBalances()
   const firstTransactionDate = Object.keys(dailyBalances)[0]
   const symbols = Object.keys(dailyBalances[firstTransactionDate] || {})
 
   // ensure we have prices for symbols for this date range
-  const [qty, unit] = state.portfolio.range.label.split(' ')
+  const [qty, unit] = state.get('portfolio.range.label', '').split(' ')
   const start = moment().subtract(qty, unit)
   const chartDates = []
-  const prices = ventiState.get('prices.prices', {})
+  const prices = state.get('prices', {})
   const existingPrices = prices
   const DATE_FORMAT = 'YYYY-MM-DD'
   const pricesQuery = { baseCurrency, symbols: [] }
@@ -64,7 +69,7 @@ const runRefreshChart = (dispatch, getState) => {
     })
     // format chart data
     .then(() => {
-      const prices = ventiState.get('prices.prices', {})
+      const prices = state.get('prices', {})
       const chartData = []
       chartDates.forEach(date => {
         const totalValue = symbols.reduce((total, symbol) => {
@@ -79,10 +84,10 @@ const runRefreshChart = (dispatch, getState) => {
           totalValue
         ])
       })
-      dispatch(setChartData(chartData))
+      setChartData(chartData)
     })
 }
 
 const refreshChartDebounced = debounce(runRefreshChart, 1000)
 
-export const refreshChart = () => refreshChartDebounced
+export const refreshChart = () => refreshChartDebounced()

@@ -31,7 +31,6 @@ const isNumber = (n) => !isNaN(parseFloat(n)) && isFinite(n)
 function SecurityModal({
   isModalOpen,
   security,
-  transactionsBySymbol,
   wallets,
   iconSrc,
   onClose,
@@ -41,6 +40,7 @@ function SecurityModal({
   openAddressModal
 }) {
   const state = useVenti()
+  const transactionsBySymbol = state.get('transactions.bySymbol', {})
   const apiKey = state.get(`binance.apiKey`, '')
   const [manualTxTime, setManualTxTime] = useState('')
   const [inputHasFocus, setInputHasFocus] = useState(false)
@@ -163,6 +163,7 @@ function SecurityModal({
 
   const importButtons = getImportButtons()
   const { symbol } = security
+  console.log('Get transactions', transactionsBySymbol, symbol)
   const balances = (transactionsBySymbol[symbol] || []).reduce((b, val) => {
     b[val.walletId] = val.balance
     return b
@@ -307,7 +308,6 @@ SecurityModal.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  transactionsBySymbol: state.transactions.bySymbol,
   wallets: state.wallets
 })
 

@@ -1,6 +1,5 @@
-import { createStore, applyMiddleware, compose } from 'redux'
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
-import rootReducer from './reducers'
 import { loadState, saveState } from './localStorage'
 import throttle from 'lodash/throttle'
 
@@ -18,7 +17,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const composedEnhancers = compose(applyMiddleware(...middleware), ...enhancers)
 
-const store = createStore(rootReducer, persistedState, composedEnhancers)
+const store = createStore(combineReducers({}), persistedState, composedEnhancers)
 
 store.subscribe(throttle(() => {
   saveState(store.getState())

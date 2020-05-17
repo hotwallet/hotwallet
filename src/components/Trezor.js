@@ -1,14 +1,13 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import moment from 'moment'
 import { Button, Table, Image, Input, Dropdown } from 'semantic-ui-react'
 import H1 from './H1'
-import { mapDispatchToProps } from '../actions'
 import { mobilePadding, desktopPadding } from '../lib/styles'
-import { getTrezorWallets } from '../selectors/transactions'
-import { getSecurity } from '../selectors/securities'
-import { supportedSymbols } from '../actions/trezor'
+import { getTrezorWallets } from '../ventiSelectors/transactions'
+import { getSecurity } from '../ventiSelectors/securities'
 import { withTheme, compose } from '../contexts'
+import { deleteWallet, setWalletName } from '../ventiStore/wallets'
+import { getTrezorAccountInfo, supportedSymbols } from '../ventiStore/trezor'
 
 const rowStyle = {}
 
@@ -30,13 +29,12 @@ const cellStyle = {
 }
 
 function Trezor({
-  deleteWallet,
-  setWalletName,
-  wallets,
-  getTrezorAccountInfo,
-  isMobile,
-  trezorSecurities
+  isMobile
 }) {
+  const wallets = getTrezorWallets()
+  const trezorSecurities = supportedSymbols
+    .map(symbol => getSecurity(symbol))
+    .sort((a, b) => a.name > b.name ? 1 : -1)
   const onClickDeleteWallet = event => {
     const id = event.target.parentNode.getAttribute('data-id')
     const name = event.target.parentNode.getAttribute('data-name')
@@ -160,15 +158,6 @@ function Trezor({
     </div>
   )
 }
-
-const mapStateToProps = state => ({
-  wallets: getTrezorWallets(state),
-  trezorSecurities: supportedSymbols
-    .map(symbol => getSecurity(state, symbol))
-    .sort((a, b) => a.name > b.name ? 1 : -1)
-})
-
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
   withTheme
 )(Trezor)

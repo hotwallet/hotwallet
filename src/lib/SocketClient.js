@@ -1,8 +1,7 @@
 import io from 'socket.io-client'
 import * as config from '../config'
-import store from '../reduxStore'
 import { assetService } from '../services'
-import { updateSecurity } from '../actions/securities'
+import { updateSecurity } from '../ventiStore/securities'
 import * as schema from '../ventiStore/schema'
 import { normalize } from 'normalizr'
 import _ from 'lodash'
@@ -33,7 +32,7 @@ export default class SocketClient {
   }
 
   onSecurity(security) {
-    const baseCurrency = state.get('user.baseCurrency', {})
+    const baseCurrency = state.get('user.baseCurrency', 'USD')
     if (security.baseCurrency !== baseCurrency) return
     security.lastUpdated = new Date()
     // update venti state
@@ -41,7 +40,7 @@ export default class SocketClient {
     assetService.update(symbol, security)
     // update redux store
     const normalizedSecurity = normalize(security, schema.security)
-    store.dispatch(updateSecurity(normalizedSecurity))
+    updateSecurity(normalizedSecurity)
   }
 
   subscribe(symbol) {
@@ -72,7 +71,7 @@ export default class SocketClient {
       return setTimeout(() => this.syncSubscriptions(), 1000)
     }
 
-    const currentBaseCurrency = state.get('user.baseCurrency', {})
+    const currentBaseCurrency = state.get('user.baseCurrency', 'USD')
 
     if (currentBaseCurrency !== this.subscribedBaseCurrency) {
       let previouslySubscribed = this.subscribed.slice()
