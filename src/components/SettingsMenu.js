@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
@@ -49,10 +48,13 @@ const navItems = [
   }
 ]
 
-function SettingsMenu({ closeMenu, onClickOverlay, maxWidth, visible, windowWidth }) {
+function SettingsMenu({ closeMenu, onClickOverlay, maxWidth, visible }) {
   const [, setHover] = useState(false)
   const [startX, setStartX] = useState(0)
   const [startY, setStartY] = useState(0)
+
+  const windowWidth = window.innerWidth
+  console.log('windowWidth = window.innerWidth', windowWidth)
 
   const onClickOverlaySettingsMenu = () => {
     closeMenu()
@@ -145,11 +147,6 @@ SettingsMenu.propTypes = {
   closeMenu: PropTypes.func.isRequired
 }
 
-const mapStateToProps = state => ({
-  windowWidth: window.innerWidth
-})
-
 export default compose(
-  connect(mapStateToProps),
   withTheme
 )(SettingsMenu)

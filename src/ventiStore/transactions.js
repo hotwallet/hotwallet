@@ -1,7 +1,7 @@
 import { refreshChart } from './portfolio'
 import { v4 } from 'uuid'
 import { state } from 'venti'
-import * as helpers from '../reducers/helpers'
+import * as helpers from '../helpers/helpers'
 import {
   getTransactionsForSymbol,
   getAllTransactions,

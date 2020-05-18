@@ -38,7 +38,6 @@ export default class SocketClient {
     // update venti state
     const { symbol } = security
     assetService.update(symbol, security)
-    // update redux store
     const normalizedSecurity = normalize(security, schema.security)
     updateSecurity(normalizedSecurity)
   }

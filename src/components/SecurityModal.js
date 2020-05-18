@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import PropTypes from 'prop-types'
@@ -31,7 +30,6 @@ const isNumber = (n) => !isNaN(parseFloat(n)) && isFinite(n)
 function SecurityModal({
   isModalOpen,
   security,
-  wallets,
   iconSrc,
   onClose,
   isMobile,
@@ -42,6 +40,7 @@ function SecurityModal({
   const state = useVenti()
   const transactionsBySymbol = state.get('transactions.bySymbol', {})
   const apiKey = state.get(`binance.apiKey`, '')
+  const wallets = state.get(`wallets`, '')
   const [manualTxTime, setManualTxTime] = useState('')
   const [inputHasFocus, setInputHasFocus] = useState(false)
   const [manualBalance, setManualBalanceState] = useState(null)
@@ -307,11 +306,6 @@ SecurityModal.propTypes = {
   openAddressModal: PropTypes.func.isRequired
 }
 
-const mapStateToProps = state => ({
-  wallets: state.wallets
-})
-
 export default compose(
-  connect(mapStateToProps),
   withTheme
 )(SecurityModal)
