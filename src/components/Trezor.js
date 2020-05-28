@@ -35,6 +35,7 @@ function Trezor({
   const trezorSecurities = supportedSymbols
     .map(symbol => getSecurity(symbol))
     .sort((a, b) => a.name > b.name ? 1 : -1)
+    .filter(Boolean)
   const onClickDeleteWallet = event => {
     const id = event.target.parentNode.getAttribute('data-id')
     const name = event.target.parentNode.getAttribute('data-name')
