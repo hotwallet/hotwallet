@@ -68,7 +68,6 @@ export function symbolsFromStore(getSymbols) {
   if (!getSymbols) throw Error('Symbols getter should be provided')
   return WrappedComponent => {
     const symbols = getSymbols()
-    console.log('Loaded symbols', symbols)
     return props => (<WrappedComponent {...{ ...props, symbols }} />)
   }
 }

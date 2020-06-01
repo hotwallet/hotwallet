@@ -100,6 +100,7 @@ const getHDBalances = (symbol, xpub) => {
 }
 
 export const fetchWalletBalances = () => {
+  state.set('wallets', {})
   const wallets = state.get('wallets')
   Promise.map(Object.keys(wallets), walletId => {
     const wallet = wallets[walletId]
@@ -129,7 +130,3 @@ export const fetchWalletBalances = () => {
       })
   })
 }
-
-const initialState = {}
-
-export default state.set('wallets', initialState)

@@ -10,8 +10,8 @@ export default function CurrencyPopup({
   onClick,
   active
 }) {
-  const currencies1 = currencies.filter((c) => c !== baseCurrency)
-  currencies1.unshift(baseCurrency)
+  const currenciesList = currencies.filter((c) => c !== baseCurrency)
+  currenciesList.unshift(baseCurrency)
   const style = {
     ...popupStyle,
     display: active ? 'block' : 'none'
@@ -19,7 +19,7 @@ export default function CurrencyPopup({
   return (
     <div>
       <div style={style}>
-        {currencies1.map((currency) => (
+        {currenciesList.map((currency) => (
           <div key={currency}>
             <CurrencyButton
               currency={currency}

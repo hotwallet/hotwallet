@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   mobilePadding,
   desktopPadding,
@@ -6,7 +6,6 @@ import {
   smallFontSize
 } from '../../lib/styles'
 import { formatFiat, formatPercentChange } from '../../lib/formatNumber'
-import { getSecurities } from '../../ventiSelectors/securities'
 import { getBalancesBySymbol } from '../../ventiSelectors/transactions'
 import { withTheme, compose } from '../../contexts'
 import { useVenti } from 'venti'
@@ -14,11 +13,13 @@ import { useVenti } from 'venti'
 function PortfolioHeader({
   isMobile
 }) {
+  // const state = useVenti()
   const state = useVenti()
-  const [balancesBySymbol] = useState(getBalancesBySymbol())
-  const [securities] = useState(getSecurities())
-  const [chartData] = useState(state.get('portfolio.chartData', {}))
-  const baseCurrency = state.get(`user.baseCurrency`, 'USD')
+  const securities = Object.values(state.get('securities.bySymbol', {}))
+  const balancesBySymbol = getBalancesBySymbol()
+  const chartData = state.get('portfolio.chartData', {})
+  const baseCurrency = state.get(`user.baseCurrency`, '')
+
   const getTotalValue = () => {
     return Object.keys(balancesBySymbol).reduce((total, symbol) => {
       const security =

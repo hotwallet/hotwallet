@@ -162,7 +162,6 @@ function SecurityModal({
 
   const importButtons = getImportButtons()
   const { symbol } = security
-  console.log('Get transactions', transactionsBySymbol, symbol)
   const balances = (transactionsBySymbol[symbol] || []).reduce((b, val) => {
     b[val.walletId] = val.balance
     return b

@@ -1,4 +1,4 @@
-import { state } from '../ventiStore'
+import { state } from 'venti'
 import AccountService from './AccountService'
 import AssetService from './AssetService'
 import TransactionService from './TransactionService'

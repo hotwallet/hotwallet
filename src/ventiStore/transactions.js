@@ -71,11 +71,3 @@ export const getTransactions = () => {
 export const getBalances = () => {
   return getBalancesBySymbol()
 }
-
-const initialState = {
-  byId: {},
-  bySymbol: {},
-  byWalletId: {}
-}
-
-export default state.set('transactions', initialState)

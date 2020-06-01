@@ -4,10 +4,6 @@ import { refreshChart } from './portfolio'
 import client from '../lib/hotwalletClient'
 import { state } from 'venti'
 
-export default state.set('user', {
-  baseCurrency: 'USD'
-})
-
 export const setBaseCurrency = currency => {
   const baseCurrency = state.get(`user.baseCurrency`, '')
   const originalCurrency = baseCurrency

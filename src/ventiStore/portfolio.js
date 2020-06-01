@@ -6,15 +6,6 @@ import client from '../lib/hotwalletClient'
 import { setPrices } from './prices'
 import { state } from 'venti'
 
-import { dateRanges } from '../components/DateRangeSelector'
-
-const initialState = {
-  range: dateRanges.find((dateRange) => !!dateRange.isDefault),
-  chartData: []
-}
-
-export default state.set('portfolio', initialState)
-
 export const getPriceKey = ({ symbol, baseCurrency, date }) => {
   const pair = `${symbol}${baseCurrency}`
   const numericDate = date.split('-').join('')
@@ -32,7 +23,7 @@ export const setDateRange = range => {
 }
 
 const runRefreshChart = () => {
-  const baseCurrency = state.get('user.baseCurrency', 'USD')
+  const baseCurrency = state.get('user.baseCurrency', '')
 
   // get the daily balances for date range
   const dailyBalances = getDailyBalances()

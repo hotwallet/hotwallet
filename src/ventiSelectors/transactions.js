@@ -63,14 +63,13 @@ export const getBalancesBySymbol = symbol => {
   const balancesBySymbol = {}
   const symbols = Object.keys(bySymbolSlice.transactions.bySymbol)
   symbols.forEach(symbol => {
-    balancesBySymbol[symbol] = getBalanceForSymbol(bySymbolSlice, symbol)
+    balancesBySymbol[symbol] = getBalanceForSymbol(symbol)
   })
   return balancesBySymbol
 }
 
 export const getDailyBalances = () => {
   const transactions = getAllTransactions()
-  console.log('Get dailiy balance', transactions)
   if (!transactions) return {}
   const DATE_FORMAT = 'YYYY-MM-DD'
   // get the sparse daily balance of each wallet
@@ -113,7 +112,6 @@ export const getDailyBalances = () => {
       })
     })
   })
-  console.log('Calculated', dailyBalances)
   return dailyBalances
 }
 

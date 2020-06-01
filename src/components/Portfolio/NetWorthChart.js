@@ -26,10 +26,10 @@ function NetWorthChart({
   deviceType
 }) {
   const state = useVenti()
-  const chartData = state.get('portfolio.chartData')
-  const lastRefresh = state.get('portfolio.lastRefresh')
+  const chartData = state.get('portfolio.chartData', {})
+  const lastRefresh = state.get('portfolio.lastRefresh', 0)
   const hasNoTransactions = !Object.keys(state.get('transactions.byId', {})).length
-  const baseCurrency = state.get(`user.baseCurrency`, 'USD')
+  const baseCurrency = state.get(`user.baseCurrency`, '')
   useEffect(() => {
     const age = Date.now() - lastRefresh
     const isStale = (age > fiveMinutes)

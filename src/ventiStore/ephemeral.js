@@ -19,11 +19,3 @@ export const setLastVisibleRow = rowIndex => {
     state.set('ephemeral.rowSlice', rowSlice)
   }
 }
-
-const initialState = {
-  device: {},
-  filterSymbolsQuery: '',
-  rowSlice: [0, 1000]
-}
-
-export default state.set('ephemeral', initialState)

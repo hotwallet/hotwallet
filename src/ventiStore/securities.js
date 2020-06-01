@@ -7,11 +7,11 @@ import { state } from 'venti'
 const fetchSecuritiesDebounced = debounce(() => {
   state.set('securities.metadata', { ...state.get('securities.metadata', {}), isFetching: true })
 
-  const baseCurrency = state.get('user.baseCurrency', 'USD')
+  const baseCurrency = state.get('user.baseCurrency', '')
   client.get('/securities', { baseCurrency, limit: 2000 })
     .then(response => {
       const data = normalize(response, schema.arrayOfSecurities)
-      state.set('securities.allSymbols', data)
+      state.set('securities.allSymbols', data.result)
 
       const bySymbol = state.get('securities.bySymbol', {})
       state.set('securities.bySymbol', { ...bySymbol, ...data.entities.security })
@@ -31,20 +31,13 @@ const fetchSecuritiesDebounced = debounce(() => {
 
 export const fetchSecurities = () => fetchSecuritiesDebounced()
 
-export const updateSecurity = (security) => {
-  const symbol = Object.keys(security.entities.security)[0]
-  if (state.get(`securities.bySymbol.${symbol}.price`) !== security.entities.security[symbol].price) {
-    state.set('securities.bySymbol', { ...state.get('securities.bySymbol'), ...security.entities.security })
+export const updateSecurity = () => {
+  const security = state.get('securities.bySymbol')
+  const symbol = Object.keys(security)[0]
+  if (state.get(`securities.bySymbol.${symbol}.price`) !== security[symbol].price) {
+    state.set('securities.bySymbol', { ...state.get('securities.bySymbol'), ...security })
     state.set('securities.metadata', { ...state.get('securities.metadata'), updatedAt: new Date().toISOString(), failureMessage: undefined })
   }
 }
 
 export const showBalancesOnly = balancesOnly => state.set('securities.metadata.balancesOnly', balancesOnly)
-
-const initialState = {
-  allSymbols: [],
-  bySymbol: {},
-  metadata: { isFetching: false, failureMessage: undefined, updatedAt: new Date().toISOString() }
-}
-
-export default state.set('securities', initialState)

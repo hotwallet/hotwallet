@@ -1,11 +1,14 @@
-import apps from './apps'
-import binance from './binance'
-import ephemeral from './ephemeral'
-import ledger from './ledger'
-import portfolio from './portfolio'
-import prices from './prices'
-import securities from './securities'
-import transactions from './transactions'
+
+import * as apps from './apps'
+import * as binance from './binance'
+import * as ephemeral from './ephemeral'
+import * as ledger from './ledger'
+import * as portfolio from './portfolio'
+import * as prices from './prices'
+import * as securities from './securities'
+import * as transactions from './transactions'
+import * as wallets from './wallets'
+import * as user from './user'
 
 export default {
   apps,
@@ -15,5 +18,7 @@ export default {
   portfolio,
   prices,
   securities,
-  transactions
+  transactions,
+  wallets,
+  user
 }

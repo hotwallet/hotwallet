@@ -32,7 +32,7 @@ export default class SocketClient {
   }
 
   onSecurity(security) {
-    const baseCurrency = state.get('user.baseCurrency', 'USD')
+    const baseCurrency = state.get('user.baseCurrency', '')
     if (security.baseCurrency !== baseCurrency) return
     security.lastUpdated = new Date()
     // update venti state
@@ -70,7 +70,7 @@ export default class SocketClient {
       return setTimeout(() => this.syncSubscriptions(), 1000)
     }
 
-    const currentBaseCurrency = state.get('user.baseCurrency', 'USD')
+    const currentBaseCurrency = state.get('user.baseCurrency', '')
 
     if (currentBaseCurrency !== this.subscribedBaseCurrency) {
       let previouslySubscribed = this.subscribed.slice()

@@ -4,10 +4,6 @@ import { getSecurity } from '../ventiSelectors/securities'
 
 import { state } from 'venti'
 
-export default state.set('ledger', {
-  data: null
-})
-
 export const setLedgerData = data => {
   console.log('setLedgerData, data --->>>', data)
   state.set('ledger.data', data)

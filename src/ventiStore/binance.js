@@ -3,13 +3,6 @@ import { addImportedTransaction } from './transactions'
 import { getBalanceForSymbol, getBalancesForWallet } from '../ventiSelectors/transactions'
 import { state } from 'venti'
 
-export default state.set('binance', {
-  apiKey: '',
-  secretKey: '',
-  lastSync: null,
-  binanceErrorMessage: ''
-})
-
 const fiveMinutes = 1000 * 60 * 5
 
 export const createApiKeyUrl = 'https://www.binance.com/userCenter/createApi.html'
@@ -36,11 +29,12 @@ const setBinanceErrorMessage = (errorMessage) => {
 export const fetchBinanceBalances = () => {
   const apiKey = state.get(`binance.apiKey`, '')
   const secretKey = state.get(`binance.secretKey`, '')
+  const lastSync = state.get(`binance.lastSync`, [])
   console.log('apiKey', apiKey)
   console.log('secretKey', secretKey)
   if (!apiKey || !secretKey) return
   // don't check binance balance too often
-  const age = Date.now() - state.binance.lastSync
+  const age = Date.now() - lastSync
   if (age < fiveMinutes) return
   const binance = new BinanceClient(apiKey, secretKey)
   binance.getAccount()

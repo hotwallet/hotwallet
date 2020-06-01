@@ -54,7 +54,6 @@ function SettingsMenu({ closeMenu, onClickOverlay, maxWidth, visible }) {
   const [startY, setStartY] = useState(0)
 
   const windowWidth = window.innerWidth
-  console.log('windowWidth = window.innerWidth', windowWidth)
 
   const onClickOverlaySettingsMenu = () => {
     closeMenu()

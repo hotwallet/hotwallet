@@ -23,7 +23,7 @@ function PricesContainer({
   })
 
   const state = useVenti()
-  const baseCurrency = state.get(`user.baseCurrency`, 'USD')
+  const baseCurrency = state.get(`user.baseCurrency`, '')
   const securities = getVisibleSecurities()
   const symbolOffset = state.get(`ephemeral.rowSlice`, [])[0] || 0
   const isFetching = state.get(`securities.metadata.isFetching`, false)
@@ -40,18 +40,6 @@ function PricesContainer({
     baseCurrency,
     setLastVisibleRow
   }
-  // return React.createElement(Prices, {
-  //   addManualTransaction,
-  //   removeManualTransactions,
-  //   securities,
-  //   symbolOffset,
-  //   isFetching,
-  //   failureMessage,
-  //   isMobile,
-  //   isDesktop,
-  //   baseCurrency,
-  //   setLastVisibleRow
-  // })
   return (<Prices {...props} />)
 }
 
