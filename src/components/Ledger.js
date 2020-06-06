@@ -63,7 +63,7 @@ function Ledger({
     )
   }
 
-  const renderLedgerStatus = () => {
+  const renderLedgerStatus = ({ status }) => {
     const { symbol, error } = status
     if (error) {
       return renderError(error)
