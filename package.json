@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "big.js": "^5.1.2",
-    "highcharts": "^6.0.7",
+    "highcharts": "^7.2.2",
     "idiot": "^2.0.1",
     "ledger-sdk": "^2.1.0",
     "lodash.flowright": "^3.5.0",
