@@ -8,7 +8,7 @@
     "idiot": "^2.0.1",
     "ledger-sdk": "^2.1.0",
     "lodash.flowright": "^3.5.0",
-    "moment": "^2.21.0",
+    "moment": "^2.29.2",
     "normalizr": "^3.2.4",
     "prop-types": "^15.6.1",
     "re-reselect": "^1.0.1",
